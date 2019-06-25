@@ -81,22 +81,8 @@ class Doppler_For_Learnpress_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Doppler_For_Learnpress_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Doppler_For_Learnpress_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
 		wp_enqueue_style( 'wp-jquery-ui-dialog' );
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/doppler-for-learnpress-admin.css', array(), $this->version, 'all' );
-
 	}
 
 	/**
@@ -105,21 +91,8 @@ class Doppler_For_Learnpress_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Doppler_For_Learnpress_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Doppler_For_Learnpress_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
     wp_enqueue_script( 'jquery-ui-dialog' );
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/doppler-for-learnpress-admin.js', array( 'jquery', 'jquery-ui-dialog'), $this->version, false );
-
 	}
 
 	/**
@@ -130,57 +103,24 @@ class Doppler_For_Learnpress_Admin {
 	public function checkConnectionStatus() {
 		$user = get_option('dplr_learnpress_user');
 		$key = get_option('dplr_learnpress_key');
-		if( !empty($user) && !empty($key) ){
+		$this->credentials = null;
+		if( empty($user) || empty($key) ){
+			return false;
+		}else{
 			$this->credentials = array('api_key' => $key, 'user_account' => $user);
 			return true;
 		}
-		$this->credentials = null;
-		return false;
 	}
 
 	/**
-	 * Subscribe customer to list after 
-	 * course subscription from fromt-end
+	 * Handles ajax connection with API
 	 * 
-	 * @since 1.0.0
+	 * @since 1-0.0
 	 */
-	public function dplr_after_customer_subscription( $order_id ) {
-		$order = new LP_Order( $order_id );
-		$lists = get_option('dplr_subsribers_list');
-		if(!empty($lists)){
-			$list_id = $lists['buyers'];
-			$order = new LP_Order( $order_id );
-			$user_data = get_userdata($order->user_id);
-			$user_email = $user_data->data->user_email;
-			$this->subscribe_customer( $list_id, $user_email, array() );
-		}
-	}
-
-	/**
-	 * Subscribe customer/s to list after 
-	 * course subscription from backend-end
-	 * 
-	 * @since 1.0.0
-	 */
-	public function dplr_after_order_completed( $order_id ){
-		$order = new LP_Order( $order_id );
-		if( $order->has_status( 'completed' ) && !$order->is_child() ){
-			$users = get_post_meta( $order_id, '_user_id', true);
-			if(!empty($users)){
-				$lists = get_option('dplr_subsribers_list');
-				$list_id = $lists['buyers'];
-				if(is_array($users)){
-					foreach($users as $k=>$user_id){
-						$user_email = get_userdata($user_id)->data->user_email;
-						$this->subscribe_customer( $list_id, $user_email, array() );
-					}
-				}else{
-					  $user_id = $users;
-						$user_email = get_userdata($user_id)->data->user_email;
-						$resp = $this->subscribe_customer( $list_id, $user_email, array() );
-				}				
-			}
-		}
+	public function dplr_api_connect() {	
+		$connected = $this->doppler_service->setCredentials(['api_key' => $_POST['key'], 'user_account' => $_POST['user']]);
+		echo ($connected)? 1:0;
+		exit();
 	}
 
 	/**
@@ -217,17 +157,6 @@ class Doppler_For_Learnpress_Admin {
 		?>
 			<p id="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'Example text', 'doppler-for-learnpress' ); ?></p>
 		<?php
-	}
-
-	/**
-	 * Handles ajax connection with API
-	 * 
-	 * @since 1-0.0
-	 */
-	public function dplr_api_connect() {	
-		$connected = $this->doppler_service->setCredentials(['api_key' => $_POST['key'], 'user_account' => $_POST['user']]);
-		echo ($connected)? 1:0;
-		exit();
 	}
 
 	/**
@@ -328,7 +257,6 @@ class Doppler_For_Learnpress_Admin {
 	 * @since 1.0.0
 	 */
 	public function dplr_learnpress_synch(){
-
 		$lists = get_option('dplr_subsribers_list');
 		$list_id = $lists['buyers'];
 		$user = get_option('dplr_learnpress_user');
@@ -347,7 +275,7 @@ class Doppler_For_Learnpress_Admin {
 		
 		$json = json_encode(array('items'=>$items, 'fields' => array()));
 		
-		/* Ej formato JSON
+		/* Example JSON format
 		{
 		"items": [
 			{
@@ -363,7 +291,7 @@ class Doppler_For_Learnpress_Admin {
 		}
 		*/
 
-		/* Ej formato csv import-csv
+		/* Example CSV format with import-csv
 		"EMAIL  \n miemail1%40hotmail.com  \n miemail2%40hotmail.com  \n miemail3%40hotmail.com"
 		*/
 		
@@ -391,6 +319,51 @@ class Doppler_For_Learnpress_Admin {
 		exit();
 	}
 
+		/**
+	 * Subscribe customer to list after 
+	 * course subscription from fromt-end
+	 * 
+	 * @since 1.0.0
+	 */
+	public function dplr_after_customer_subscription( $order_id ) {
+		$order = new LP_Order( $order_id );
+		$lists = get_option('dplr_subsribers_list');
+		if(!empty($lists)){
+			$list_id = $lists['buyers'];
+			$order = new LP_Order( $order_id );
+			$user_data = get_userdata($order->user_id);
+			$user_email = $user_data->data->user_email;
+			$this->subscribe_customer( $list_id, $user_email, array() );
+		}
+	}
+
+	/**
+	 * Subscribe customer/s to list after 
+	 * course subscription from backend-end
+	 * 
+	 * @since 1.0.0
+	 */
+	public function dplr_after_order_completed( $order_id ){
+		$order = new LP_Order( $order_id );
+		if( $order->has_status( 'completed' ) && !$order->is_child() ){
+			$users = get_post_meta( $order_id, '_user_id', true);
+			if(!empty($users)){
+				$lists = get_option('dplr_subsribers_list');
+				$list_id = $lists['buyers'];
+				if(is_array($users)){
+					foreach($users as $k=>$user_id){
+						$user_email = get_userdata($user_id)->data->user_email;
+						$this->subscribe_customer( $list_id, $user_email, array() );
+					}
+				}else{
+					  $user_id = $users;
+						$user_email = get_userdata($user_id)->data->user_email;
+						$resp = $this->subscribe_customer( $list_id, $user_email, array() );
+				}				
+			}
+		}
+	}
+
 	/**
 	* Update Subscribers count
 	*
@@ -404,7 +377,6 @@ class Doppler_For_Learnpress_Admin {
 		
 		//$c_count = 0;
 		$b_count = 0;
-
 		$this->doppler_service->setCredentials( $this->credentials );
 		$list_resource = $this->doppler_service->getResource( 'lists' );
 		
@@ -419,7 +391,6 @@ class Doppler_For_Learnpress_Admin {
 		if(!empty($b_list_id)){
 			$b_count = $list_resource->getList($b_list_id)->subscribersCount;
 		}
-
 		echo json_encode(array('contacts'=>$c_count, 'buyers'=>$b_count));
 		exit();
 	}
@@ -531,7 +502,6 @@ class Doppler_For_Learnpress_Admin {
 	 * @since 1.0.0
 	 */
 	private function subscribe_customer( $list_id, $email, $fields ){
-
 		if( !empty($list_id) && !empty($email) ){
 			$subscriber['email'] = $email;
 			$subscriber['fields'] = $fields; 
@@ -539,7 +509,6 @@ class Doppler_For_Learnpress_Admin {
 			$subscriber_resource = $this->doppler_service->getResource('subscribers');
 			$result = $subscriber_resource->addSubscriber($list_id, $subscriber);
 		}
-				
 	}
 
 	/**
