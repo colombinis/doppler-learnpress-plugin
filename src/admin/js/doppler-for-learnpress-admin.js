@@ -3,54 +3,6 @@
 
 	$(function() {
 
-		$('#dplr-form-connect').submit(function(e){
-
-			e.preventDefault();
-
-			var f = $(this);
-			var button = f.children('button');
-			var userfield = $('input[name="dplr_learnpress_user"]');
-			var keyfield = $('input[name="dplr_learnpress_key"]');
-
-			$('#dplr-form-connect .error').remove();
-
-			var data = {
-				action: 'dplr_ajax_connect',
-				user: userfield.val(),
-				key: keyfield.val()
-			}
-
-			$('.doppler-settings .error').remove();
-			$('#dplr-messages').html('');
-
-			if(data.user === ''){
-				userfield.after('<span class="error">Mensaje de error</span>');
-			}
-
-			if(data.key === ''){
-				keyfield.after('<span class="error">Mensaje de error</span>');
-			}
-
-			if( data.user === '' || data.key === '' ){
-				return false;
-			}
-
-			button.attr('disabled','disabled');
-
-			$.post( ajaxurl, data, function( response ) {
-				if(response == 0){
-					$("#dplr-messages").html('Mensaje de datos incorrectos');
-					button.removeAttr('disabled');
-				}else if(response == 1){
-					var fields =  f.serialize();
-					$.post( 'options.php', fields, function(obj){
-						window.location.reload(false); 					
-					});
-				}
-			})
-		
-		}); 
-
 		$("#dplr-save-list").click(function(e){
 
 			e.preventDefault();			
@@ -110,19 +62,6 @@
 				modal: true
 			});
 		}
-	
-		$("#dplr-tbl-lists tbody").on("click","tr a",deleteList);
-
-		$("#view-students-list").click(function(){
-			var frame = $("#students-frame");
-			if(frame.css('display')=='block'){
-				frame.css('display','none');
-				$(this).html('View');
-			}else{
-				frame.css('display','block');
-				$(this).html('Hide');
-			}
-		});
 
 		$("#btn-synch").click(function(){
 			var button = $(this);
@@ -169,107 +108,11 @@
 		
 		});
 
-		if($("#dplr-tbl-lists").length>0){
-			loadLists(1);
-		}
-
 	});
-
 
 	function listsLoading(){
 		$('form input, form button').prop('disabled', true);
 		$('#dplr-crud').addClass('loading');
 	}
-
-	function listsLoaded(){
-		$('form input, form button').prop('disabled', false);
-		$('form input').val('');
-		$('#dplr-crud').removeClass('loading');
-	}
-
-	function loadLists( page ){
-
-		var data = {
-			action: 'dplr_ajax_get_lists',
-			page: page
-		};
-		
-		listsLoading();
-
-		$("#dpr-tbl-lists tbody tr").remove();
-
-		$.post( ajaxurl, data, function( response ) {
-	
-			if(response.length>0){
-
-				var obj = JSON.parse(response);
-				var html = '';
-				
-				for (const key in obj) {
-					
-					var value = obj[key];
-					
-					html += '<tr>';
-					html += '<td>'+value.listId+'</td>';
-					html += '<td><strong>'+value.name+'</strong></td>';
-					html += '<td>'+value.subscribersCount+'</td>';
-					html += '<td><a href="#" class="text-dark-red" data-list-id="'+value.listId+'">Delete</a></td>'
-					html += '</tr>';
-					
-				}
-
-				$("#dplr-tbl-lists tbody").prepend(html);
-				$("#dplr-tbl-lists").attr('data-page','1');
-				
-				listsLoaded();
-			}
-
-		})
-	
-	}
-
-	function deleteList(e){
-
-		e.preventDefault();
-
-		var a = $(this);
-		var tr = a.closest('tr');
-		var listId = a.attr('data-list-id');
-		var data = {
-			action: 'dplr_ajax_delete_list',
-			listId : listId
-		};
-		
-		$("#dplr-dialog-confirm").dialog("option", "buttons", [{
-			text: 'Delete',
-			click: function() {
-				$(this).dialog("close");
-				tr.addClass('deleting');
-				$.post( ajaxurl, data, function( response ) {
-					var obj = JSON.parse(response);
-					if(obj.response.code == 200){
-						tr.remove();
-					}else{
-						if(obj.response.code == 0){
-							alert('No se puede eliminar lista.')
-						}else{
-							alert('Error');
-						}
-						tr.removeClass('deleting');
-					}
-				});
-			}
-		  }, 
-		  {
-			text: 'Cancel',
-			click: function() {
-			  $(this).dialog("close");
-			}
-		  }]);
-  
-		  $("#dplr-dialog-confirm").dialog("open");
-
-	}
-
 
 })( jQuery );

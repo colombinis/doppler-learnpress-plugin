@@ -1,5 +1,15 @@
 <div class="dplr-tab-content">
 
+    <?php $this->display_success_message() ?>
+
+    <?php $this->display_error_message() ?>
+
+    <div id="showSuccessResponse" class="messages-container info">
+    </div>
+
+    <div id="showErrorResponse" class="messages-container blocker">
+    </div>
+
     <form id="dplr-form-list" action="" method="post">
 
         <?php wp_nonce_field( 'map-lists' );?>
@@ -12,16 +22,16 @@
         }
         ?>
 
-        <table class="grid">
+        <table class="grid panel w-100" cellspacing="0">
             
-            <tbody>
-
-                <tr>
-                    <th colspan="2"></th>
-                    <th class="text-right td-sm"><?php _e('Subscriptors', 'doppler-for-learnpress')?></th>
-                    <th></th>
+            <thead>
+                <tr class="panel-header">
+                <th class="text-white semi-bold"><?php _e('Type', 'dplr-learnpress') ?></th>
+                    <th class="text-white semi-bold"><?php _e('List Name', 'dplr-learnpress') ?></th>
+                    <th class="text-white semi-bold"><?php _e('Subscriptors', 'dplr-learnpress')?></th>
                 </tr>
-
+            </thead>
+            <tbody class="panel-body">
                 <tr>
                     <th>
                         <?php _e('Buyers', 'doppler-for-learnpress')?>
@@ -47,15 +57,11 @@
                     <td class="text-right td-sm">
                         <span class="buyers-count"><?php echo $scount?></span>
                     </td>
-                    <td>
-                    </td>
                 </tr>
-
             </tbody>
-
         </table>
 
-        <button id="dplr-lists-btn" class="dplr-button">
+        <button id="dplr-lists-btn" class="dp-button button-medium primary-green">
             <?php _e('Save', 'doppler-for-learnpress') ?>
         </button>
 
@@ -83,11 +89,10 @@
             <?php 
         }
     ?>
-        <button id="btn-synch" class="pointer dplr-button dplr-button--alt"><?php _e('Synchronize', 'doppler-for-learnpress')?></button>
+        <a id="btn-synch" class="small-text pointer green-link"><?php _e('Synchronize', 'doppler-for-learnpress')?></a>
         <img class="doing-synch" src="<?php echo DOPPLER_FOR_LEARNPRESS_URL . 'admin/img/ajax-synch.gif' ?>" alt="<?php _e('Synchronizing', 'doppler-for-learnpress')?>"/>
-        <span class="doing-synch"><?php _e('Synchronizing students', 'doppler-for-learnpress')?>...</span>
-        <span class="synch-ok dashicons dashicons-yes text-dark-green"></span>
-        <span class="synch-ok text-dark-green"><?php _e('Synchronization has ended!', 'doppler-for-learnpress')?></span>
+        <span class="doing-synch d-none"><?php _e('Synchronizing students', 'doppler-for-learnpress')?>...</span>
+        <span class="synch-ok dashicons dashicons-yes text-dark-green opacity-0"></span>
     <?php
     endif;
     ?>
