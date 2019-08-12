@@ -29,3 +29,29 @@
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
+
+if( $_REQUEST['slug']==='doppler-for-learnpress' ){
+
+	global $wpdb;
+
+	/*
+		TODO: iterate through array 
+	*/
+	
+	$option_name = 'dplrlp_version';
+	delete_option($option_name);
+	delete_site_option($option_name);
+	
+	$option_name = 'dplr_learnpress_user';
+	delete_option($option_name);
+	delete_site_option($option_name);
+	
+	$option_name = 'dplr_learnpress_key';
+	delete_option($option_name);
+	delete_site_option($option_name);
+	
+	$option_name = 'dplr_learnpress_subscribers_list';
+	delete_option($option_name);
+	delete_site_option($option_name);
+
+}

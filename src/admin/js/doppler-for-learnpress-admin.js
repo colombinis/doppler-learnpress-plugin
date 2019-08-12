@@ -3,9 +3,19 @@
 
 	$(function() {
 
+		easyValidator.init({
+			invalid_email_message:ObjStr.invalidUser,
+			empty_field_message:ObjStr.emptyField,
+			event: 'keyup',
+		});
+
 		$('#dplr-form-connect').submit(function(e){
 
 			e.preventDefault();
+
+			if(!easyValidator.isValidForm()){
+				return false;
+			}
 
 			var f = $(this);
 			var button = f.children('button');
@@ -13,6 +23,10 @@
 			var keyfield = $('input[name="dplr_learnpress_key"]');
 
 			$('#dplr-form-connect .error').remove();
+			$('.doppler-settings .error').remove();
+			$('#dplr-messages').html('');
+
+			button.attr('disabled','disabled').addClass('loading');
 
 			var data = {
 				action: 'dplr_ajax_connect',
@@ -20,27 +34,10 @@
 				key: keyfield.val()
 			}
 
-			$('.doppler-settings .error').remove();
-			$('#dplr-messages').html('');
-
-			if(data.user === ''){
-				userfield.after('<span class="error">Mensaje de error</span>');
-			}
-
-			if(data.key === ''){
-				keyfield.after('<span class="error">Mensaje de error</span>');
-			}
-
-			if( data.user === '' || data.key === '' ){
-				return false;
-			}
-
-			button.attr('disabled','disabled');
-
 			$.post( ajaxurl, data, function( response ) {
 				if(response == 0){
-					$("#dplr-messages").html('Mensaje de datos incorrectos');
-					button.removeAttr('disabled');
+					$("#dplr-messages").html(ObjStr.wrongData);
+					button.removeAttr('disabled').removeClass('loading');
 				}else if(response == 1){
 					var fields =  f.serialize();
 					$.post( 'options.php', fields, function(obj){
@@ -188,50 +185,34 @@
 	}
 
 	function loadLists( page ){
-
 		var data = {
 			action: 'dplr_ajax_get_lists',
 			page: page
 		};
-		
 		listsLoading();
-
 		$("#dpr-tbl-lists tbody tr").remove();
-
 		$.post( ajaxurl, data, function( response ) {
-	
 			if(response.length>0){
-
 				var obj = JSON.parse(response);
 				var html = '';
-				
 				for (const key in obj) {
-					
 					var value = obj[key];
-					
 					html += '<tr>';
 					html += '<td>'+value.listId+'</td>';
 					html += '<td><strong>'+value.name+'</strong></td>';
 					html += '<td>'+value.subscribersCount+'</td>';
 					html += '<td><a href="#" class="text-dark-red" data-list-id="'+value.listId+'">Delete</a></td>'
 					html += '</tr>';
-					
 				}
-
 				$("#dplr-tbl-lists tbody").prepend(html);
 				$("#dplr-tbl-lists").attr('data-page','1');
-				
 				listsLoaded();
 			}
-
 		})
-	
 	}
 
 	function deleteList(e){
-
 		e.preventDefault();
-
 		var a = $(this);
 		var tr = a.closest('tr');
 		var listId = a.attr('data-list-id');
@@ -239,7 +220,6 @@
 			action: 'dplr_ajax_delete_list',
 			listId : listId
 		};
-		
 		$("#dplr-dialog-confirm").dialog("option", "buttons", [{
 			text: 'Delete',
 			click: function() {
@@ -266,10 +246,85 @@
 			  $(this).dialog("close");
 			}
 		  }]);
-  
-		  $("#dplr-dialog-confirm").dialog("open");
-
+		$("#dplr-dialog-confirm").dialog("open");
 	}
 
+	var easyValidator = {
+		strInvalidEmail: 'Email is invalid',
+		strEmptyField: 'Field is empty',
+		event: 'blur',
+		emailRegex: /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/,
+		init: function(data){
+			easyValidator.config = {
+				form: $('form[easy-validate]'),
+			}
+			easyValidator.config.form.attr('novalidate','novalidate');
+			if(typeof data !== "undefined"){
+				if(typeof data.invalid_email_message !== "undefined"){
+					this.strInvalidEmail = data.invalid_email_message;
+				}
+				if(typeof data.empty_field_message !== "undefined"){
+					this.strEmptyField = data.empty_field_message;
+				}
+				if(typeof data.event !== "undefined"){
+					if( $.inArray(data.event,['keyup','blur']) === -1 ){
+						console.log('Invalid event attribute, use keyup or blur');
+						return false;
+					}
+					easyValidator.event = data.event;
+				}
+			}
+			var emailFields = easyValidator.config.form.find('input[type="email"]');
+			var emptyFields = easyValidator.config.form.find('input[required]');
+			var fields = easyValidator.config.form.find('input[required],input[type="email"]');
+			fields.on('focus',this.clearError);
+			emptyFields.on(easyValidator.event,this.validateEmpty);
+			emailFields.on(easyValidator.event,this.validateEmail);
+		},
+		isValidForm: function(){
+			easyValidator.config.form.find('.ev-error').remove();
+			var fields = easyValidator.config.form.find('input');
+			$.each(fields,function(){
+				easyValidator.validateField($(this));
+			})
+			if(easyValidator.config.form.find('.ev-error').length>0){
+				return false;
+			}
+			return true;
+		},
+		validateField: function(field){
+			if(field.attr("type") === 'email'){
+				easyValidator.validateEmailField(field);
+			}
+			if(field.attr("required") !== null){
+				easyValidator.validateEmptyField(field);
+			} 
+		},
+		validateEmptyField: function(e){
+			if(e.val()==""){	
+				e.after('<span class="ev-error">'+easyValidator.strEmptyField+'</span>');
+				return false;
+			}
+		},
+		validateEmailField: function(e){
+		if( !easyValidator.emailRegex.test(e.val()) && e.val()!==''){
+				e.after('<span class="ev-error">'+easyValidator.strInvalidEmail+'</span>');
+				return false;
+			}
+		},
+		validateEmail: function(){
+			var element = $(this);
+			element.next('.ev-error').remove();
+			easyValidator.validateEmailField(element);
+		},
+		validateEmpty: function(){
+			var element = $(this);
+			element.next('.ev-error').remove();
+			easyValidator.validateEmptyField($(element));
+		},
+		clearError: function(){
+			$(this).next('.ev-error').remove();
+		}
+	}
 
 })( jQuery );

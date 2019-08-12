@@ -139,7 +139,6 @@ class Woo_Doppler_Service
         break;
     }
 
-
   }
 
   public function connectionStatus() {

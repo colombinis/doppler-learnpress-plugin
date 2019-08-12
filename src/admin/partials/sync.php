@@ -27,7 +27,7 @@
                         <?php _e('Buyers', 'doppler-for-learnpress')?>
                     </th>
                     <td>
-                        <select name="dplr_subsribers_list[buyers]">
+                        <select name="dplr_learnpress_subscriberes_list[buyers]">
                             <option value=""></option>
                             <?php 
                             if(!empty($lists)){

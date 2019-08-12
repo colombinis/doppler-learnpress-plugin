@@ -44,8 +44,8 @@
             <!--
             <a href="?page=dplr_learnpress_menu&tab=lists" class="nav-tab <?php echo $active_tab == 'lists' ? 'nav-tab-active' : ''; ?>"><?php _e('Lists subscriptions', 'doppler-for-learnpress')?></a>
             -->
-            <a href="?page=dplr_learnpress_menu&tab=sync" class="nav-tab <?php echo $active_tab == 'sync' ? 'nav-tab-active' : ''; ?>"><?php _e('Synchronize students', 'doppler-for-learnpress')?></a>
-            <a href="?page=dplr_learnpress_menu&tab=lists_crud" class="nav-tab <?php echo $active_tab == 'lists_crud' ? 'nav-tab-active' : ''; ?>"><?php _e('Manage Lists', 'doppler-for-learnpress')?></a>
+            <a href="?page=dplr_learnpress_menu&tab=lists" class="nav-tab <?php echo $active_tab == 'lists' ? 'nav-tab-active' : ''; ?>"><?php _e('Lists settings', 'doppler-for-learnpress')?></a>
+            <a href="?page=dplr_learnpress_menu&tab=lists_crud" class="nav-tab <?php echo $active_tab == 'lists_crud' ? 'nav-tab-active' : ''; ?>"><?php _e('Manage Doppler Lists', 'doppler-for-learnpress')?></a>
         <?php endif; ?>
     </h2>
 
@@ -54,16 +54,7 @@
     <?php
 
     switch($active_tab){
-
-        case 'lists':
-            /*   
-            $lists = $this->get_alpha_lists();
-            $subscribers_lists = get_option('dplr_subsribers_list');
-            require_once('lists.php');
-            break;
-            */
-        case 'lists_crud':
-                
+        case 'lists_crud':      
             $lists = $this->get_alpha_lists();
             require_once('lists_crud.php');
             break;
@@ -79,13 +70,13 @@
             require_once('mapping.php');
             */
             break;
-        case 'sync':
+        case 'lists':
             $lists = $this->get_alpha_lists();
-            $subscribers_lists = get_option('dplr_subsribers_list');
+            $subscribers_lists = get_option('dplr_learnpress_subscriberes_list');
             if(!empty($subscribers_lists)){
                 $students = $this->get_students();
             }
-            require_once('sync.php');
+            require_once('lists.php');
             break;
 
         default:

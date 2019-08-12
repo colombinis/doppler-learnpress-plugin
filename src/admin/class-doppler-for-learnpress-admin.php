@@ -93,6 +93,11 @@ class Doppler_For_Learnpress_Admin {
 	public function enqueue_scripts() {
     wp_enqueue_script( 'jquery-ui-dialog' );
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/doppler-for-learnpress-admin.js', array( 'jquery', 'jquery-ui-dialog'), $this->version, false );
+		wp_localize_script( $this->plugin_name, 'ObjStr', array( 
+			'invalidUser'   	=> __( 'Ouch! Enter a valid Email.', 'doppler-for-learnpress' ),
+			'emptyField'    	=> __( 'Ouch! The Field is empty.', 'doppler-for-learnpress'),
+			'wrongData'				=> __( 'Ouch! There\'s something wrong with your Username or API Key. Please, try again.')							 				
+		) );
 	}
 
 	/**
@@ -216,8 +221,8 @@ class Doppler_For_Learnpress_Admin {
 
 		*/
 		if($_GET['tab']=='sync'){
-			if( isset($_POST['dplr_subsribers_list']) && current_user_can('manage_options') && check_admin_referer('map-lists') ){
-				update_option( 'dplr_subsribers_list', $_POST['dplr_subsribers_list'] );
+			if( isset($_POST['dplr_learnpress_subscribers_list']) && current_user_can('manage_options') && check_admin_referer('map-lists') ){
+				update_option( 'dplr_learnpress_subscribers_list', $_POST['dplr_learnpress_subscribers_list'] );
 				$this->admin_notice = array('success', __('Subscribers lists saved succesfully', 'doppler-for-learnpress'));
 			}
 		}
@@ -233,7 +238,7 @@ class Doppler_For_Learnpress_Admin {
 	function display_user_field( $args ) {
 		$option = get_option( 'dplr_learnpress_user' );
 		?>
-			<input type="email" value="<?php echo $option ?>" name="dplr_learnpress_user" />
+			<input type="email" value="<?php echo $option ?>" name="dplr_learnpress_user" required/>
 		<?php
 	}
 
@@ -246,7 +251,7 @@ class Doppler_For_Learnpress_Admin {
 	function display_key_field( $args ) {
 		$option = get_option( 'dplr_learnpress_key' );
 		?>
-			<input type="text" value="<?php echo $option ?>" name="dplr_learnpress_key" maxlength="32" />
+			<input type="text" value="<?php echo $option ?>" name="dplr_learnpress_key" maxlength="32" required/>
 		<?php
 	}
 
@@ -257,7 +262,7 @@ class Doppler_For_Learnpress_Admin {
 	 * @since 1.0.0
 	 */
 	public function dplr_learnpress_synch(){
-		$lists = get_option('dplr_subsribers_list');
+		$lists = get_option('dplr_learnpress_subscribers_list');
 		$list_id = $lists['buyers'];
 		$user = get_option('dplr_learnpress_user');
 		$key = get_option('dplr_learnpress_key');
@@ -327,7 +332,7 @@ class Doppler_For_Learnpress_Admin {
 	 */
 	public function dplr_after_customer_subscription( $order_id ) {
 		$order = new LP_Order( $order_id );
-		$lists = get_option('dplr_subsribers_list');
+		$lists = get_option('dplr_learnpress_subscribers_list');
 		if(!empty($lists)){
 			$list_id = $lists['buyers'];
 			$order = new LP_Order( $order_id );
@@ -348,7 +353,7 @@ class Doppler_For_Learnpress_Admin {
 		if( $order->has_status( 'completed' ) && !$order->is_child() ){
 			$users = get_post_meta( $order_id, '_user_id', true);
 			if(!empty($users)){
-				$lists = get_option('dplr_subsribers_list');
+				$lists = get_option('dplr_learnpress_subscribers_list');
 				$list_id = $lists['buyers'];
 				if(is_array($users)){
 					foreach($users as $k=>$user_id){
@@ -381,13 +386,13 @@ class Doppler_For_Learnpress_Admin {
 		$list_resource = $this->doppler_service->getResource( 'lists' );
 		
 		/*
-		$c_list_id = get_option('dplr_subsribers_list')['contacts'];
+		$c_list_id = get_option('dplr_learnpress_subscriberes_list')['contacts'];
 		if(!empty($c_list_id)){
 			$c_count = $list_resource->getList($c_list_id)->subscribersCount;
 		}
 		*/
 
-		$b_list_id = get_option('dplr_subsribers_list')['buyers'];
+		$b_list_id = get_option('dplr_learnpress_subscribers_list')['buyers'];
 		if(!empty($b_list_id)){
 			$b_count = $list_resource->getList($b_list_id)->subscribersCount;
 		}
@@ -441,7 +446,7 @@ class Doppler_For_Learnpress_Admin {
 	 */
 	public function dplr_delete_list() {
 		if(!empty($_POST['listId'])){
-			$subscribers_lists = get_option('dplr_subsribers_list');
+			$subscribers_lists = get_option('dplr_learnpress_subscribers_list');
 			if(!array_search($_POST['listId'],$subscribers_lists)){
 				$this->doppler_service->setCredentials($this->credentials);
 				$subscriber_resource = $this->doppler_service->getResource('lists');

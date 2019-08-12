@@ -31,6 +31,9 @@ class Doppler_For_Learnpress_Activator {
 	 */
 	public static function activate() {
 
+		update_option('dplrlp_version', DOPPLER_FOR_LEARNPRESS_VERSION);
+
 	}
+
 
 }

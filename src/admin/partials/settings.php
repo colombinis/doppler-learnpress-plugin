@@ -6,7 +6,7 @@
 
         ?>
 
-        <form id="dplr-form-connect" action="options.php" method="post">
+        <form id="dplr-form-connect" action="options.php" method="post" easy-validate>
             
             <?php
             settings_fields( 'dplr_learnpress_menu' );
@@ -15,10 +15,10 @@
 
             <button id="dplr-connect" class="dplr-button dplr-button--rounded">
                 <div class="loading"></div>
-                <?php _e('Connect', 'doppler-for-learnpress') ?>
+                <span><?php _e('Connect', 'doppler-for-learnpress') ?></span>
             </button>
 
-            <div id="dplr-messages">
+            <div id="dplr-messages" class="mt-30 text-red">
             </div>
 
         </form>
