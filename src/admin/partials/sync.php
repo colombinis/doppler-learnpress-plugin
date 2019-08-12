@@ -22,9 +22,9 @@
             
             <thead>
                 <tr class="panel-header">
-                <th class="text-white semi-bold"><?php _e('Type', 'dplr-learnpress') ?></th>
-                    <th class="text-white semi-bold"><?php _e('List Name', 'dplr-learnpress') ?></th>
-                    <th class="text-white semi-bold"><?php _e('Subscriptors', 'dplr-learnpress')?></th>
+                <th class="text-white semi-bold"><?php _e('Type', 'doppler-for-learnpress') ?></th>
+                    <th class="text-white semi-bold"><?php _e('List Name', 'doppler-for-learnpress') ?></th>
+                    <th class="text-white semi-bold"><?php _e('Subscriptors', 'doppler-for-learnpress')?></th>
                 </tr>
             </thead>
             <tbody class="panel-body">
