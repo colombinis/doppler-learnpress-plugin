@@ -30,7 +30,7 @@
             <tbody class="panel-body">
                 <tr>
                     <th>
-                        <?php _e('Buyers', 'doppler-for-learnpress')?>
+                        <?php _e('Enrolled students', 'doppler-for-learnpress')?>
                     </th>
                     <td>
                         <select name="dplr_learnpress_subscriberes_list[buyers]">
