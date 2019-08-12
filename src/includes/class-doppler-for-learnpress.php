@@ -78,7 +78,8 @@ class Doppler_For_Learnpress {
 	 */
 	public function __construct() {
 		
-		require_once(dirname( __FILE__ ) . '/DopplerAPIClient/DopplerService.php');
+		require_once( DOPPLER_PLUGINS_PATH . 'doppler-form\\includes\\DopplerApiClient\\DopplerService.php' );
+		$this->doppler_service = new Doppler_Service();
 
 		if ( defined( 'DOPPLER_FOR_LEARNPRESS_VERSION' ) ) {
 			$this->version = DOPPLER_FOR_LEARNPRESS_VERSION;
@@ -86,7 +87,6 @@ class Doppler_For_Learnpress {
 			$this->version = '1.0.0';
 		}
 		$this->plugin_name = 'doppler-for-learnpress';
-		$this->doppler_service = new Woo_Doppler_Service();
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -170,12 +170,12 @@ class Doppler_For_Learnpress {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'dplr_learnpress_settings_init' );
-		$this->loader->add_action( 'admin_menu', $plugin_admin, 'dplr_init_menu' );
-		$this->loader->add_action( 'wp_ajax_dplr_ajax_connect', $plugin_admin, 'dplr_api_connect' );
-		$this->loader->add_action( 'wp_ajax_dplr_ajax_get_lists', $plugin_admin, 'dplr_get_lists' );
+		//$this->loader->add_action( 'admin_init', $plugin_admin, 'dplr_learnpress_settings_init' );
+		$this->loader->add_action( 'dplr_add_extension_submenu', $plugin_admin, 'dplr_init_menu' );
+		//$this->loader->add_action( 'wp_ajax_dplr_ajax_connect', $plugin_admin, 'dplr_api_connect' );
+		//$this->loader->add_action( 'wp_ajax_dplr_ajax_get_lists', $plugin_admin, 'dplr_get_lists' );
 		$this->loader->add_action( 'wp_ajax_dplr_ajax_save_list', $plugin_admin, 'dplr_save_list' );
-		$this->loader->add_action( 'wp_ajax_dplr_ajax_delete_list', $plugin_admin, 'dplr_delete_list' );
+		//$this->loader->add_action( 'wp_ajax_dplr_ajax_delete_list', $plugin_admin, 'dplr_delete_list' );
 		$this->loader->add_action( 'wp_ajax_dplr_lp_ajax_synch', $plugin_admin, 'dplr_learnpress_synch' );
 		$this->loader->add_action( 'wp_ajax_dplr_ajax_update_counter', $plugin_admin, 'update_subscribers_count' );
 		//When customer subscribe to a course

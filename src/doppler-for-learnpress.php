@@ -26,6 +26,8 @@ if ( ! defined( 'WPINC' ) ) {
 
 define( 'DOPPLER_FOR_LEARNPRESS_VERSION', '1.0.0' );
 define( 'DOPPLER_FOR_LEARNPRESS_URL', plugin_dir_url(__FILE__) );
+define( 'DOPPLER_PLUGINS_PATH', plugin_dir_path(__DIR__));
+define( 'DOPPLER_PLUGINS_URL', plugins_url().'/doppler-form');
 
 /**
  * The code that runs during plugin activation.

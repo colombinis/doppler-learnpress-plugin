@@ -61,7 +61,9 @@ class Doppler_For_Learnpress_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 		$this->doppler_service = $doppler_service;
-		$this->connectionStatus = $this->checkConnectionStatus();
+		$this->connectionStatus = $this->check_connection_status();
+		$this->success_message = false;
+		$this->error_message = false;
 
 	}
 
@@ -73,6 +75,42 @@ class Doppler_For_Learnpress_Admin {
 	 */
 	public function get_version() {
 		return $this->version;
+	}
+
+	public function set_error_message($message) {
+		$this->error_message = $message;
+	}
+
+	public function set_success_message($message) {
+		$this->success_message = $message;
+	}
+
+	public function get_error_message() {
+		return $this->error_message;
+	}
+
+	public function get_success_message() {
+		return $this->success_message;
+	}
+
+	public function display_error_message() {
+		if($this->get_error_message()!=''):
+		?>
+		<div id="displayErrorMessage" class="messages-container blocker">
+			<p><?php echo $this->get_error_message(); ?></p>
+		</div>
+		<?php
+		endif;
+	}
+
+	public function display_success_message() {
+		if($this->get_success_message()!=''):
+		?>
+		<div id="displaySuccessMessage" class="messages-container info">
+			<p><?php echo $this->get_success_message(); ?></p>
+		</div>
+		<?php
+		endif;
 	}
 
 	/**
@@ -101,46 +139,18 @@ class Doppler_For_Learnpress_Admin {
 	}
 
 	/**
-	 * Check if credentials exists in database
-	 * 
-	 * @since 1.0.0
-	 */
-	public function checkConnectionStatus() {
-		$user = get_option('dplr_learnpress_user');
-		$key = get_option('dplr_learnpress_key');
-		$this->credentials = null;
-		if( empty($user) || empty($key) ){
-			return false;
-		}else{
-			$this->credentials = array('api_key' => $key, 'user_account' => $user);
-			return true;
-		}
-	}
-
-	/**
-	 * Handles ajax connection with API
-	 * 
-	 * @since 1-0.0
-	 */
-	public function dplr_api_connect() {	
-		$connected = $this->doppler_service->setCredentials(['api_key' => $_POST['key'], 'user_account' => $_POST['user']]);
-		echo ($connected)? 1:0;
-		exit();
-	}
-
-	/**
 	 * Register the admin menu
 	 * 
 	 * @since 1.0.0
 	 */
 	public function dplr_init_menu() {
-		add_menu_page(
+		add_submenu_page(
+			'doppler_forms_menu',
 			__('Doppler for LearnPress', 'dplr-learnpress'),
 		    __('Doppler for LearnPress', 'dplr-learnpress'),
 			'manage_options',
-			'dplr_learnpress_menu',
-			array($this, "dplr_learnpress_admin"),
-			plugin_dir_url( __FILE__ ) . 'img/icon-doppler-menu.png'
+			'doppler_learnpress_menu',
+			array($this, 'dplr_learnpress_admin')
 		);	
 	}
 
@@ -153,79 +163,32 @@ class Doppler_For_Learnpress_Admin {
 		include "partials/doppler-for-learnpress-admin-display.php";
 	}
 
-	/**
-	 * Example for section text.
-	 * 
-	 *  @since 1.0.0
-	 */
-	function eg_setting_section_callback_function( $args ) {
-		?>
-			<p id="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'Example text', 'doppler-for-learnpress' ); ?></p>
-		<?php
-	}
+	public function check_connection_status() {
 
-	/**
-	 * Register the plugin settings and fields.
-	 * 
-	 * @since 1.0.0
-	 */
-	public function dplr_learnpress_settings_init() {
-
-		if( !isset($_GET['tab']) || $_GET['tab']=='settings' ){
-
-			add_settings_section(
-				'dplr_learnpress_setting_section',
-				'Example settings section in reading',
-				array($this,'eg_setting_section_callback_function'),
-				'dplr_learnpress_menu'
-			);
-
-			add_settings_field(
-				'dplr_learnpress_user',
-				__( 'User Email', 'doppler-for-learnpress' ),
-				array($this,'display_user_field'),
-				'dplr_learnpress_menu',
-				'dplr_learnpress_setting_section',
-				[
-				'label_for' => 'dplr_learnpress_user',
-				'class' => 'dplr_learnpress_user_row',
-				//'wporg_custom_data' => 'custom',
-				]
-			);
-
-			add_settings_field(
-				'dplr_learnpress_key',
-				__( 'API Key', 'doppler-for-learnpress' ),
-				array($this,'display_key_field'),
-				'dplr_learnpress_menu',
-				'dplr_learnpress_setting_section',
-				[
-				'label_for' => 'dplr_learnpress_key',
-				'class' => 'dplr_learnpress_key_row',
-				//'wporg_custom_data' => 'custom',
-				]
-			);
-
-			register_setting( 'dplr_learnpress_menu', 'dplr_learnpress_user' );
-			register_setting( 'dplr_learnpress_menu', 'dplr_learnpress_key' );
-
+		$options = get_option('dplr_settings');
+		
+		if( empty($options) ){
+			return false;
 		}
 		
-		/*
-		if($_GET['tab']=='fields'){
-			if( isset($_POST['dplr_learnpress_mapping']) && current_user_can('manage_options') && check_admin_referer('map-fields') ){
-				update_option( 'dplr_learnpress_mapping', $_POST['dplr_mapping'] );
-				$this->admin_notice = array('success', __('Fields mapped succesfully', 'doppler-for-learnpress'));
+		$user = $options['dplr_option_useraccount'];
+		$key = $options['dplr_option_apikey'];
+
+		if( !empty($user) && !empty($key) ){
+			if(empty($this->doppler_service->config['crendentials'])){
+				$this->doppler_service->setCredentials(array('api_key' => $key, 'user_account' => $user));
 			}
+			if( is_admin() ){ //... if we are at the backend.
+				$response =  $this->doppler_service->connectionStatus();
+				if( is_array($response) && $response['response']['code']>=400 ){
+					 $this->admin_notice = array('error', '<strong>Doppler API Connection error.</strong> ' . $response['response']['message']);
+					 return false;
+				}
+			}
+			return true;
 		}
 
-		*/
-		if($_GET['tab']=='sync'){
-			if( isset($_POST['dplr_learnpress_subscribers_list']) && current_user_can('manage_options') && check_admin_referer('map-lists') ){
-				update_option( 'dplr_learnpress_subscribers_list', $_POST['dplr_learnpress_subscribers_list'] );
-				$this->admin_notice = array('success', __('Subscribers lists saved succesfully', 'doppler-for-learnpress'));
-			}
-		}
+		return false;
 
 	}
 
@@ -279,26 +242,6 @@ class Doppler_For_Learnpress_Admin {
 		}
 		
 		$json = json_encode(array('items'=>$items, 'fields' => array()));
-		
-		/* Example JSON format
-		{
-		"items": [
-			{
-			"email": "lalal123@dsada.com",
-			"fields": []
-			},
-			{
-			"email": "lalal567@dsada.com",
-			"fields": []
-			}
-		],
-		"fields":[]
-		}
-		*/
-
-		/* Example CSV format with import-csv
-		"EMAIL  \n miemail1%40hotmail.com  \n miemail2%40hotmail.com  \n miemail3%40hotmail.com"
-		*/
 		
 		// Generated by curl-to-PHP: http://incarnate.github.io/curl-to-php/
 		$ch = curl_init();
@@ -379,18 +322,9 @@ class Doppler_For_Learnpress_Admin {
 	* @since 1.0.0
 	*/
 	public function update_subscribers_count() {
-		
-		//$c_count = 0;
 		$b_count = 0;
 		$this->doppler_service->setCredentials( $this->credentials );
 		$list_resource = $this->doppler_service->getResource( 'lists' );
-		
-		/*
-		$c_list_id = get_option('dplr_learnpress_subscriberes_list')['contacts'];
-		if(!empty($c_list_id)){
-			$c_count = $list_resource->getList($c_list_id)->subscribersCount;
-		}
-		*/
 
 		$b_list_id = get_option('dplr_learnpress_subscribers_list')['buyers'];
 		if(!empty($b_list_id)){
@@ -440,31 +374,11 @@ class Doppler_For_Learnpress_Admin {
 	}
 
 	/**
-	 * Delete a list.
-	 * 
-	 * @since 1.0.0
-	 */
-	public function dplr_delete_list() {
-		if(!empty($_POST['listId'])){
-			$subscribers_lists = get_option('dplr_learnpress_subscribers_list');
-			if(!array_search($_POST['listId'],$subscribers_lists)){
-				$this->doppler_service->setCredentials($this->credentials);
-				$subscriber_resource = $this->doppler_service->getResource('lists');
-				echo json_encode($subscriber_resource->deleteList( $_POST['listId'] ));
-			}else{
-				echo json_encode(array('response'=>array('code'=>'0')));
-			}
-		}
-		exit();
-	}
-
-	/**
 	 * Get lists
 	 * 
 	 * @since 1.0.0
 	 */
 	public function get_alpha_lists() {
-		$this->doppler_service->setCredentials($this->credentials);
 		$list_resource = $this->doppler_service->getResource('lists');
 		$dplr_lists = $list_resource->getAllLists();
 		if(is_array($dplr_lists)){
@@ -478,27 +392,6 @@ class Doppler_For_Learnpress_Admin {
 			$dplr_lists_arr = $dplr_lists_aux;
 		}
 		return $dplr_lists_arr;
-	}
-
-	/**
-	 * Get lists by page, 
-	 * 
-	 * @since 1.0.0
-	 */
-	public function get_lists_by_page( $page = 1 ) {
-		$this->doppler_service->setCredentials( $this->credentials );
-		$list_resource = $this->doppler_service->getResource( 'lists' );
-		return $list_resource->getListsByPage( $page );
-	}
-
-	/**
-	 * Gets list.
-	 * 
-	 * @since 1.0.0
-	 */
-	public function dplr_get_lists() {
-		echo json_encode($this->get_lists_by_page($_POST['page']));
-		exit();
 	}
 
 	/**
