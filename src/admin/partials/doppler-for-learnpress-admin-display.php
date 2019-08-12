@@ -33,6 +33,7 @@
 
 <div class="wrap dplr_settings">
 
+    <a href="<?php _e('https://www.fromdoppler.com/en/?utm_source=landing&utm_medium=integracion&utm_campaign=wordpress', 'doppler-form')?>" target="_blank" class="dplr-logo-header"><img src="<?php echo DOPPLER_PLUGINS_URL?>/admin/img/doppler.png" alt="Doppler logo"/></a>
     <h2 class="main-title"><?php _e('Doppler for LearnPress', 'doppler-for-learnpress')?> <?php echo $this->get_version()?></h2> 
 
     <!--
@@ -63,7 +64,7 @@
             if(!empty($subscribers_lists)){
                 $students = $this->get_students();
             }
-            require_once('lists.php');
+            require_once('sync.php');
             break;
     }
 

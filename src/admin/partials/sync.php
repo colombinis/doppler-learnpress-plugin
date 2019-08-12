@@ -14,13 +14,9 @@
 
         <?php wp_nonce_field( 'map-lists' );?>
 
-        <?php
-        if(empty($subscribers_lists['buyers'])){
-            ?>
-            <p>Please select the list where you want to subscribe your students.</p>
-            <?php
-        }
-        ?>
+       
+        <p><?php _e('Select the list you want to populate.', 'doppler-for-learnpress') ?></p>
+            
 
         <table class="grid panel w-100" cellspacing="0">
             
@@ -54,7 +50,7 @@
                             ?>
                         </select>
                     </td>
-                    <td class="text-right td-sm">
+                    <td class="text-center td-sm">
                         <span class="buyers-count"><?php echo $scount?></span>
                     </td>
                 </tr>
@@ -69,32 +65,8 @@
 
     <hr/>
 
-    <?php
-    if(!empty($subscribers_lists['buyers'])):
-        if(!empty($students)){
-            ?>
-                <h4><?php _e('Total LearnPress students', 'doppler-for-learnpress')?>: <span>(<?php echo count($students)?>)</span> <a id="view-students-list">View</a></h4>
-                <div id="students-frame">
-                    <?php
-                    $cont = 0;
-                    foreach($students as $k=>$student){
-                        $cont++;
-                        echo '#'.$cont.' - '.$student->user_nicename.', '.$student->user_email.'<br>';
-                        ?>
-                        <input class="subscribers-item" type="hidden" name="subscribers[]" value="<?php echo $student->user_email?>"/>
-                        <?php
-                    } 
-                    ?>
-                </div>
-            <?php 
-        }
-    ?>
-        <a id="btn-synch" class="small-text pointer green-link"><?php _e('Synchronize', 'doppler-for-learnpress')?></a>
-        <img class="doing-synch" src="<?php echo DOPPLER_FOR_LEARNPRESS_URL . 'admin/img/ajax-synch.gif' ?>" alt="<?php _e('Synchronizing', 'doppler-for-learnpress')?>"/>
-        <span class="doing-synch d-none"><?php _e('Synchronizing students', 'doppler-for-learnpress')?>...</span>
-        <span class="synch-ok dashicons dashicons-yes text-dark-green opacity-0"></span>
-    <?php
-    endif;
-    ?>
+    <a id="btn-synch" class="small-text pointer green-link"><?php _e('Synchronize', 'doppler-for-learnpress')?></a>
+    <img class="doing-synch d-none" src="<?php echo DOPPLER_FOR_LEARNPRESS_URL . 'admin/img/ajax-synch.gif' ?>" alt="<?php _e('Synchronizing', 'doppler-for-learnpress')?>"/>
+    <span class="synch-ok dashicons dashicons-yes text-dark-green opacity-0"></span>
 
 </div>
