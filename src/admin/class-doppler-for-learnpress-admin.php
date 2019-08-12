@@ -131,11 +131,13 @@ class Doppler_For_Learnpress_Admin {
 	public function enqueue_scripts() {
     wp_enqueue_script( 'jquery-ui-dialog' );
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/doppler-for-learnpress-admin.js', array( 'jquery', 'jquery-ui-dialog'), $this->version, false );
+		/*
 		wp_localize_script( $this->plugin_name, 'ObjStr', array( 
 			'invalidUser'   	=> __( 'Ouch! Enter a valid Email.', 'doppler-for-learnpress' ),
 			'emptyField'    	=> __( 'Ouch! The Field is empty.', 'doppler-for-learnpress'),
 			'wrongData'				=> __( 'Ouch! There\'s something wrong with your Username or API Key. Please, try again.')							 				
 		) );
+		*/
 	}
 
 	/**
@@ -146,8 +148,8 @@ class Doppler_For_Learnpress_Admin {
 	public function dplr_init_menu() {
 		add_submenu_page(
 			'doppler_forms_menu',
-			__('Doppler for LearnPress', 'dplr-learnpress'),
-		    __('Doppler for LearnPress', 'dplr-learnpress'),
+			__('Doppler for LearnPress', 'dopppler-for-learnpress'),
+		    __('Doppler for LearnPress', 'doppler-for-learnpress'),
 			'manage_options',
 			'doppler_learnpress_menu',
 			array($this, 'dplr_learnpress_admin')

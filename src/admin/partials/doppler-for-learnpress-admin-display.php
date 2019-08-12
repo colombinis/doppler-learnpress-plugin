@@ -33,17 +33,8 @@
 
 <div class="wrap dplr_settings">
 
-    <a href="<?php _e('https://www.fromdoppler.com/en/?utm_source=landing&utm_medium=integracion&utm_campaign=wordpress', 'doppler-form')?>" target="_blank" class="dplr-logo-header"><img src="<?php echo DOPPLER_PLUGINS_URL?>/admin/img/doppler.png" alt="Doppler logo"/></a>
+    <a href="<?php _e('https://www.fromdoppler.com/en/?utm_source=landing&utm_medium=integracion&utm_campaign=wordpress', 'doppler-for-learnpress')?>" target="_blank" class="dplr-logo-header"><img src="<?php echo DOPPLER_PLUGINS_URL?>/admin/img/doppler.png" alt="Doppler logo"/></a>
     <h2 class="main-title"><?php _e('Doppler for LearnPress', 'doppler-for-learnpress')?> <?php echo $this->get_version()?></h2> 
-
-    <!--
-    <h2 class="nav-tab-wrapper">
-        <?php if ($connected) :?>
-            <a href="?page=dplr_learnpress_menu&tab=sync" class="nav-tab <?php echo $active_tab == 'sync' ? 'nav-tab-active' : ''; ?>"><?php _e('Synchronize students', 'doppler-for-learnpress')?></a>
-            <a href="?page=dplr_learnpress_menu&tab=lists_crud" class="nav-tab <?php echo $active_tab == 'lists_crud' ? 'nav-tab-active' : ''; ?>"><?php _e('Manage Lists', 'doppler-for-learnpress')?></a>
-        <?php endif; ?>
-    </h2>
-    -->
 
     <h1 class="screen-reader-text"></h1>
 
