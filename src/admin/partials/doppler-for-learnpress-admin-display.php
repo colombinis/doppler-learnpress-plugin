@@ -33,7 +33,7 @@
 
 <div class="wrap dplr_settings">
 
-    <a href="<?php _e('https://www.fromdoppler.com/en/?utm_source=landing&utm_medium=integracion&utm_campaign=wordpress', 'doppler-for-learnpress')?>" target="_blank" class="dplr-logo-header"><img src="<?php echo DOPPLER_PLUGINS_URL?>/admin/img/doppler.png" alt="Doppler logo"/></a>
+    <a href="<?php _e('https://www.fromdoppler.com/en/?utm_source=landing&utm_medium=integracion&utm_campaign=wordpress', 'doppler-for-learnpress')?>" target="_blank" class="dplr-logo-header"><img src="<?php echo DOPPLER_PLUGINS_URL?>/admin/img/logo-doppler.svg" alt="Doppler logo"/></a>
     <h2 class="main-title"><?php _e('Doppler for LearnPress', 'doppler-for-learnpress')?> <?php echo $this->get_version()?></h2> 
 
     <h1 class="screen-reader-text"></h1>
@@ -50,11 +50,14 @@
             */
             break;
         default:
-            $lists = $this->get_alpha_lists();
-            $subscribers_lists = get_option('dplr_subscribers_list');
-            if(!empty($subscribers_lists)){
-                $students = $this->get_students();
+
+            if( isset($_POST['dplr_learnpress_subscribers_list']) && current_user_can('manage_options') && check_admin_referer('map-lists') ){
+                update_option( 'dplr_learnpress_subscribers_list', $_POST['dplr_learnpress_subscribers_list'] );
+                $this->set_success_message(__('Subscribers list saved succesfully', 'doppler-for-woocommerce'));
             }
+
+            $lists = $this->get_alpha_lists();
+            $subscribers_lists = get_option('dplr_learnpress_subscribers_list');
             require_once('sync.php');
             break;
     }

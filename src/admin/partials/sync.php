@@ -4,13 +4,13 @@
 
     <?php $this->display_error_message() ?>
 
-    <div id="showSuccessResponse" class="messages-container info">
+    <div id="showSuccessResponse" class="messages-container info d-none">
     </div>
 
-    <div id="showErrorResponse" class="messages-container blocker">
+    <div id="showErrorResponse" class="messages-container blocker d-none">
     </div>
 
-    <form id="dplr-form-list" action="" method="post">
+    <form id="dplr-lp-form-list" action="" method="post">
 
         <?php wp_nonce_field( 'map-lists' );?>
 
@@ -33,7 +33,7 @@
                         <?php _e('Enrolled students', 'doppler-for-learnpress')?>
                     </th>
                     <td>
-                        <select name="dplr_learnpress_subscriberes_list[buyers]">
+                        <select name="dplr_learnpress_subscribers_list[buyers]">
                             <option value=""></option>
                             <?php 
                             if(!empty($lists)){
@@ -57,7 +57,7 @@
             </tbody>
         </table>
 
-        <button id="dplr-lists-btn" class="dp-button button-medium primary-green">
+        <button id="dplr-lp-lists-btn" class="dp-button button-medium primary-green">
             <?php _e('Save', 'doppler-for-learnpress') ?>
         </button>
 
@@ -65,7 +65,7 @@
 
     <hr/>
 
-    <a id="btn-synch" class="small-text pointer green-link"><?php _e('Synchronize', 'doppler-for-learnpress')?></a>
+    <a id="btn-lp-synch" class="small-text pointer green-link"><?php _e('Synchronize', 'doppler-for-learnpress')?></a>
     <img class="doing-synch d-none" src="<?php echo DOPPLER_FOR_LEARNPRESS_URL . 'admin/img/ajax-synch.gif' ?>" alt="<?php _e('Synchronizing', 'doppler-for-learnpress')?>"/>
     <span class="synch-ok dashicons dashicons-yes text-dark-green opacity-0"></span>
 

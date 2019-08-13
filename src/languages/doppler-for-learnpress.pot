@@ -8,7 +8,7 @@ msgstr ""
 "Blank WordPress Pot "
 "v1.0.0\n"
 "POT-Creation-Date: "
-"2019-08-12 12:52-0300\n"
+"2019-08-13 12:02-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Your "
 "Name <you@example.com>\n"
@@ -51,8 +51,8 @@ msgstr ""
 "X-Poedit-"
 "SearchPath-0: .\n"
 
-#: admin/class-doppler-for-learnpress-admin.php:151
-#: admin/class-doppler-for-learnpress-admin.php:152
+#: admin/class-doppler-for-learnpress-admin.php:144
+#: admin/class-doppler-for-learnpress-admin.php:145
 #: admin/partials/doppler-for-learnpress-admin-display.php:37
 msgid ""
 "Doppler for LearnPress"
@@ -63,6 +63,12 @@ msgid ""
 "https://www.fromdoppler."
 "com/en/?"
 "utm_source=landing&utm_medium=integracion&utm_campaign=wordpress"
+msgstr ""
+
+#: admin/partials/doppler-for-learnpress-admin-display.php:56
+msgid ""
+"Subscribers list saved "
+"succesfully"
 msgstr ""
 
 #: admin/partials/sync.php:18
