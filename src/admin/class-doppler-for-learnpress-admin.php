@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -353,7 +355,7 @@ class Doppler_For_Learnpress_Admin {
 		pm.meta_key = '_user_id'
 		GROUP BY u.id
 		";
-		return  $wpdb->get_results($query);
+		return  $wpdb->get_results($wpdb->prepare($query));
 	}
 
 	/**

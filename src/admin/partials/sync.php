@@ -1,3 +1,9 @@
+<?php
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
+?>
+
 <div class="dplr-tab-content">
 
     <?php $this->display_success_message() ?>

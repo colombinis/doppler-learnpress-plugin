@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 /**
  * The file that defines the core plugin class
  *
@@ -91,7 +93,6 @@ class Doppler_For_Learnpress {
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
-		$this->define_public_hooks();
 
 	}
 
@@ -129,12 +130,6 @@ class Doppler_For_Learnpress {
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-doppler-for-learnpress-admin.php';
-
-		/**
-		 * The class responsible for defining all actions that occur in the public-facing
-		 * side of the site.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-doppler-for-learnpress-public.php';
 
 		$this->loader = new Doppler_For_Learnpress_Loader();
 
@@ -184,22 +179,6 @@ class Doppler_For_Learnpress {
 		//When order status changes (applys to new order and updated, becouse new order at first saves autodraft, and completed is an update)
 		$this->loader->add_action( 'learn-press/order/status-changed', $plugin_admin, 'dplr_after_order_completed' );
 		$this->loader->add_action( 'admin_notices', $plugin_admin, 'show_admin_notice' );
-	}
-
-	/**
-	 * Register all of the hooks related to the public-facing functionality
-	 * of the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function define_public_hooks() {
-
-		$plugin_public = new Doppler_For_Learnpress_Public( $this->get_plugin_name(), $this->get_version() );
-
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-
 	}
 
 	/**

@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 /**
  * Provide a admin area view for the plugin
  *
@@ -40,28 +42,15 @@
 
     <?php
 
-    switch($active_tab){
-
-        case 'mapping':
-            /*   
-            $lists = $this->get_alpha_lists();
-            $subscribers_lists = get_option('dplr_subsribers_list');
-            require_once('lists.php');
-            */
-            break;
-        default:
-
-            if( isset($_POST['dplr_learnpress_subscribers_list']) && current_user_can('manage_options') && check_admin_referer('map-lists') ){
-                update_option( 'dplr_learnpress_subscribers_list', $_POST['dplr_learnpress_subscribers_list'] );
-                $this->set_success_message(__('Subscribers list saved succesfully', 'doppler-for-woocommerce'));
-            }
-
-            $lists = $this->get_alpha_lists();
-            $subscribers_lists = get_option('dplr_learnpress_subscribers_list');
-            require_once('sync.php');
-            break;
+    if( is_array($_POST['dplr_learnpress_subscribers_list']) && current_user_can('manage_options') && check_admin_referer('map-lists') ){
+        update_option( 'dplr_learnpress_subscribers_list', $_POST['dplr_learnpress_subscribers_list'] );
+        $this->set_success_message(__('Subscribers list saved succesfully', 'doppler-for-learnpress'));
     }
 
+    $lists = $this->get_alpha_lists();
+    $subscribers_lists = get_option('dplr_learnpress_subscribers_list');
+    require_once('sync.php');
+         
     ?>
     
 </div>
