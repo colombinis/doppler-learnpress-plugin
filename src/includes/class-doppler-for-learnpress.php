@@ -168,6 +168,7 @@ class Doppler_For_Learnpress {
 
 		$plugin_admin = new Doppler_For_Learnpress_Admin( $this->get_plugin_name(), $this->get_version(), $this->doppler_service );
 
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'dplrlp_check_parent');
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		//$this->loader->add_action( 'admin_init', $plugin_admin, 'dplr_learnpress_settings_init' );
@@ -182,6 +183,7 @@ class Doppler_For_Learnpress {
 		$this->loader->add_action( 'learn-press/payment-complete', $plugin_admin, 'dplr_after_customer_subscription' );
 		//When order status changes (applys to new order and updated, becouse new order at first saves autodraft, and completed is an update)
 		$this->loader->add_action( 'learn-press/order/status-changed', $plugin_admin, 'dplr_after_order_completed' );
+		$this->loader->add_action( 'admin_notices', $plugin_admin, 'show_admin_notice' );
 	}
 
 	/**

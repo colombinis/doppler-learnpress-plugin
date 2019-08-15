@@ -31,23 +31,17 @@ class Doppler_For_Learnpress_Admin {
 	 */
 	private $plugin_name;
 
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
 	private $version;
 
-	/**
-	 * The service.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
 	private $doppler_service;
+
+	private $admin_notice;
+	
+	private $success_message;
+
+	private $error_message;
+	
+	private $required_doppler_version;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -64,6 +58,7 @@ class Doppler_For_Learnpress_Admin {
 		$this->connectionStatus = $this->check_connection_status();
 		$this->success_message = false;
 		$this->error_message = false;
+		$this->required_doppler_version = '2.1.0';
 
 	}
 
@@ -91,6 +86,10 @@ class Doppler_For_Learnpress_Admin {
 
 	public function get_success_message() {
 		return $this->success_message;
+	}
+	
+	public function get_required_doppler_version(){
+		return $this->required_doppler_version;
 	}
 
 	public function display_error_message() {
@@ -129,24 +128,50 @@ class Doppler_For_Learnpress_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-    wp_enqueue_script( 'jquery-ui-dialog' );
+		wp_enqueue_script( 'jquery-ui-dialog' );
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/doppler-for-learnpress-admin.js', array( 'jquery', 'jquery-ui-dialog', 'Doppler'), $this->version, false );
 	}
+	
+	public function dplrlp_check_parent() {
+		if ( !is_plugin_active( 'doppler-form/doppler-form.php' ) ) {
+			$this->admin_notice = array( 'error', __('Sorry, but <strong>Doppler for LearnPress</strong> requires the <strong><a href="https://wordpress.org/plugins/doppler-form/">Doppler Forms plugin</a></strong> to be installed and active.', 'doppler-form') );
+		}else if( version_compare( get_option('dplr_version'), $this->get_required_doppler_version(), '<' ) ){
+			$this->admin_notice = array( 'error', __('Sorry, but <strong>Doppler for LearnPress</strong> requires Doppler Forms v2.1.0 or greater to be active. Please <a href="'.admin_url().'plugins.php">upgrade</a> Doppler Forms.', 'doppler-form') );
+			$this->deactivate();
+		}
+	}
 
+	private function deactivate() {
+		deactivate_plugins( DOPPLER_FOR_LEARNPRESS_PLUGIN ); 
+		if ( isset( $_GET['activate'] ) ) {
+			unset( $_GET['activate'] );
+		}
+	}
+	
+	private function is_plugin_allowed() {
+		$version = get_option('dplr_version');
+		if( class_exists('DPLR_Doppler') && class_exists('LearnPress') && version_compare($version, $this->get_required_doppler_version(), '>=') ){
+			return true;
+	    }
+		return false;
+	}
+	
 	/**
 	 * Register the admin menu
 	 * 
 	 * @since 1.0.0
 	 */
 	public function dplr_init_menu() {
-		add_submenu_page(
-			'doppler_forms_menu',
-			__('Doppler for LearnPress', 'dopppler-for-learnpress'),
-		    __('Doppler for LearnPress', 'doppler-for-learnpress'),
-			'manage_options',
-			'doppler_learnpress_menu',
-			array($this, 'dplr_learnpress_admin')
-		);	
+		if($this->is_plugin_allowed()):
+			add_submenu_page(
+				'doppler_forms_menu',
+				__('Doppler for LearnPress', 'dopppler-for-learnpress'),
+				__('Doppler for LearnPress', 'doppler-for-learnpress'),
+				'manage_options',
+				'doppler_learnpress_menu',
+				array($this, 'dplr_learnpress_admin')
+			);
+	    endif;
 	}
 
 	/**
@@ -220,7 +245,6 @@ class Doppler_For_Learnpress_Admin {
 	 * @since 1.0.0
 	 */
 	public function dplr_learnpress_synch(){
-
 
 		$lists = get_option('dplr_learnpress_subscribers_list');
 		$list_id = $lists['buyers'];
@@ -394,7 +418,7 @@ class Doppler_For_Learnpress_Admin {
 	 * @since 1.0.0
 	 * 
 	 */
-	public function show_admin_notice() {	
+	public function show_admin_notice() {
 		$class = $this->admin_notice[0];
 		$text = $this->admin_notice[1];
 		if( !empty($class) && !empty($class) ){

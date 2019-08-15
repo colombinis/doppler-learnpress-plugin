@@ -37,7 +37,8 @@
 		$("#btn-lp-synch").click(function(){
 			var button = $(this);
 			$('.doing-synch').css('display','inline');
-			$('.synch-ok').css('display', 'none');
+			$('.synch-ok').css('opacity', '0');
+			clearResponseMessages();
 			var emails = $('.subscribers-item');
 			var subscribers = [];
 			for(var i=0; i<emails.length; i++){
@@ -48,7 +49,8 @@
 				var obj = JSON.parse(response);
 				if(!obj.createdResourceId){
 					if(obj!=0){
-						displayErrors(obj.status,obj.errorCode);
+						console.log(obj);
+						displayErrors(obj);
 					}
 					$('.doing-synch').css('display', 'none');
 					button.css('pointer-events','initial');
@@ -57,7 +59,7 @@
 				$.post(ajaxurl,{action: 'dplr_ajax_update_counter'}, function(response){
 					var obj = JSON.parse(response);
 					$('.buyers-count').html(obj.buyers);
-					$('.synch-ok').css('display', 'inline');
+					$('.synch-ok').css('opacity', '1');
 					button.css('pointer-events','initial');
 					$('.doing-synch').css('display','none');
 					return;

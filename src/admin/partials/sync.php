@@ -10,13 +10,11 @@
     <div id="showErrorResponse" class="messages-container blocker d-none">
     </div>
 
+    <p class="size-medium"><?php _e('Select the list you want to populate.', 'doppler-for-learnpress') ?></p>
+
     <form id="dplr-lp-form-list" action="" method="post">
 
-        <?php wp_nonce_field( 'map-lists' );?>
-
-       
-        <p><?php _e('Select the list you want to populate.', 'doppler-for-learnpress') ?></p>
-            
+        <?php wp_nonce_field( 'map-lists' );?>            
 
         <table class="grid panel w-100" cellspacing="0">
             
