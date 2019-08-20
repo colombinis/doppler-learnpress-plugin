@@ -5,7 +5,7 @@
 		
 		
 		$("#dplr-lp-form-list select").change(function(){
-			$("#btn-synch").css('display','none');
+			$("#btn-lp-synch").css('display','none');
 			$(this).closest('tr').find('td span').html(
 				$('option:selected', this).attr('data-subscriptors')
 			);
@@ -59,6 +59,7 @@
 				}
 				$.post(ajaxurl,{action: 'dplr_ajax_update_counter'}, function(response){
 					var obj = JSON.parse(response);
+					console.log(obj);
 					$('.buyers-count').html(obj.buyers);
 					$('.synch-ok').css('opacity', '1');
 					button.css('pointer-events','initial');

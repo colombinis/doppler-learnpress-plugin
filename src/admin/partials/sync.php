@@ -37,7 +37,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
                         <?php _e('Enrolled students', 'doppler-for-learnpress')?>
                     </th>
                     <td>
-                        <select name="dplr_learnpress_subscribers_list[buyers]">
+                        <select name="dplr_learnpress_subscribers_list[buyers]" class="dplr-lp-lists">
                             <option value=""></option>
                             <?php 
                             if(!empty($lists)){
