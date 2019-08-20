@@ -46,6 +46,7 @@
 			}
 
 			synchBuyers().then(function( response ){
+			
 				var obj = JSON.parse(response);
 				if(!obj.createdResourceId){
 					if(obj!=0){

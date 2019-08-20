@@ -247,7 +247,7 @@ class Doppler_For_Learnpress_Admin {
 	 * @since 1.0.0
 	 */
 	public function dplr_learnpress_synch(){
-
+		
 		$lists = get_option('dplr_learnpress_subscribers_list');
 		$list_id = $lists['buyers'];
 		$user = get_option('dplr_learnpress_user');
@@ -257,7 +257,8 @@ class Doppler_For_Learnpress_Admin {
 		$students = $this->get_students();
 
 		if(empty($students) ||  empty($lists)){
-			exit();
+			echo '0';
+			wp_die();
 		}
 		
 		foreach($students as $student){
@@ -355,7 +356,7 @@ class Doppler_For_Learnpress_Admin {
 		pm.meta_key = '_user_id'
 		GROUP BY u.id
 		";
-		return  $wpdb->get_results($wpdb->prepare($query));
+		return  $wpdb->get_results($query);
 	}
 
 	/**
