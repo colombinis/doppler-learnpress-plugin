@@ -45,8 +45,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
                                     ?>
                                     <option value="<?php echo $k?>" 
                                         <?php if($subscribers_lists['buyers']==$k){ echo 'selected'; $scount = $v['subscribersCount']; } ?>
-                                        data-subscriptors="<?php echo $v['subscribersCount']?>">
-                                        <?php echo $v['name']?>
+                                        data-subscriptors="<?php echo esc_attr($v['subscribersCount'])?>">
+                                        <?php echo esc_html($v['name'])?>
                                     </option>
                                     <?php
                                 }
