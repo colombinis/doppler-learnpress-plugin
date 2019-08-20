@@ -2,8 +2,7 @@
 	'use strict';
 
 	$(function() {
-		
-		
+			
 		$("#dplr-lp-form-list select").change(function(){
 			$("#btn-lp-synch").css('display','none');
 			$(this).closest('tr').find('td span').html(
@@ -71,6 +70,5 @@
 		});
 
 	});
-
 
 })( jQuery );
