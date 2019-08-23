@@ -166,17 +166,11 @@ class Doppler_For_Learnpress {
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'dplrlp_check_parent');
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-		//$this->loader->add_action( 'admin_init', $plugin_admin, 'dplr_learnpress_settings_init' );
 		$this->loader->add_action( 'dplr_add_extension_submenu', $plugin_admin, 'dplr_init_menu' );
-		//$this->loader->add_action( 'wp_ajax_dplr_ajax_connect', $plugin_admin, 'dplr_api_connect' );
-		//$this->loader->add_action( 'wp_ajax_dplr_ajax_get_lists', $plugin_admin, 'dplr_get_lists' );
 		$this->loader->add_action( 'wp_ajax_dplr_ajax_save_list', $plugin_admin, 'dplr_save_list' );
-		//$this->loader->add_action( 'wp_ajax_dplr_ajax_delete_list', $plugin_admin, 'dplr_delete_list' );
 		$this->loader->add_action( 'wp_ajax_dplr_lp_ajax_synch', $plugin_admin, 'dplr_learnpress_synch' );
 		$this->loader->add_action( 'wp_ajax_dplr_ajax_update_counter', $plugin_admin, 'update_subscribers_count' );
-		//When customer subscribe to a course
 		$this->loader->add_action( 'learn-press/payment-complete', $plugin_admin, 'dplr_after_customer_subscription' );
-		//When order status changes (applys to new order and updated, becouse new order at first saves autodraft, and completed is an update)
 		$this->loader->add_action( 'learn-press/order/status-changed', $plugin_admin, 'dplr_after_order_completed' );
 		$this->loader->add_action( 'admin_notices', $plugin_admin, 'show_admin_notice' );
 	}

@@ -271,7 +271,7 @@ class Doppler_For_Learnpress_Admin {
 		
 		$subscriber_resource = $this->doppler_service->getResource( 'subscribers' );
 		echo $subscriber_resource->importSubscribers($list_id, $subscribers)['body'];
-		exit();
+		wp_die();
 	}
 
 		/**
@@ -366,15 +366,11 @@ class Doppler_For_Learnpress_Admin {
 	 */
 	public function dplr_save_list() {
 
-		/**
-		 * TODO: Validar nombre de la lista
-		 * largo, mínimo, etc.
-		 */
 		if(!empty($_POST['listName'])){
 			$subscriber_resource = $this->doppler_service->getResource('lists');
 			echo $subscriber_resource->saveList( $_POST['listName'] )['body'];
 		}
-		exit();
+		wp_die();
 
 	}
 

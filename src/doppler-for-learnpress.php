@@ -9,7 +9,7 @@
  * @wordpress-plugin
  * Plugin Name:       Doppler for LearnPress
  * Plugin URI:        www.fromdoppler.com
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       Submit your LearnPress students to a Doppler Lists.
  * Version:           1.0.0
  * Author:            Doppler
  * Author URI:        www.fromdoppler.com
@@ -27,11 +27,12 @@ if ( ! defined( 'WPINC' ) ) {
 define( 'DOPPLER_FOR_LEARNPRESS_VERSION', '1.0.0' );
 define( 'DOPPLER_FOR_LEARNPRESS_PLUGIN', plugin_basename( __FILE__ ));
 define( 'DOPPLER_FOR_LEARNPRESS_URL', plugin_dir_url(__FILE__) );
+
 if(!defined('DOPPLER_PLUGINS_PATH')):
-define( 'DOPPLER_PLUGINS_PATH', plugin_dir_path(__DIR__));
+	define( 'DOPPLER_PLUGINS_PATH', plugin_dir_path(__DIR__));
 endif;
 if(!defined('DOPPLER_PLUGINS_URL')):
-define( 'DOPPLER_PLUGINS_URL', plugins_url().'/doppler-form');
+	define( 'DOPPLER_PLUGINS_URL', plugins_url().'/doppler-form');
 endif;
 
 /**
