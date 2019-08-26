@@ -12,7 +12,6 @@
  * Description:       Submit your LearnPress students to a Doppler Lists.
  * Version:           1.0.0
  * Author:            Doppler
- * Author URI:        www.fromdoppler.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       doppler-for-learnpress
