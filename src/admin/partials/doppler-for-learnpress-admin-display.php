@@ -21,13 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
  if ( ! current_user_can( 'manage_options' ) ) {
  return;
- }
-
- if( isset($_GET['tab']) ) {
-    $active_tab = $_GET['tab'];
- }else{
-    $active_tab = 'settings';
- } 
+ }  
 
  $connected = $this->connectionStatus;
 
@@ -35,15 +29,15 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 <div class="wrap dplr_settings">
 
-    <a href="<?php _e('https://www.fromdoppler.com/en/?utm_source=landing&utm_medium=integracion&utm_campaign=wordpress', 'doppler-for-learnpress')?>" target="_blank" class="dplr-logo-header"><img src="<?php echo DOPPLER_PLUGINS_URL?>/admin/img/logo-doppler.svg" alt="Doppler logo"/></a>
+    <a href="<?php _e('https://www.fromdoppler.com/en/?utm_source=landing&utm_medium=integracion&utm_campaign=wordpress', 'doppler-for-learnpress')?>" target="_blank" class="dplr-logo-header"><img src="<?php echo DOPPLER_FOR_LEARNPRESS_URL?>admin/img/logo-doppler.svg" alt="Doppler logo"/></a>
     <h2 class="main-title"><?php _e('Doppler for LearnPress', 'doppler-for-learnpress')?> <?php echo $this->get_version()?></h2> 
 
     <h1 class="screen-reader-text"></h1>
 
     <?php
-
-    if( is_array($_POST['dplr_learnpress_subscribers_list']) && current_user_can('manage_options') && check_admin_referer('map-lists') ){
-        update_option( 'dplr_learnpress_subscribers_list', $_POST['dplr_learnpress_subscribers_list'] );
+    
+    if( $this->validate_subscribers_list($_POST['dplr_learnpress_subscribers_list']) && current_user_can('manage_options') && check_admin_referer('map-lists') ){
+        update_option( 'dplr_learnpress_subscribers_list', $this->sanitize_subscribers_list($_POST['dplr_learnpress_subscribers_list']) );
         $this->set_success_message(__('Subscribers list saved succesfully', 'doppler-for-learnpress'));
     }
 

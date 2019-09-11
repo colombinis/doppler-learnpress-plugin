@@ -2,6 +2,8 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+$scount = '';
+
 ?>
 
 <div class="dplr-tab-content">
@@ -43,7 +45,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
                             if(!empty($lists)){
                                 foreach($lists as $k=>$v){
                                     ?>
-                                    <option value="<?php echo $k?>" 
+                                    <option value="<?php echo esc_attr($k)?>" 
                                         <?php if($subscribers_lists['buyers']==$k){ echo 'selected'; $scount = $v['subscribersCount']; } ?>
                                         data-subscriptors="<?php echo esc_attr($v['subscribersCount'])?>">
                                         <?php echo esc_html($v['name'])?>

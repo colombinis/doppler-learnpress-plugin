@@ -79,8 +79,8 @@ class Doppler_For_Learnpress {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		
-		require_once( DOPPLER_PLUGINS_PATH . 'doppler-form/includes/DopplerAPIClient/DopplerService.php' );
+
+		include DOPPLER_PLUGINS_PATH. 'doppler-form/includes/DopplerAPIClient/DopplerService.php';
 		$this->doppler_service = new Doppler_Service();
 
 		if ( defined( 'DOPPLER_FOR_LEARNPRESS_VERSION' ) ) {
@@ -167,7 +167,6 @@ class Doppler_For_Learnpress {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'dplr_add_extension_submenu', $plugin_admin, 'dplr_init_menu' );
-		$this->loader->add_action( 'wp_ajax_dplr_ajax_save_list', $plugin_admin, 'dplr_save_list' );
 		$this->loader->add_action( 'wp_ajax_dplr_lp_ajax_synch', $plugin_admin, 'dplr_learnpress_synch' );
 		$this->loader->add_action( 'wp_ajax_dplr_ajax_update_counter', $plugin_admin, 'update_subscribers_count' );
 		$this->loader->add_action( 'learn-press/payment-complete', $plugin_admin, 'dplr_after_customer_subscription' );

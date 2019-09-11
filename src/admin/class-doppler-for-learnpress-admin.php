@@ -137,6 +137,7 @@ class Doppler_For_Learnpress_Admin {
 	public function dplrlp_check_parent() {
 		if ( !is_plugin_active( 'doppler-form/doppler-form.php' ) ) {
 			$this->admin_notice = array( 'error', __('Sorry, but <strong>Doppler for LearnPress</strong> requires the <strong><a href="https://wordpress.org/plugins/doppler-form/">Doppler Forms plugin</a></strong> to be installed and active.', 'doppler-form') );
+			$this->deactivate();
 		}else if( version_compare( get_option('dplr_version'), $this->get_required_doppler_version(), '<' ) ){
 			$this->admin_notice = array( 'error', __('Sorry, but <strong>Doppler for LearnPress</strong> requires Doppler Forms v2.1.0 or greater to be active. Please <a href="'.admin_url().'plugins.php">upgrade</a> Doppler Forms.', 'doppler-form') );
 			$this->deactivate();
@@ -144,10 +145,7 @@ class Doppler_For_Learnpress_Admin {
 	}
 
 	private function deactivate() {
-		deactivate_plugins( DOPPLER_FOR_LEARNPRESS_PLUGIN ); 
-		if ( isset( $_GET['activate'] ) ) {
-			unset( $_GET['activate'] );
-		}
+		deactivate_plugins( DOPPLER_FOR_LEARNPRESS_PLUGIN_FILE ); 
 	}
 	
 	private function is_plugin_allowed() {
@@ -220,7 +218,7 @@ class Doppler_For_Learnpress_Admin {
 	 * @since 1.0.0
 	 * 
 	 */
-	function display_user_field( $args ) {
+	public function display_user_field( $args ) {
 		$option = get_option( 'dplr_learnpress_user' );
 		?>
 			<input type="email" value="<?php echo $option ?>" name="dplr_learnpress_user" required/>
@@ -233,7 +231,7 @@ class Doppler_For_Learnpress_Admin {
 	 * @since 1.0.0
 	 * 
 	 */
-	function display_key_field( $args ) {
+	public function display_key_field( $args ) {
 		$option = get_option( 'dplr_learnpress_key' );
 		?>
 			<input type="text" value="<?php echo $option ?>" name="dplr_learnpress_key" maxlength="32" required/>
@@ -347,7 +345,7 @@ class Doppler_For_Learnpress_Admin {
 	 * 
 	 * @since 1.0.0
 	 */
-  private function get_students(){
+  	private function get_students(){
 		global $wpdb;
 		$query = "SELECT u.user_email, u.user_nicename FROM wp_posts p 
 		JOIN wp_postmeta pm ON p.ID = pm.post_id
@@ -357,21 +355,6 @@ class Doppler_For_Learnpress_Admin {
 		GROUP BY u.id
 		";
 		return  $wpdb->get_results($query);
-	}
-
-	/**
-	 * Create a list.
-	 * 
-	 * @since 1.0.0
-	 */
-	public function dplr_save_list() {
-
-		if(!empty($_POST['listName'])){
-			$subscriber_resource = $this->doppler_service->getResource('lists');
-			echo $subscriber_resource->saveList( $_POST['listName'] )['body'];
-		}
-		wp_die();
-
 	}
 
 	/**
@@ -427,6 +410,28 @@ class Doppler_For_Learnpress_Admin {
 				</div>
 			<?php
 		}
+	}
+
+	/**
+	 * Validate list array
+	 */
+	private function validate_subscribers_list( $list ){
+		if( is_array($list) && array_filter($list, 'is_numeric') ){
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Sanitize list array
+	 */
+	private function sanitize_subscribers_list( $list ){
+		if(is_array($list)){
+			foreach($list as $k=>$v){
+				$list[$k] = (int)trim($v);
+			}
+		}
+		return $list;
 	}
 
 }
