@@ -259,17 +259,26 @@ class Doppler_For_Learnpress_Admin {
 			wp_die();
 		}
 		
-		foreach($students as $student){
-			//$item['email'] = $email;
-			//$item['fields'] = array();
-			$items[] = array("email"=>$student->user_email, "fields" => array() );
-		}
-		
-		$subscribers = array('items'=>$items, 'fields' => array());
-		
 		$subscriber_resource = $this->doppler_service->getResource( 'subscribers' );
-		echo $subscriber_resource->importSubscribers($list_id, $subscribers)['body'];
+		echo $subscriber_resource->importSubscribers( $list_id, $this->get_subscribers_for_import() )['body'];
 		wp_die();
+	}
+
+	/**
+	 * Prepares students array form database result
+	 * to be sent to the api in another array.
+	 */
+	private function get_subscribers_for_import( $students ){
+		return array('items'=> array_map( array($this,'get_student_fields'), $students) , 'fields' => array());
+	}
+
+	/**
+	 * Extract user email to an array
+	 * from learnPress student object
+	 * for later use with API
+	 */
+	private function get_student_fields( $student ){
+		return array( 'items'=>$student->user_email, "fields" => array() );
 	}
 
 		/**
@@ -413,25 +422,17 @@ class Doppler_For_Learnpress_Admin {
 	}
 
 	/**
-	 * Validate list array
+	 * Validate subscribers lists
 	 */
-	private function validate_subscribers_list( $list ){
-		if( is_array($list) && array_filter($list, 'is_numeric') ){
-			return true;
-		}
-		return false;
+	private function validate_subscribers_list( $list) {
+		return is_array($list) && array_key_exists('buyers',$list);
 	}
 
 	/**
 	 * Sanitize list array
 	 */
-	private function sanitize_subscribers_list( $list ){
-		if(is_array($list)){
-			foreach($list as $k=>$v){
-				$list[$k] = (int)trim($v);
-			}
-		}
-		return $list;
+	private function sanitize_subscribers_list( $list ) {
+		return array_filter($list,'is_numeric');
 	}
 
 }
