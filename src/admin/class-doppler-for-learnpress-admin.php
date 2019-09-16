@@ -155,6 +155,10 @@ class Doppler_For_Learnpress_Admin {
 	    }
 		return false;
 	}
+
+	private function is_auto_enabled(){
+		return get_option('dplr_learnpress_enabled');
+	}
 	
 	/**
 	 * Register the admin menu
@@ -292,6 +296,7 @@ class Doppler_For_Learnpress_Admin {
 	 * @since 1.0.0
 	 */
 	public function dplr_after_customer_subscription( $order_id ) {
+		if(!$this->is_auto_enabled()) return false;
 		$order = new LP_Order( $order_id );
 		$lists = get_option('dplr_learnpress_subscribers_list');
 		if(!empty($lists)){
@@ -310,6 +315,7 @@ class Doppler_For_Learnpress_Admin {
 	 * @since 1.0.0
 	 */
 	public function dplr_after_order_completed( $order_id ){
+		if(!$this->is_auto_enabled()) return false;
 		$order = new LP_Order( $order_id );
 		if( $order->has_status( 'completed' ) && !$order->is_child() ){
 			$users = get_post_meta( $order_id, '_user_id', true);
