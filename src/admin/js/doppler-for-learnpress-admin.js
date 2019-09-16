@@ -33,7 +33,8 @@
 			return deferred.promise();
 		}
 
-		$("#btn-lp-synch").click(function(){
+		$("#btn-lp-synch").click(function(e){
+			e.preventDefault();
 			var button = $(this);
 			$('.doing-synch').css('display','inline');
 			$('.synch-ok').css('opacity', '0');
@@ -44,12 +45,10 @@
 				subscribers[i] = emails[i].value;
 			}
 
-			synchBuyers().then(function( response ){
-			
+			synchBuyers().then(function( response ){			
 				var obj = JSON.parse(response);
 				if(!obj.createdResourceId){
 					if(obj!=0){
-						console.log(obj);
 						displayErrors(obj);
 					}
 					$('.doing-synch').css('display', 'none');
@@ -58,7 +57,6 @@
 				}
 				$.post(ajaxurl,{action: 'dplr_ajax_update_counter'}, function(response){
 					var obj = JSON.parse(response);
-					console.log(obj);
 					$('.buyers-count').html(obj.buyers);
 					$('.synch-ok').css('opacity', '1');
 					button.css('pointer-events','initial');

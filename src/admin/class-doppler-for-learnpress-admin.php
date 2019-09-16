@@ -260,7 +260,11 @@ class Doppler_For_Learnpress_Admin {
 		}
 		
 		$subscriber_resource = $this->doppler_service->getResource( 'subscribers' );
-		echo $subscriber_resource->importSubscribers( $list_id, $this->get_subscribers_for_import() )['body'];
+		$result = $subscriber_resource->importSubscribers( $list_id, $this->get_subscribers_for_import($students) )['body'];
+		if(!empty(json_decode($result)->createdResourceId)){
+			update_option('dplr_learnpress_last_sync',time());
+		}
+		echo $result;
 		wp_die();
 	}
 
@@ -278,7 +282,7 @@ class Doppler_For_Learnpress_Admin {
 	 * for later use with API
 	 */
 	private function get_student_fields( $student ){
-		return array( 'items'=>$student->user_email, "fields" => array() );
+		return array( 'email'=>$student->user_email, "fields" => array() );
 	}
 
 		/**
