@@ -36,13 +36,15 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
     <?php
     
-    if( $this->validate_subscribers_list($_POST['dplr_learnpress_subscribers_list']) && current_user_can('manage_options') && check_admin_referer('map-lists') ){
+    if( current_user_can('manage_options') && $this->validate_subscribers_list($_POST['dplr_learnpress_subscribers_list']) && check_admin_referer('map-lists') ){
         update_option( 'dplr_learnpress_subscribers_list', $this->sanitize_subscribers_list($_POST['dplr_learnpress_subscribers_list']) );
+        !empty($_POST['dplr_learnpress_enabled'])? $dplr_enabled = $_POST['dplr_learnpress_enabled'] : $dplr_enabled = 0;
+        update_option('dplr_learnpress_enabled',$dplr_enabled);
         $this->set_success_message(__('Subscribers list saved succesfully', 'doppler-for-learnpress'));
     }
-
     $lists = $this->get_alpha_lists();
     $subscribers_lists = get_option('dplr_learnpress_subscribers_list');
+    $dplr_enabled = get_option('dplr_learnpress_enabled');
     require_once('settings.php');
          
     ?>

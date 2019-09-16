@@ -155,6 +155,10 @@ class Doppler_For_Learnpress_Admin {
 	    }
 		return false;
 	}
+
+	private function is_auto_enabled(){
+		return get_option('dplr_learnpress_enabled');
+	}
 	
 	/**
 	 * Register the admin menu
@@ -260,7 +264,11 @@ class Doppler_For_Learnpress_Admin {
 		}
 		
 		$subscriber_resource = $this->doppler_service->getResource( 'subscribers' );
-		echo $subscriber_resource->importSubscribers( $list_id, $this->get_subscribers_for_import() )['body'];
+		$result = $subscriber_resource->importSubscribers( $list_id, $this->get_subscribers_for_import($students) )['body'];
+		if(!empty(json_decode($result)->createdResourceId)){
+			update_option('dplr_learnpress_last_sync',time());
+		}
+		echo $result;
 		wp_die();
 	}
 
@@ -278,7 +286,7 @@ class Doppler_For_Learnpress_Admin {
 	 * for later use with API
 	 */
 	private function get_student_fields( $student ){
-		return array( 'items'=>$student->user_email, "fields" => array() );
+		return array( 'email'=>$student->user_email, "fields" => array() );
 	}
 
 		/**
@@ -288,6 +296,7 @@ class Doppler_For_Learnpress_Admin {
 	 * @since 1.0.0
 	 */
 	public function dplr_after_customer_subscription( $order_id ) {
+		if(!$this->is_auto_enabled()) return false;
 		$order = new LP_Order( $order_id );
 		$lists = get_option('dplr_learnpress_subscribers_list');
 		if(!empty($lists)){
@@ -306,6 +315,7 @@ class Doppler_For_Learnpress_Admin {
 	 * @since 1.0.0
 	 */
 	public function dplr_after_order_completed( $order_id ){
+		if(!$this->is_auto_enabled()) return false;
 		$order = new LP_Order( $order_id );
 		if( $order->has_status( 'completed' ) && !$order->is_child() ){
 			$users = get_post_meta( $order_id, '_user_id', true);
