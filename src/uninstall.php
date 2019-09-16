@@ -35,7 +35,8 @@ if( $_REQUEST['plugin'] === ( plugin_basename( __DIR__ ) . '/doppler-for-learnpr
 	$options = array(
 		'dplrlp_version',
 		'dplr_learnpress_subscribers_list',
-		'dplr_learnpress_last_sync'
+		'dplr_learnpress_last_sync',
+		'dplr_learnpress_enabled'
 	);
 	
 	array_map('uninstall_options', $options);
