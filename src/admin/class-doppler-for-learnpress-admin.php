@@ -330,7 +330,7 @@ class Doppler_For_Learnpress_Admin {
 				}else{
 					  	$user_id = $users;
 						$user_email = get_userdata($user_id)->data->user_email;
-						$resp = $this->subscribe_customer( $list_id, $user_email, array() );
+						$this->subscribe_customer( $list_id, $user_email, array() );
 				}				
 			}
 		}
@@ -422,7 +422,7 @@ class Doppler_For_Learnpress_Admin {
 	public function show_admin_notice() {
 		$class = $this->admin_notice[0];
 		$text = $this->admin_notice[1];
-		if( !empty($class) && !empty($class) ){
+		if( !empty($class) && !empty($text) ){
 			?>
 				<div class="notice notice-<?php echo $class?> is-dismissible">
 					<p><?php echo $text ?></p>
