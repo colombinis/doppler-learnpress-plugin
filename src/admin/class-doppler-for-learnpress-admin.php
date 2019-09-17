@@ -370,6 +370,7 @@ class Doppler_For_Learnpress_Admin {
 		JOIN wp_postmeta pm ON p.ID = pm.post_id
 		JOIN wp_users u ON u.id = pm.meta_value
 		WHERE p.post_type = 'lp_order'AND
+		p.post_status = 'lp-completed' AND
 		pm.meta_key = '_user_id'
 		GROUP BY u.id
 		";
