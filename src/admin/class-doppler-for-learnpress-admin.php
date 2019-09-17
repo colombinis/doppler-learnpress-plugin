@@ -217,33 +217,6 @@ class Doppler_For_Learnpress_Admin {
 	}
 
 	/**
-	 * Shows user field.
-	 * 
-	 * @since 1.0.0
-	 * 
-	 */
-	public function display_user_field( $args ) {
-		$option = get_option( 'dplr_learnpress_user' );
-		?>
-			<input type="email" value="<?php echo $option ?>" name="dplr_learnpress_user" required/>
-		<?php
-	}
-
-	/**
-	 * Shows API Key field
-	 * 
-	 * @since 1.0.0
-	 * 
-	 */
-	public function display_key_field( $args ) {
-		$option = get_option( 'dplr_learnpress_key' );
-		?>
-			<input type="text" value="<?php echo $option ?>" name="dplr_learnpress_key" maxlength="32" required/>
-		<?php
-	}
-
-
-	/**
 	 * Synch subscribers
 	 * 
 	 * @since 1.0.0
@@ -289,7 +262,7 @@ class Doppler_For_Learnpress_Admin {
 		return array( 'email'=>$student->user_email, "fields" => array() );
 	}
 
-		/**
+	/**
 	 * Subscribe customer to list after 
 	 * course subscription from fromt-end
 	 * 
