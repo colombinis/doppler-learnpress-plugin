@@ -6,7 +6,7 @@ $scount = '';
 
 ?>
 
-<div class="dplr-tab-content" style="max-width: 600px">
+<div class="dplr-tab-content">
 
     <?php $this->display_success_message() ?>
 
@@ -17,21 +17,46 @@ $scount = '';
 
     <div id="showErrorResponse" class="messages-container blocker d-none">
     </div>
-    <form id="dplr-lp-form-list" action="" method="post">
 
-        <?php wp_nonce_field( 'map-lists' );?>   
+    <div class="d-flex flex-row">
 
-        <p>
-         <input type="checkbox" value="1" name="dplr_learnpress_enabled" <?php if($dplr_enabled) echo 'checked' ?>/> <label class="d-inline-block"><?php _e('Enable Doppler for LearnPress', 'doppler-for-learnpress') ?></label>
-        </p>         
+        <div class="flex-grow-1">
+            <p class="size-medium" id="dplr-settings-text">
+                <?php
+                if(!empty($subscribers_lists['buyers'])){
+                    _e('Your Customers will be sent automatically to the selected Doppler List when enrolling to a Course.', 'doppler-for-learnpress');
+                }else{
+                    if(empty($lists)){
+                        _e('Currently you don’t have any list in Doppler, create a New List by entering a list name and pressing Create List.','doppler-for-learnpress');
 
-        <hr/>
+                    }else{
+                        _e('Select the list you want to populate.', 'doppler-for-learnpress');
+                    }
+                }
+                ?>
+            </p>
+        </div>
+        <div class="flex-grow-1">
+            <form id="dplr-form-list-new" class="text-right" action="" method="post">
 
-        <p><?php _e('Select the list you want to populate.', 'doppler-for-learnpress') ?></p>
+                <input type="text" value="" class="d-inline-block"  maxlength="100" placeholder="<?php _e('Write the List name', 'doppler-for-woocommerce')?>"/>
 
+                <button id="dplrlp-save-list" class="dp-button dp-button--inline button-medium primary-green" disabled="disabled">
+                    <?php _e('Create List', 'doppler-form') ?>
+                </button>
+
+            </form>
+        </div>
+        
+    </div>
+
+    <form id="dplr-lp-form-list" action="" method="post" style="max-width: 600px">
+
+        <?php wp_nonce_field( 'map-lists' );?>         
         <p>
             <label><?php _e('Doppler List to send Customers') ?></label>
             <select name="dplr_learnpress_subscribers_list[buyers]" class="dplr-lp-lists">
+            <option value=""><?php _e('Select a List to connect with Doppler', 'doppler-for-learnpress')?></option>
             <?php 
             if(!empty($lists)){
                 foreach($lists as $k=>$v){
@@ -48,60 +73,14 @@ $scount = '';
             </select>
         </p>
 
-        <p>
-            <label><?php _e('Syncrhonize Customers', 'doppler-for-learnpress') ?></label>
-            <button id="btn-lp-synch" class="dp-button button-small"><?php _e('Sync', 'doppler-for-learnpress')?>
-                <img class="doing-synch d-none" src="<?php echo DOPPLER_FOR_LEARNPRESS_URL . 'admin/img/ajax-synch.gif' ?>" alt="<?php _e('Synchronizing', 'doppler-for-learnpress')?>"/>
+        <p class="d-flex justify-end">
+
+            <button id="dplr-lp-clear" class="dp-button button-medium primary-grey" <?php echo empty($subscribers_lists['buyers'])? 'disabled' : '' ?>>
+                <?php _e('Clear selection', 'doppler-for-learnpress') ?>
             </button>
-            <span class="synch-ok dashicons dashicons-yes text-dark-green opacity-0"></span>
-            <i class="text-small ml-1">Last synch: 04-22-2019 hh:mm:ss</i>
-        </p>
-<!--
-        <table class="grid panel w-100" cellspacing="0">
-            
-            <thead>
-                <tr class="panel-header">
-                <th class="text-white semi-bold"><?php _e('Type', 'doppler-for-learnpress') ?></th>
-                    <th class="text-white semi-bold"><?php _e('List Name', 'doppler-for-learnpress') ?></th>
-                    <th class="text-white semi-bold"><?php _e('Subscriptors', 'doppler-for-learnpress')?></th>
-                </tr>
-            </thead>
-            <tbody class="panel-body">
-                <tr>
-                    <th>
-                        <?php _e('Enrolled students', 'doppler-for-learnpress')?>
-                    </th>
-                    <td>
-                        <select name="dplr_learnpress_subscribers_list[buyers]" class="dplr-lp-lists">
-                            <option value=""></option>
-                            <?php 
-                            if(!empty($lists)){
-                                foreach($lists as $k=>$v){
-                                    ?>
-                                    <option value="<?php echo esc_attr($k)?>" 
-                                        <?php if($subscribers_lists['buyers']==$k){ echo 'selected'; $scount = $v['subscribersCount']; } ?>
-                                        data-subscriptors="<?php echo esc_attr($v['subscribersCount'])?>">
-                                        <?php echo esc_html($v['name'])?>
-                                    </option>
-                                    <?php
-                                }
-                            }   
-                            ?>
-                        </select>
-                    </td>
-                    <td class="text-center td-sm">
-                        <span class="buyers-count"><?php echo $scount?></span>
-                    </td>
-                </tr>
-            </tbody>
-        </table> -->
-
-        <hr/>
-
-        <p class="text-right" style="text-align: right">
         
-            <button id="dplr-lp-lists-btn" class="dp-button button-medium primary-green">
-                <?php _e('Save config', 'doppler-for-learnpress') ?>
+            <button id="dplr-lp-lists-btn" class="dp-button button-medium primary-green ml-1" disabled>
+                <?php _e('Synchronize', 'doppler-for-learnpress') ?>
             </button>
 
         </p>

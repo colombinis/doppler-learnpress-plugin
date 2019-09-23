@@ -163,15 +163,16 @@ class Doppler_For_Learnpress {
 
 		$plugin_admin = new Doppler_For_Learnpress_Admin( $this->get_plugin_name(), $this->get_version(), $this->doppler_service );
 
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'dplrlp_check_parent');
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-		$this->loader->add_action( 'dplr_add_extension_submenu', $plugin_admin, 'dplr_init_menu' );
-		$this->loader->add_action( 'wp_ajax_dplr_lp_ajax_synch', $plugin_admin, 'dplr_learnpress_synch' );
-		$this->loader->add_action( 'wp_ajax_dplr_ajax_update_counter', $plugin_admin, 'update_subscribers_count' );
-		$this->loader->add_action( 'learn-press/payment-complete', $plugin_admin, 'dplr_after_customer_subscription' );
-		$this->loader->add_action( 'learn-press/order/status-changed', $plugin_admin, 'dplr_after_order_completed' );
-		$this->loader->add_action( 'admin_notices', $plugin_admin, 'show_admin_notice' );
+		$this->loader->add_action( 'admin_init', 								$plugin_admin, 'dplrlp_check_parent');
+		$this->loader->add_action( 'admin_enqueue_scripts', 					$plugin_admin, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', 					$plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'dplr_add_extension_submenu', 				$plugin_admin, 'dplr_init_menu' );
+		$this->loader->add_action( 'wp_ajax_dplr_lp_ajax_synch', 				$plugin_admin, 'dplr_learnpress_synch' );
+		$this->loader->add_action( 'wp_ajax_dplr_ajax_update_counter', 			$plugin_admin, 'update_subscribers_count' );
+		$this->loader->add_action( 'wp_ajax_dplr_lp_ajax_clear_buyers_list', 	$plugin_admin, 'clear_buyers_list');
+		$this->loader->add_action( 'learn-press/payment-complete', 				$plugin_admin, 'dplr_after_customer_subscription' );
+		$this->loader->add_action( 'learn-press/order/status-changed', 			$plugin_admin, 'dplr_after_order_completed' );
+		$this->loader->add_action( 'admin_notices', 							$plugin_admin, 'show_admin_notice' );
 	}
 
 	/**
