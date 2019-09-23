@@ -5,6 +5,9 @@
 
 .dplr_settings{
   .dplr-tab-content{
+    #dplr-lp-form-list{
+      max-width: 600px;
+    }
     #dplr-form-list-new{
       input[type="text"]{
         width:200px;

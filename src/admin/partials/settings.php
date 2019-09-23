@@ -50,7 +50,7 @@ $scount = '';
         
     </div>
 
-    <form id="dplr-lp-form-list" action="" method="post" style="max-width: 600px">
+    <form id="dplr-lp-form-list" action="" method="post">
 
         <?php wp_nonce_field( 'map-lists' );?>         
         <p>
