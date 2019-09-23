@@ -35,12 +35,14 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
     <h1 class="screen-reader-text"></h1>
 
     <?php
+
+    include 'tabs-nav.php';
     
-    if( current_user_can('manage_options') && $this->validate_subscribers_list($_POST['dplr_learnpress_subscribers_list']) && check_admin_referer('map-lists') ){
+    if( isset($_POST['dplr_learnpress_subscribers_list']) && $this->validate_subscribers_list($_POST['dplr_learnpress_subscribers_list']) && current_user_can('manage_options') && check_admin_referer('map-lists') ){
         update_option( 'dplr_learnpress_subscribers_list', $this->sanitize_subscribers_list($_POST['dplr_learnpress_subscribers_list']) );
         !empty($_POST['dplr_learnpress_enabled'])? $dplr_enabled = $_POST['dplr_learnpress_enabled'] : $dplr_enabled = 0;
         update_option('dplr_learnpress_enabled',$dplr_enabled);
-        $this->set_success_message(__('Subscribers list saved succesfully', 'doppler-for-learnpress'));
+        $this->set_success_message(__('Subscribers list saved and syncronized succesfully', 'doppler-for-learnpress'));
     }
     $lists = $this->get_alpha_lists();
     $subscribers_lists = get_option('dplr_learnpress_subscribers_list');
