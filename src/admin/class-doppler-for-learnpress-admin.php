@@ -132,6 +132,11 @@ class Doppler_For_Learnpress_Admin {
 	public function enqueue_scripts() {
 		wp_enqueue_script( 'jquery-ui-dialog' );
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/doppler-for-learnpress-admin.js', array( 'jquery', 'jquery-ui-dialog', 'Doppler'), $this->version, false );
+		wp_localize_script( $this->plugin_name, 'dplrlp_object_string', array( 
+			'Syncrhonizing'   	=> __( 'Wait a minute. We\'re synchronizing your Customers with the selecteed Doppler List...', 'doppler-for-learnpress' ),	
+			'newListSuccess'    => __( 'The List has been created correctly.', 'doppler-for-learnpress'),
+			'selectAList'		=> __( 'Select the list you want to populate.', 'doppler-for-learnpress')							 				
+		) ); 
 	}
 	
 	public function dplrlp_check_parent() {
@@ -221,17 +226,16 @@ class Doppler_For_Learnpress_Admin {
 	 * 
 	 * @since 1.0.0
 	 */
-	public function dplr_learnpress_synch(){
+	public function dplr_learnpress_synch() {
+
+		if(empty($_POST['list_id'])) wp_die();
 		
-		$lists = get_option('dplr_learnpress_subscribers_list');
-		$list_id = $lists['buyers'];
-		$user = get_option('dplr_learnpress_user');
-		$key = get_option('dplr_learnpress_key');
+		$list_id = intval($_POST['list_id']);
 		$items = array();
 
 		$students = $this->get_students();
 
-		if(empty($students) ||  empty($lists)){
+		if(empty($students) || empty($list_id)){
 			echo '0';
 			wp_die();
 		}
@@ -245,11 +249,16 @@ class Doppler_For_Learnpress_Admin {
 		wp_die();
 	}
 
+	function clear_buyers_list() {
+		update_option( 'dplr_learnpress_subscribers_list', array('buyers','') );
+		wp_die();
+	}
+
 	/**
 	 * Prepares students array form database result
 	 * to be sent to the api in another array.
 	 */
-	private function get_subscribers_for_import( $students ){
+	private function get_subscribers_for_import( $students ) {
 		return array('items'=> array_map( array($this,'get_student_fields'), $students) , 'fields' => array());
 	}
 
@@ -258,7 +267,7 @@ class Doppler_For_Learnpress_Admin {
 	 * from learnPress student object
 	 * for later use with API
 	 */
-	private function get_student_fields( $student ){
+	private function get_student_fields( $student ) {
 		return array( 'email'=>$student->user_email, "fields" => array() );
 	}
 
@@ -287,7 +296,7 @@ class Doppler_For_Learnpress_Admin {
 	 * 
 	 * @since 1.0.0
 	 */
-	public function dplr_after_order_completed( $order_id ){
+	public function dplr_after_order_completed( $order_id ) {
 		if(!$this->is_auto_enabled()) return false;
 		$order = new LP_Order( $order_id );
 		if( $order->has_status( 'completed' ) && !$order->is_child() ){
@@ -319,6 +328,7 @@ class Doppler_For_Learnpress_Admin {
 	* @since 1.0.0
 	*/
 	public function update_subscribers_count() {
+		$c_count = 0;
 		$b_count = 0;
 		$list_resource = $this->doppler_service->getResource( 'lists' );
 
@@ -337,7 +347,7 @@ class Doppler_For_Learnpress_Admin {
 	 * 
 	 * @since 1.0.0
 	 */
-  	private function get_students(){
+  	private function get_students() {
 		global $wpdb;
 		$query = "SELECT u.user_email, u.user_nicename FROM wp_posts p 
 		JOIN wp_postmeta pm ON p.ID = pm.post_id
@@ -376,7 +386,7 @@ class Doppler_For_Learnpress_Admin {
 	 * 
 	 * @since 1.0.0
 	 */
-	private function subscribe_customer( $list_id, $email, $fields ){
+	private function subscribe_customer( $list_id, $email, $fields ) {
 		if( !empty($list_id) && !empty($email) ){
 			$subscriber['email'] = $email;
 			$subscriber['fields'] = $fields; 
