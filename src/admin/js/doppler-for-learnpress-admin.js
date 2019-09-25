@@ -79,7 +79,7 @@
 			var listInput = $(this).closest('form').find('input[type="text"]');
 			var listName = listInput.val();
 			if(listName=='') return false;
-			button.addClass("button--loading");
+			button.attr('disabled',true).addClass("button--loading");
 			var data = {
 				action: 'dplr_save_list',
 				listName: listName
@@ -95,7 +95,7 @@
 				}else if(body.status >= 400){
 					displayErrors(body);
 				}
-				button.removeClass("button--loading");
+				button.removeAttr('disabled').removeClass("button--loading");
 			})
 		});
 
