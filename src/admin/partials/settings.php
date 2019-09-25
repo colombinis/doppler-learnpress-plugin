@@ -2,8 +2,6 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-$scount = '';
-
 ?>
 
 <div class="dplr-tab-content">
@@ -62,7 +60,7 @@ $scount = '';
                 foreach($lists as $k=>$v){
                     ?>
                     <option value="<?php echo esc_attr($k)?>" 
-                        <?php if($subscribers_lists['buyers']==$k){ echo 'selected'; $scount = $v['subscribersCount']; } ?>
+                        <?php if(!empty($subscribers_lists['buyers']) && $subscribers_lists['buyers']==$k) echo 'selected' ?>
                         data-subscriptors="<?php echo esc_attr($v['subscribersCount'])?>">
                         <?php echo esc_html($v['name'])?>
                     </option>
@@ -86,12 +84,5 @@ $scount = '';
         </p>
 
     </form>
-
-    <!--
-    <hr/>
-
-    <a id="btn-lp-synch" class="small-text pointer green-link"><?php _e('Synchronize', 'doppler-for-learnpress')?></a>
-    <img class="doing-synch d-none" src="<?php echo DOPPLER_FOR_LEARNPRESS_URL . 'admin/img/ajax-synch.gif' ?>" alt="<?php _e('Synchronizing', 'doppler-for-learnpress')?>"/>
-    <span class="synch-ok dashicons dashicons-yes text-dark-green opacity-0"></span> -->
 
 </div>
