@@ -133,18 +133,18 @@ class Doppler_For_Learnpress_Admin {
 		wp_enqueue_script( 'jquery-ui-dialog' );
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/doppler-for-learnpress-admin.js', array( 'jquery', 'jquery-ui-dialog', 'Doppler'), $this->version, false );
 		wp_localize_script( $this->plugin_name, 'dplrlp_object_string', array( 
-			'Syncrhonizing'   	=> __( 'Wait a minute. We\'re synchronizing your Customers with the selecteed Doppler List...', 'doppler-for-learnpress' ),	
+			'Syncrhonizing'   	=> __( 'We\'re synchronizing your Subscribers with your Doppler List.', 'doppler-for-learnpress' ),	
 			'newListSuccess'    => __( 'The List has been created correctly.', 'doppler-for-learnpress'),
-			'selectAList'		=> __( 'Select the list you want to populate.', 'doppler-for-learnpress')							 				
+			'selectAList'		=> __( 'Select the Doppler List where you want to import Subscribers of your course. When synchronized, those customers already registered and future customers will be sent automatically.', 'doppler-for-learnpress')							 				
 		) ); 
 	}
 	
 	public function dplrlp_check_parent() {
 		if ( !is_plugin_active( 'doppler-form/doppler-form.php' ) ) {
-			$this->admin_notice = array( 'error', __('Sorry, but <strong>Doppler for LearnPress</strong> requires the <strong><a href="https://wordpress.org/plugins/doppler-form/">Doppler Forms plugin</a></strong> to be installed and active.', 'doppler-form') );
+			$this->admin_notice = array( 'error', __('Ouch! <strong>Doppler for LearnPress</strong> requires the <a href="https://wordpress.org/plugins/doppler-form/">Doppler Forms</a> plugin to be installed and active.', 'doppler-for-learnpress') );
 			$this->deactivate();
 		}else if( version_compare( get_option('dplr_version'), $this->get_required_doppler_version(), '<' ) ){
-			$this->admin_notice = array( 'error', __('Sorry, but <strong>Doppler for LearnPress</strong> requires Doppler Forms v2.1.0 or greater to be active. Please <a href="'.admin_url().'plugins.php">upgrade</a> Doppler Forms.', 'doppler-form') );
+			$this->admin_notice = array( 'error', sprintf(__('Ouch! <strong>Doppler for LearnPress</strong> requires at least <strong>Doppler Forms v%s</strong> to be active. Please <a href="%splugins.php">upgrade</a> Doppler Forms.', 'doppler-for-learnpress'),$this->get_required_doppler_version(),admin_url()));
 			$this->deactivate();
 		}
 	}

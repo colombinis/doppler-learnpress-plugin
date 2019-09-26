@@ -8,7 +8,7 @@ msgstr ""
 "Blank WordPress Pot "
 "v1.0.0\n"
 "POT-Creation-Date: "
-"2019-08-13 12:02-0300\n"
+"2019-09-26 15:30-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Your "
 "Name <you@example.com>\n"
@@ -51,73 +51,146 @@ msgstr ""
 "X-Poedit-"
 "SearchPath-0: .\n"
 
+#: admin/class-doppler-for-learnpress-admin.php:136
+msgid ""
+"We're synchronizing your "
+"Subscribers with your "
+"Doppler List."
+msgstr ""
+
+#: admin/class-doppler-for-learnpress-admin.php:137
+msgid ""
+"The List has been "
+"created correctly."
+msgstr ""
+
+#: admin/class-doppler-for-learnpress-admin.php:138
+msgid ""
+"Select the Doppler List "
+"where you want to import "
+"Subscribers of your "
+"course. When "
+"synchronized, those "
+"customers already "
+"registered and future "
+"customers will be sent "
+"automatically."
+msgstr ""
+
 #: admin/class-doppler-for-learnpress-admin.php:144
-#: admin/class-doppler-for-learnpress-admin.php:145
-#: admin/partials/doppler-for-learnpress-admin-display.php:37
+msgid ""
+"Ouch! <strong>Doppler "
+"for Learnpress</strong> "
+"requires the <a href="
+"\"https://wordpress.org/"
+"plugins/doppler-form/"
+"\">Doppler Forms</a> "
+"plugin to be installed "
+"and active."
+msgstr ""
+
+#: admin/class-doppler-for-learnpress-admin.php:147
+#, php-format
+msgid ""
+"Ouch! <strong>Doppler "
+"for Learnpress</strong> "
+"requires at least "
+"<strong>Doppler Forms v"
+"%s</strong> to be "
+"active. Please <a href="
+"\"%splugins.php"
+"\">upgrade</a> Doppler "
+"Forms."
+msgstr ""
+
+#: admin/class-doppler-for-learnpress-admin.php:177
+#: admin/class-doppler-for-learnpress-admin.php:178
+#: admin/partials/doppler-for-learnpress-admin-display.php:33
 msgid ""
 "Doppler for LearnPress"
 msgstr ""
 
-#: admin/partials/doppler-for-learnpress-admin-display.php:36
+#: admin/partials/doppler-for-learnpress-admin-display.php:32
 msgid ""
 "https://www.fromdoppler."
 "com/en/?"
 "utm_source=landing&utm_medium=integracion&utm_campaign=wordpress"
 msgstr ""
 
-#: admin/partials/doppler-for-learnpress-admin-display.php:56
+#: admin/partials/doppler-for-learnpress-admin-display.php:45
 msgid ""
-"Subscribers list saved "
-"succesfully"
+"Your List has been "
+"syncronized and saved "
+"succesfully."
 msgstr ""
 
-#: admin/partials/sync.php:18
+#: admin/partials/settings.php:25
 msgid ""
-"Select the list you want "
-"to populate."
+"As they enroll in a "
+"course, your Subscribers "
+"will be automatically "
+"sent to the selected "
+"Doppler List."
 msgstr ""
 
-#: admin/partials/sync.php:25
-msgid "Type"
+#: admin/partials/settings.php:28
+msgid ""
+"You currently have no "
+"Doppler Lists created. "
+"Create a List in Doppler "
+"by entering a List name "
+"and pressing Create List."
 msgstr ""
 
-#: admin/partials/sync.php:26
-msgid "List Name"
+#: admin/partials/settings.php:31
+msgid ""
+"Select the Doppler List "
+"where you want to import "
+"Subscribers of your "
+"courses. When "
+"synchronized, those "
+"customers already "
+"registered and future "
+"customers will be sent "
+"automatically."
 msgstr ""
 
-#: admin/partials/sync.php:27
-msgid "Subscriptors"
+#: admin/partials/settings.php:40
+msgid "Write the List name"
 msgstr ""
 
-#: admin/partials/sync.php:33
-msgid "Enrolled students"
+#: admin/partials/settings.php:43
+msgid "Create List"
 msgstr ""
 
-#: admin/partials/sync.php:61
-msgid "Save"
+#: admin/partials/settings.php:55
+msgid ""
+"Doppler List to send "
+"Customers"
 msgstr ""
 
-#: admin/partials/sync.php:68
-msgid "Synchronize"
+#: admin/partials/settings.php:57
+msgid "Select a List"
 msgstr ""
 
-#: admin/partials/sync.php:69
-msgid "Synchronizing"
+#: admin/partials/settings.php:77
+msgid "Clear selection"
 msgstr ""
 
-#: doppler-for-learnpress.php:48
+#: admin/partials/settings.php:81
+msgid "Sync"
+msgstr ""
+
+#: admin/partials/tabs-nav.php:2
+msgid "Settings"
+msgstr ""
+
+#: doppler-for-learnpress.php:45
 msgid ""
 "This plugin requires "
 msgstr ""
 
-#: doppler-for-learnpress.php:48
+#: doppler-for-learnpress.php:45
 msgid ""
 " plugin to be active."
-msgstr ""
-
-#: includes/DopplerAPIClient/DopplerService.php:247
-msgid ""
-"<b>Doppler Forms:</b> "
-"Connection error. Please "
-"contact support."
 msgstr ""
