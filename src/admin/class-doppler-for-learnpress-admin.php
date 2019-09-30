@@ -59,11 +59,11 @@ class Doppler_For_Learnpress_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 		$this->doppler_service = $doppler_service;
-		$this->connectionStatus = $this->check_connection_status();
 		$this->success_message = false;
 		$this->error_message = false;
 		$this->required_doppler_version = '2.1.0';
 		$this->origin = $this->set_origin();
+		$this->set_credentials();
 
 	}
 
@@ -168,8 +168,23 @@ class Doppler_For_Learnpress_Admin {
 		return false;
 	}
 
-	private function is_auto_enabled(){
-		return get_option('dplr_learnpress_enabled');
+	/**
+	 * Set the credentials to doppler service
+	 * before running api calls.
+	 */
+	private function set_credentials(){
+
+		$options = get_option('dplr_settings');
+
+		if ( ! is_admin() ||  empty($options) ) {
+			return;
+		}
+
+		$this->doppler_service->setCredentials(array(	
+			'api_key' => $options['dplr_option_apikey'], 
+			'user_account' => $options['dplr_option_useraccount'])
+		);
+	
 	}
 	
 	/**
@@ -199,35 +214,6 @@ class Doppler_For_Learnpress_Admin {
 		include "partials/doppler-for-learnpress-admin-display.php";
 	}
 
-	public function check_connection_status() {
-
-		$options = get_option('dplr_settings');
-		
-		if( empty($options) ){
-			return false;
-		}
-		
-		$user = $options['dplr_option_useraccount'];
-		$key = $options['dplr_option_apikey'];
-
-		if( !empty($user) && !empty($key) ){
-			if(empty($this->doppler_service->config['crendentials'])){
-				$this->doppler_service->setCredentials(array('api_key' => $key, 'user_account' => $user));
-			}
-			if( is_admin() ){ //... if we are at the backend.
-				$response =  $this->doppler_service->connectionStatus();
-				if( is_array($response) && $response['response']['code']>=400 ){
-					 $this->admin_notice = array('error', '<strong>Doppler API Connection error.</strong> ' . $response['response']['message']);
-					 return false;
-				}
-			}
-			return true;
-		}
-
-		return false;
-
-	}
-
 	/**
 	 * Synch subscribers
 	 * 
@@ -248,6 +234,7 @@ class Doppler_For_Learnpress_Admin {
 		}
 		
 		$subscriber_resource = $this->doppler_service->getResource( 'subscribers' );
+		$this->set_origin();
 		$result = $subscriber_resource->importSubscribers( $list_id, $this->get_subscribers_for_import($students) )['body'];
 		if(!empty(json_decode($result)->createdResourceId)){
 			update_option('dplr_learnpress_last_sync',time());
@@ -285,7 +272,6 @@ class Doppler_For_Learnpress_Admin {
 	 * @since 1.0.0
 	 */
 	public function dplr_after_customer_subscription( $order_id ) {
-		if(!$this->is_auto_enabled()) return false;
 		$order = new LP_Order( $order_id );
 		$lists = get_option('dplr_learnpress_subscribers_list');
 		if(!empty($lists)){
@@ -304,7 +290,6 @@ class Doppler_For_Learnpress_Admin {
 	 * @since 1.0.0
 	 */
 	public function dplr_after_order_completed( $order_id ) {
-		if(!$this->is_auto_enabled()) return false;
 		$order = new LP_Order( $order_id );
 		if( $order->has_status( 'completed' ) && !$order->is_child() ){
 			$users = get_post_meta( $order_id, '_user_id', true);
@@ -366,6 +351,15 @@ class Doppler_For_Learnpress_Admin {
 		";
 		return  $wpdb->get_results($query);
 	}
+	
+
+	public function check_active_list($list_id, $lists) {
+		if(!empty($lists) && !empty($list_id)){
+			if(!isset($lists[$list_id])){
+				$this->set_error_message(__('Oops! The seleceted List could not be found. Please, select another List. ', 'doppler-for-learnpress'));
+			}
+		}
+	}
 
 	/**
 	 * Get lists
@@ -398,6 +392,7 @@ class Doppler_For_Learnpress_Admin {
 			$subscriber['email'] = $email;
 			$subscriber['fields'] = $fields; 
 			$subscriber_resource = $this->doppler_service->getResource('subscribers');
+			$this->set_origin();
 			$result = $subscriber_resource->addSubscriber($list_id, $subscriber);
 		}
 	}

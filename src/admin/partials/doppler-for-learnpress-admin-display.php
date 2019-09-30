@@ -23,8 +23,6 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  return;
  }  
 
- $connected = $this->connectionStatus;
-
  ?>
 
 <div class="wrap dplr_settings">
@@ -40,14 +38,15 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
     
     if( isset($_POST['dplr_learnpress_subscribers_list']) && $this->validate_subscribers_list($_POST['dplr_learnpress_subscribers_list']) && current_user_can('manage_options') && check_admin_referer('map-lists') ){
         update_option( 'dplr_learnpress_subscribers_list', $this->sanitize_subscribers_list($_POST['dplr_learnpress_subscribers_list']) );
-        !empty($_POST['dplr_learnpress_enabled'])? $dplr_enabled = $_POST['dplr_learnpress_enabled'] : $dplr_enabled = 0;
-        update_option('dplr_learnpress_enabled',$dplr_enabled);
         $this->set_success_message(__('Your List has been syncronized and saved succesfully.', 'doppler-for-learnpress'));
     }
+    
     $lists = $this->get_alpha_lists();
     $subscribers_lists = get_option('dplr_learnpress_subscribers_list');
-    $dplr_enabled = get_option('dplr_learnpress_enabled');
+    $this->check_active_list($subscribers_lists['buyers'],$lists);
+
     require_once('settings.php');
+
          
     ?>
     
