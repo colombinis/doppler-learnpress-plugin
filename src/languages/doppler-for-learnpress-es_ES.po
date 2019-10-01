@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank WordPress Pot v1.0.0\n"
 "Report-Msgid-Bugs-To: Translator Name <translations@example.com>\n"
-"POT-Creation-Date: 2019-09-26 15:31-0300\n"
+"POT-Creation-Date: 2019-10-01 17:07-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: Your Team <translations@example.com>\n"
@@ -23,15 +23,15 @@ msgstr ""
 "X-Generator: Poedit 2.2.1\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: admin/class-doppler-for-learnpress-admin.php:136
+#: admin/class-doppler-for-learnpress-admin.php:143
 msgid "We're synchronizing your Subscribers with your Doppler List."
 msgstr "Estamos sincronizando tus Suscriptores con tu Lista de Doppler."
 
-#: admin/class-doppler-for-learnpress-admin.php:137
+#: admin/class-doppler-for-learnpress-admin.php:144
 msgid "The List has been created correctly."
 msgstr "La Lista fue creada correctamente."
 
-#: admin/class-doppler-for-learnpress-admin.php:138
+#: admin/class-doppler-for-learnpress-admin.php:145
 msgid ""
 "Select the Doppler List where you want to import Subscribers of your course. "
 "When synchronized, those customers already registered and future customers "
@@ -41,7 +41,7 @@ msgstr ""
 "tu Curso. Al sincronizarlas, se enviarán automáticamente los que ya están "
 "inscriptos y los futuros clientes."
 
-#: admin/class-doppler-for-learnpress-admin.php:144
+#: admin/class-doppler-for-learnpress-admin.php:151
 msgid ""
 "Ouch! <strong>Doppler for LearnPress</strong> requires the <a href=\"https://"
 "wordpress.org/plugins/doppler-form/\">Doppler Forms</a> plugin to be "
@@ -51,7 +51,7 @@ msgstr ""
 "plugin <a href=\"https://wordpress.org/plugins/doppler-form/\">Formularios "
 "Doppler</a> instalado y activo."
 
-#: admin/class-doppler-for-learnpress-admin.php:147
+#: admin/class-doppler-for-learnpress-admin.php:154
 #, php-format
 msgid ""
 "Ouch! <strong>Doppler for LearnPress</strong> requires at least "
@@ -62,13 +62,20 @@ msgstr ""
 "menos la versión de <strong>Doppler Forms v%s</strong>. Por favor <a href="
 "\"%splugins.php\">actualiza</a> Doppler Forms."
 
-#: admin/class-doppler-for-learnpress-admin.php:177
-#: admin/class-doppler-for-learnpress-admin.php:178
-#: admin/partials/doppler-for-learnpress-admin-display.php:33
+#: admin/class-doppler-for-learnpress-admin.php:199
+#: admin/class-doppler-for-learnpress-admin.php:200
+#: admin/partials/doppler-for-learnpress-admin-display.php:31
 msgid "Doppler for LearnPress"
 msgstr "Doppler para LearnPress"
 
-#: admin/partials/doppler-for-learnpress-admin-display.php:32
+#: admin/class-doppler-for-learnpress-admin.php:359
+msgid ""
+"Ouch! The selected List was deleted from Doppler. Please select another one."
+msgstr ""
+"¡Ouch! La Lista seleccionada fue eliminada en Doppler. Por favor selecciona "
+"otra."
+
+#: admin/partials/doppler-for-learnpress-admin-display.php:30
 msgid ""
 "https://www.fromdoppler.com/en/?"
 "utm_source=landing&utm_medium=integracion&utm_campaign=wordpress"
@@ -76,7 +83,7 @@ msgstr ""
 "https://www.fromdoppler.com?"
 "utm_source=landing&utm_medium=integracion&utm_campaign=wordpress"
 
-#: admin/partials/doppler-for-learnpress-admin-display.php:45
+#: admin/partials/doppler-for-learnpress-admin-display.php:41
 msgid "Your List has been syncronized and saved succesfully."
 msgstr "Tu Lista fue sincronizada y guardada con éxito."
 

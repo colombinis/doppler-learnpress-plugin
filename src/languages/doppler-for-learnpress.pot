@@ -8,7 +8,7 @@ msgstr ""
 "Blank WordPress Pot "
 "v1.0.0\n"
 "POT-Creation-Date: "
-"2019-09-26 15:30-0300\n"
+"2019-10-01 17:06-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Your "
 "Name <you@example.com>\n"
@@ -51,20 +51,20 @@ msgstr ""
 "X-Poedit-"
 "SearchPath-0: .\n"
 
-#: admin/class-doppler-for-learnpress-admin.php:136
+#: admin/class-doppler-for-learnpress-admin.php:143
 msgid ""
 "We're synchronizing your "
 "Subscribers with your "
 "Doppler List."
 msgstr ""
 
-#: admin/class-doppler-for-learnpress-admin.php:137
+#: admin/class-doppler-for-learnpress-admin.php:144
 msgid ""
 "The List has been "
 "created correctly."
 msgstr ""
 
-#: admin/class-doppler-for-learnpress-admin.php:138
+#: admin/class-doppler-for-learnpress-admin.php:145
 msgid ""
 "Select the Doppler List "
 "where you want to import "
@@ -77,10 +77,10 @@ msgid ""
 "automatically."
 msgstr ""
 
-#: admin/class-doppler-for-learnpress-admin.php:144
+#: admin/class-doppler-for-learnpress-admin.php:151
 msgid ""
 "Ouch! <strong>Doppler "
-"for Learnpress</strong> "
+"for LearnPress</strong> "
 "requires the <a href="
 "\"https://wordpress.org/"
 "plugins/doppler-form/"
@@ -89,11 +89,11 @@ msgid ""
 "and active."
 msgstr ""
 
-#: admin/class-doppler-for-learnpress-admin.php:147
+#: admin/class-doppler-for-learnpress-admin.php:154
 #, php-format
 msgid ""
 "Ouch! <strong>Doppler "
-"for Learnpress</strong> "
+"for LearnPress</strong> "
 "requires at least "
 "<strong>Doppler Forms v"
 "%s</strong> to be "
@@ -103,21 +103,29 @@ msgid ""
 "Forms."
 msgstr ""
 
-#: admin/class-doppler-for-learnpress-admin.php:177
-#: admin/class-doppler-for-learnpress-admin.php:178
-#: admin/partials/doppler-for-learnpress-admin-display.php:33
+#: admin/class-doppler-for-learnpress-admin.php:199
+#: admin/class-doppler-for-learnpress-admin.php:200
+#: admin/partials/doppler-for-learnpress-admin-display.php:31
 msgid ""
 "Doppler for LearnPress"
 msgstr ""
 
-#: admin/partials/doppler-for-learnpress-admin-display.php:32
+#: admin/class-doppler-for-learnpress-admin.php:359
+msgid ""
+"Ouch! The selected List "
+"was deleted from "
+"Doppler. Please select "
+"another one."
+msgstr ""
+
+#: admin/partials/doppler-for-learnpress-admin-display.php:30
 msgid ""
 "https://www.fromdoppler."
 "com/en/?"
 "utm_source=landing&utm_medium=integracion&utm_campaign=wordpress"
 msgstr ""
 
-#: admin/partials/doppler-for-learnpress-admin-display.php:45
+#: admin/partials/doppler-for-learnpress-admin-display.php:41
 msgid ""
 "Your List has been "
 "syncronized and saved "

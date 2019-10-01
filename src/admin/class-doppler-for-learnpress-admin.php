@@ -356,7 +356,7 @@ class Doppler_For_Learnpress_Admin {
 	public function check_active_list($list_id, $lists) {
 		if(!empty($lists) && !empty($list_id)){
 			if(!isset($lists[$list_id])){
-				$this->set_error_message(__('Oops! The seleceted List could not be found. Please, select another List. ', 'doppler-for-learnpress'));
+				$this->set_error_message(__('Ouch! The selected List was deleted from Doppler. Please select another one.', 'doppler-for-learnpress'));
 			}
 		}
 	}
