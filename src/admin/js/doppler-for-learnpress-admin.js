@@ -3,13 +3,13 @@
 
 	$(function() {
 
+		var syncListButton = $("#dplr-lp-lists-btn");
+		var buyersSelect = $("#dplr-lp-form-list select");
 		var synchBuyers = function(list_id) {
-
 			var data = {
 				action: 'dplr_lp_ajax_synch',
 				list_id: list_id,
 			}
-
 			var deferred = new $.Deferred();
 			$.post( ajaxurl, data, function( response ){
 				deferred.resolve(response);
@@ -17,15 +17,15 @@
 			return deferred.promise();
 		}
 
-		$("#dplr-lp-form-list select").change(function(){
-			$("#dplr-lp-lists-btn").removeAttr("disabled");
+		buyersSelect.change(function(){
+			$(this).val() === ''? syncListButton.attr("disabled","true") : syncListButton.removeAttr("disabled");
 		});
 
-		$("#dplr-lp-lists-btn").click(function(e){
+		syncListButton.click(function(e){
 			e.preventDefault();
 			clearResponseMessages();
 			var button = $(this);
-			var buyersList = $("#dplr-lp-form-list select").val();
+			var buyersList = buyersSelect.val();
 			if(buyersList == ''){
 				button.attr('disabled','disabled').addClass("button--loading");
 				$("#dplr-lp-form-list").submit();
@@ -33,7 +33,6 @@
 			}
 			button.attr('disabled','disabled').addClass("button--loading");
 			$("#dplr-settings-text").html(dplrlp_object_string.Syncrhonizing);
-			//Sync & save.
 			synchBuyers(buyersList).then(function( response ){			
 				var obj = JSON.parse(response);
 				if(!obj.createdResourceId){
@@ -108,44 +107,6 @@
 				modal: true
 			});
 		}
-
-	
-		/*
-
-		$("#btn-lp-synch").click(function(e){
-		/	e.preventDefault();
-			var button = $(this);
-			$('.doing-synch').css('display','inline');
-			$('.synch-ok').css('opacity', '0');
-			clearResponseMessages();
-			var emails = $('.subscribers-item');
-			var subscribers = [];
-			for(var i=0; i<emails.length; i++){
-				subscribers[i] = emails[i].value;
-			}
-
-			synchBuyers().then(function( response ){			
-				var obj = JSON.parse(response);
-				if(!obj.createdResourceId){
-					if(obj!=0){
-						displayErrors(obj);
-					}
-					$('.doing-synch').css('display', 'none');
-					button.css('pointer-events','initial');
-					return false;
-				}
-				$.post(ajaxurl,{action: 'dplr_ajax_update_counter'}, function(response){
-					var obj = JSON.parse(response);
-					$('.buyers-count').html(obj.buyers);
-					$('.synch-ok').css('opacity', '1');
-					button.css('pointer-events','initial');
-					$('.doing-synch').css('display','none');
-					return;
-				});
-			});
-		
-		});
-		*/
 
 	});
 
