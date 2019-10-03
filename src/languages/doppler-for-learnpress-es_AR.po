@@ -4,12 +4,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Blank WordPress Pot v1.0.0\n"
-"Report-Msgid-Bugs-To: Translator Name <translations@example.com>\n"
 "POT-Creation-Date: 2019-10-02 11:24-0300\n"
 "PO-Revision-Date: \n"
-"Last-Translator: \n"
 "Language-Team: Your Team <translations@example.com>\n"
-"Language: es_ES\n"
+"Report-Msgid-Bugs-To: Translator Name <translations@example.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,15 +19,17 @@ msgstr ""
 "_x:1,2c;_n:1,2;_n_noop:1,2;__ngettext:1,2;__ngettext_noop:1,2;_c,_nc:4c,1,2\n"
 "X-Poedit-Basepath: ..\n"
 "X-Generator: Poedit 2.2.1\n"
+"Last-Translator: \n"
+"Language: es_AR\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: admin/class-doppler-for-learnpress-admin.php:143
 msgid "We're synchronizing your Subscribers with your Doppler List."
-msgstr "Estamos sincronizando tus Suscriptores con tu Lista de Doppler."
+msgstr ""
 
 #: admin/class-doppler-for-learnpress-admin.php:144
 msgid "The List has been created correctly."
-msgstr "La Lista fue creada correctamente."
+msgstr ""
 
 #: admin/class-doppler-for-learnpress-admin.php:145
 msgid ""
@@ -37,9 +37,6 @@ msgid ""
 "When synchronized, those customers already registered and future customers "
 "will be sent automatically."
 msgstr ""
-"Selecciona la Lista de Doppler a donde quieres importar los Suscriptores de "
-"tu Curso. Al sincronizarlas, se enviarán automáticamente los que ya están "
-"inscriptos y los futuros clientes."
 
 #: admin/class-doppler-for-learnpress-admin.php:151
 msgid ""
@@ -47,9 +44,6 @@ msgid ""
 "wordpress.org/plugins/doppler-form/\">Doppler Forms</a> plugin to be "
 "installed and active."
 msgstr ""
-"¡Ouch! <strong>Doppler para Learnpress</strong> requiere que tengas el "
-"plugin <a href=\"https://wordpress.org/plugins/doppler-form/\">Formularios "
-"Doppler</a> instalado y activo."
 
 #: admin/class-doppler-for-learnpress-admin.php:154
 #, php-format
@@ -58,50 +52,39 @@ msgid ""
 "<strong>Doppler Forms v%s</strong> to be active. Please <a href=\"%splugins."
 "php\">upgrade</a> Doppler Forms."
 msgstr ""
-"Ouch! <strong>Doppler para LearnPress</strong> requiere tener activa al "
-"menos la versión de <strong>Doppler Forms v%s</strong>. Por favor <a href="
-"\"%splugins.php\">actualiza</a> Doppler Forms."
 
 #: admin/class-doppler-for-learnpress-admin.php:199
 #: admin/class-doppler-for-learnpress-admin.php:200
 #: admin/partials/doppler-for-learnpress-admin-display.php:31
 msgid "Doppler for LearnPress"
-msgstr "Doppler para LearnPress"
+msgstr ""
 
 #: admin/class-doppler-for-learnpress-admin.php:359
 msgid ""
 "Ouch! The selected List was deleted from Doppler. Please select another one."
 msgstr ""
-"¡Ouch! La Lista seleccionada fue eliminada en Doppler. Por favor selecciona "
-"otra."
 
 #: admin/partials/doppler-for-learnpress-admin-display.php:30
 msgid ""
 "https://www.fromdoppler.com/en/?"
 "utm_source=landing&utm_medium=integracion&utm_campaign=wordpress"
 msgstr ""
-"https://www.fromdoppler.com?"
-"utm_source=landing&utm_medium=integracion&utm_campaign=wordpress"
 
 #: admin/partials/doppler-for-learnpress-admin-display.php:41
 msgid "Your List has been syncronized and saved succesfully."
-msgstr "Tu Lista fue sincronizada y guardada con éxito."
+msgstr ""
 
 #: admin/partials/settings.php:25
 msgid ""
 "As they enroll in a course, your Subscribers will be automatically sent to "
 "the selected Doppler List."
 msgstr ""
-"Cuando se inscriban a un curso, tus Suscriptores serán enviados "
-"automáticamente a la Lista de Doppler seleccionada."
 
 #: admin/partials/settings.php:28
 msgid ""
 "You currently have no Doppler Lists created. Create a List in Doppler by "
 "entering a List name and pressing Create List."
 msgstr ""
-"Actualmente no tienes Listas de Doppler creadas. Crea una Lista en Doppler "
-"ingresando un nombre para tu Lista y presiona Crear Lista."
 
 #: admin/partials/settings.php:31
 msgid ""
@@ -109,72 +92,39 @@ msgid ""
 "courses. When synchronized, those customers already registered and future "
 "customers will be sent automatically."
 msgstr ""
-"Selecciona la Lista de Doppler a donde quieres importar los Suscriptores de "
-"tus Cursos. Al sincronizarlas, se enviarán automáticamente los que ya están "
-"inscriptos y los futuros clientes."
 
 #: admin/partials/settings.php:40
 msgid "Write the List name"
-msgstr "Escribe el nombre de la Lista"
+msgstr ""
 
 #: admin/partials/settings.php:43
 msgid "Create List"
-msgstr "Crear Lista"
+msgstr ""
 
 #: admin/partials/settings.php:55
 msgid "Doppler List to send Subscribers"
-msgstr "Lista de Doppler donde enviar Suscriptores"
+msgstr ""
 
 #: admin/partials/settings.php:57
 msgid "Select"
-msgstr "Seleccionar"
+msgstr ""
 
 #: admin/partials/settings.php:77
 msgid "Clear selection"
-msgstr "Eliminar selección"
+msgstr ""
 
 #: admin/partials/settings.php:81
 msgid "Sync"
-msgstr "Sincronizar"
+msgstr ""
 
 #: admin/partials/tabs-nav.php:2
 msgid "Settings"
-msgstr "Configuración"
+msgstr ""
 
 #: doppler-for-learnpress.php:45
 msgid "This plugin requires "
-msgstr "Este plugin requiere que "
+msgstr ""
 
 #: doppler-for-learnpress.php:45
 msgid " plugin to be active."
-msgstr " esté activo."
-
-#~ msgid "Select the list you want to populate."
-#~ msgstr ""
-#~ "Selecciona la lista a la cual quieres enviar a tus estudiantes inscriptos."
-
-#~ msgid "Type"
-#~ msgstr "Tipo"
-
-#~ msgid "List Name"
-#~ msgstr "Nombre de la Lista"
-
-#~ msgid "Subscriptors"
-#~ msgstr "Suscriptores"
-
-#~ msgid "Enrolled students"
-#~ msgstr "Estudiantes inscriptos"
-
-#~ msgid "Save"
-#~ msgstr "Guardar"
-
-#~ msgid "Synchronize"
-#~ msgstr "Sincronizar"
-
-#~ msgid "Synchronizing"
-#~ msgstr "Sincronizando"
-
-#~ msgid "<b>Doppler Forms:</b> Connection error. Please contact support."
-#~ msgstr ""
-#~ "<b>Formularios de Doppler:</b> Error de conexión. Por favor contacte a "
-#~ "soporte."
+msgstr ""

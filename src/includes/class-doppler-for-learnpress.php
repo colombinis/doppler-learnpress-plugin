@@ -170,8 +170,8 @@ class Doppler_For_Learnpress {
 		$this->loader->add_action( 'wp_ajax_dplr_lp_ajax_synch', 				$plugin_admin, 'dplr_learnpress_synch' );
 		$this->loader->add_action( 'wp_ajax_dplr_ajax_update_counter', 			$plugin_admin, 'update_subscribers_count' );
 		$this->loader->add_action( 'wp_ajax_dplr_lp_ajax_clear_buyers_list', 	$plugin_admin, 'clear_buyers_list');
-		$this->loader->add_action( 'learn-press/payment-complete', 				$plugin_admin, 'dplr_after_customer_subscription' );
 		$this->loader->add_action( 'learn-press/order/status-changed', 			$plugin_admin, 'dplr_after_order_completed' );
+		//$this->loader->add_action( 'learn-press/payment-complete', 				$plugin_admin, 'dplr_after_customer_subscription' );
 		$this->loader->add_action( 'admin_notices', 							$plugin_admin, 'show_admin_notice' );
 	}
 
