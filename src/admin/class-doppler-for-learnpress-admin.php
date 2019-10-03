@@ -168,23 +168,29 @@ class Doppler_For_Learnpress_Admin {
 		return false;
 	}
 
+	private function write_log($log) {
+        if (true === WP_DEBUG) {
+            if (is_array($log) || is_object($log)) {
+                error_log(print_r($log, true));
+            } else {
+                error_log($log);
+            }
+        }
+    }
+
 	/**
 	 * Set the credentials to doppler service
 	 * before running api calls.
 	 */
 	private function set_credentials(){
-
 		$options = get_option('dplr_settings');
-
-		if ( ! is_admin() ||  empty($options) ) {
+		if ( empty($options) ) {
 			return;
 		}
-
 		$this->doppler_service->setCredentials(array(	
 			'api_key' => $options['dplr_option_apikey'], 
 			'user_account' => $options['dplr_option_useraccount'])
 		);
-	
 	}
 	
 	/**
@@ -271,7 +277,10 @@ class Doppler_For_Learnpress_Admin {
 	 * 
 	 * @since 1.0.0
 	 */
+	/*
 	public function dplr_after_customer_subscription( $order_id ) {
+		echo 'dplr_after_customer_subscription';
+		die();
 		$order = new LP_Order( $order_id );
 		$lists = get_option('dplr_learnpress_subscribers_list');
 		if(!empty($lists)){
@@ -279,9 +288,10 @@ class Doppler_For_Learnpress_Admin {
 			$order = new LP_Order( $order_id );
 			$user_data = get_userdata($order->user_id);
 			$user_email = $user_data->data->user_email;
+			$this->set_credentials(); 
 			$this->subscribe_customer( $list_id, $user_email, array() );
 		}
-	}
+	}*/
 
 	/**
 	 * Subscribe customer/s to list after 
@@ -302,11 +312,29 @@ class Doppler_For_Learnpress_Admin {
 						$this->subscribe_customer( $list_id, $user_email, array() );
 					}
 				}else{
-					  	$user_id = $users;
-						$user_email = get_userdata($user_id)->data->user_email;
-						$this->subscribe_customer( $list_id, $user_email, array() );
+					$user_id = $users;
+					$user_email = get_userdata($user_id)->data->user_email;
+					$this->write_log('attemptint to subscribe' . $user_email . __LINE__);
+					$this->subscribe_customer( $list_id, $user_email, array() );
 				}				
 			}
+		}
+	}
+
+	/**
+	 * Send email and fields to a Doppler List
+	 * 
+	 * @since 1.0.0
+	 */
+	private function subscribe_customer( $list_id, $email, $fields ) {
+		if( !empty($list_id) && !empty($email) ){
+			$subscriber['email'] = $email;
+			$subscriber['fields'] = $fields; 
+			$subscriber_resource = $this->doppler_service->getResource('subscribers');
+			$this->set_origin();
+			$this->set_credentials();
+			$result = $subscriber_resource->addSubscriber($list_id, $subscriber);
+			$this->write_log($result . __LINE__);
 		}
 	}
 
@@ -380,21 +408,6 @@ class Doppler_For_Learnpress_Admin {
 			$dplr_lists_arr = $dplr_lists_aux;
 		}
 		return $dplr_lists_arr;
-	}
-
-	/**
-	 * Send email and fields to a Doppler List
-	 * 
-	 * @since 1.0.0
-	 */
-	private function subscribe_customer( $list_id, $email, $fields ) {
-		if( !empty($list_id) && !empty($email) ){
-			$subscriber['email'] = $email;
-			$subscriber['fields'] = $fields; 
-			$subscriber_resource = $this->doppler_service->getResource('subscribers');
-			$this->set_origin();
-			$result = $subscriber_resource->addSubscriber($list_id, $subscriber);
-		}
 	}
 
 	/**
