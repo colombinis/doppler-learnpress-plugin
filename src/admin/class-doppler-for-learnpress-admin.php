@@ -351,6 +351,18 @@ class Doppler_For_Learnpress_Admin {
 		";
 		return  $wpdb->get_results($query);
 	}
+
+	private function get_courses(){
+		global $wpdb;
+		$courses   = $wpdb->get_results(
+			$wpdb->prepare(
+					"SELECT p.ID, p.post_title FROM $wpdb->posts p
+					WHERE post_type = '%s' AND post_status = '%s'",
+					"lp_course", "publish" 
+				)
+		);
+		return $courses;
+	}
 	
 
 	public function check_active_list($list_id, $lists) {

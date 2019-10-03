@@ -85,4 +85,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
     </form>
 
+    <?php
+    require_once('courses-mapping.php');
+    ?>
+
 </div>
