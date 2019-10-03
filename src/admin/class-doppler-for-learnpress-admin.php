@@ -314,7 +314,6 @@ class Doppler_For_Learnpress_Admin {
 				}else{
 					$user_id = $users;
 					$user_email = get_userdata($user_id)->data->user_email;
-					$this->write_log('attemptint to subscribe' . $user_email . __LINE__);
 					$this->subscribe_customer( $list_id, $user_email, array() );
 				}				
 			}
