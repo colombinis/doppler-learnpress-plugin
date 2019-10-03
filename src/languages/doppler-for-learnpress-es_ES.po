@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank WordPress Pot v1.0.0\n"
 "Report-Msgid-Bugs-To: Translator Name <translations@example.com>\n"
-"POT-Creation-Date: 2019-10-01 17:07-0300\n"
+"POT-Creation-Date: 2019-10-02 11:24-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: Your Team <translations@example.com>\n"
@@ -110,7 +110,7 @@ msgid ""
 "customers will be sent automatically."
 msgstr ""
 "Selecciona la Lista de Doppler a donde quieres importar los Suscriptores de "
-"tu Curso. Al sincronizarlas, se enviarán automáticamente los que ya están "
+"tus Cursos. Al sincronizarlas, se enviarán automáticamente los que ya están "
 "inscriptos y los futuros clientes."
 
 #: admin/partials/settings.php:40
@@ -122,12 +122,12 @@ msgid "Create List"
 msgstr "Crear Lista"
 
 #: admin/partials/settings.php:55
-msgid "Doppler List to send Customers"
-msgstr "Lista de Doppler a la que enviarás a tus Clientes"
+msgid "Doppler List to send Subscribers"
+msgstr "Lista de Doppler donde enviar Suscriptores"
 
 #: admin/partials/settings.php:57
-msgid "Select a List"
-msgstr "Selecciona una Lista"
+msgid "Select"
+msgstr "Seleccionar"
 
 #: admin/partials/settings.php:77
 msgid "Clear selection"

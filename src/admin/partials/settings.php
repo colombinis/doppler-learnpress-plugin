@@ -52,9 +52,9 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
         <?php wp_nonce_field( 'map-lists' );?>         
         <p>
-            <label><?php _e('Doppler List to send Customers', 'doppler-for-learnpress') ?></label>
+            <label><?php _e('Doppler List to send Subscribers', 'doppler-for-learnpress') ?></label>
             <select name="dplr_learnpress_subscribers_list[buyers]" class="dplr-lp-lists">
-            <option value=""><?php _e('Select a List', 'doppler-for-learnpress')?></option>
+            <option value=""><?php _e('Select', 'doppler-for-learnpress')?></option>
             <?php 
             if(!empty($lists)){
                 foreach($lists as $k=>$v){
