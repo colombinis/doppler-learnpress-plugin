@@ -86,7 +86,7 @@ class Doppler_For_Learnpress {
 		if ( defined( 'DOPPLER_FOR_LEARNPRESS_VERSION' ) ) {
 			$this->version = DOPPLER_FOR_LEARNPRESS_VERSION;
 		} else {
-			$this->version = '1.0.0';
+			$this->version = '1.0.3';
 		}
 		$this->plugin_name = 'doppler-for-learnpress';
 
@@ -173,6 +173,7 @@ class Doppler_For_Learnpress {
 		$this->loader->add_action( 'learn-press/order/status-changed', 			$plugin_admin, 'dplr_after_order_completed' );
 		//$this->loader->add_action( 'learn-press/payment-complete', 				$plugin_admin, 'dplr_after_customer_subscription' );
 		$this->loader->add_action( 'admin_notices', 							$plugin_admin, 'show_admin_notice' );
+		$this->loader->add_action( 'wp_ajax_dplr_map_course',					$plugin_admin, 'dplr_map_course');
 	}
 
 	/**
