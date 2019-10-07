@@ -98,6 +98,43 @@
 			})
 		});
 
+		$("#course-mapping-form").change(function(){
+			var selects = $(this).closest('form').find('select');
+			var button = $(this).closest('form').find('button');
+			var allCompleted = true;
+			$.each(selects,function(e,s){
+				if(s.value === '') allCompleted = false;
+			});
+			allCompleted? button.removeAttr('disabled') : button.attr('disabled',true);
+		});
+
+		$("#course-mapping-form button").click(function(e){
+			e.preventDefault();
+			var button = $(this);
+			var mapCourse = $("#map-course").val();
+			var mapList = $("#map-list").val();
+			if( mapCourse === '' || mapList === '' ) return false;
+			button.attr('disabled','true').addClass("button--loading");
+			var data = {
+				action: 'dplr_map_course',
+				course_id: mapCourse,
+				list_id: mapList
+			}
+			$.post( ajaxurl, data, function( response ){
+				if(response==='1'){
+					var html = '<tr>';
+						html+= '<td>'+$("#map-course option:selected").text()+'</td>';
+						html+= '<td>'+$("#map-list option:selected").text()+'</td>';
+						html+= '<td><a class="pointer">Sync</a></td>';
+						html+= '<td><a class="pointer">Delete</a></td>';
+						html+= '</tr>';
+					if($("#associated-lists-tbl").removeClass('d-none'));
+					$("#associated-lists-tbl tbody").prepend(html);
+				} 
+				button.removeAttr('disabled').removeClass("button--loading");
+			})
+		});
+
 		if($('#dplr-lp-dialog-confirm').length>0){
 			$("#dplr-lp-dialog-confirm").dialog({
 				autoOpen: false,
