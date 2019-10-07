@@ -61,7 +61,7 @@ class Doppler_For_Learnpress_Admin {
 		$this->doppler_service = $doppler_service;
 		$this->success_message = false;
 		$this->error_message = false;
-		$this->required_doppler_version = '2.1.0';
+		$this->required_doppler_version = '2.1.4';
 		$this->origin = $this->set_origin();
 		$this->set_credentials();
 
@@ -98,7 +98,9 @@ class Doppler_For_Learnpress_Admin {
 	}
 
 	public function set_origin() {
-		$this->doppler_service->set_origin('LearnPress');
+		if(method_exists($this->doppler_service,'set_origin')){
+			$this->doppler_service->set_origin('LearnPress');
+		}
 	}
 
 	public function display_error_message() {
@@ -368,9 +370,9 @@ class Doppler_For_Learnpress_Admin {
 	 */
   	private function get_students() {
 		global $wpdb;
-		$query = "SELECT u.user_email, u.user_nicename FROM wp_posts p 
-		JOIN wp_postmeta pm ON p.ID = pm.post_id
-		JOIN wp_users u ON u.id = pm.meta_value
+		$query = "SELECT u.user_email, u.user_nicename FROM $wpdb->posts p 
+		JOIN {$wpdb->prefix}postmeta pm ON p.ID = pm.post_id
+		JOIN {$wpdb->prefix}users u ON u.id = pm.meta_value
 		WHERE p.post_type = 'lp_order'AND
 		p.post_status = 'lp-completed' AND
 		pm.meta_key = '_user_id'
@@ -398,6 +400,22 @@ class Doppler_For_Learnpress_Admin {
 				$this->set_error_message(__('Ouch! The selected List was deleted from Doppler. Please select another one.', 'doppler-for-learnpress'));
 			}
 		}
+	}
+
+	public function dplr_map_course(){
+		if( empty($_POST['course_id']) || empty($_POST['list_id']) ) return false;
+		
+		$map = get_option('dplr_learnpress_courses_map');
+		if($map !== false) $dplr_courses_map = $map;
+		
+		$dplr_courses_map[][$_POST['course_id']] = $_POST['list_id'];
+
+		//maybe array_filter for checking repeteated association?
+		
+		if(update_option( 'dplr_learnpress_courses_map', $dplr_courses_map )){
+			echo '1';
+		}
+		wp_die();
 	}
 
 	/**
