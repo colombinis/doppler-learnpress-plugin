@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 ?>
 
-<div class="dplr-tab-content">
+<div class="dplr-tab-content dplr-learnpress-tab">
 
     <?php $this->display_success_message() ?>
 
@@ -18,8 +18,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
     <div class="d-flex flex-row">
 
-        <div class="flex-grow-1">
-            <p class="size-medium" id="dplr-settings-text">
+        <div class="col-68">
+            <p class="size-medium mt10" id="dplr-settings-text">
                 <?php
                 if(!empty($subscribers_lists['buyers'])){
                     _e('As they enroll in a course, your Subscribers will be automatically sent to the selected Doppler List.', 'doppler-for-learnpress');

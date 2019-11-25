@@ -8,7 +8,7 @@ msgstr ""
 "Blank WordPress Pot "
 "v1.0.0\n"
 "POT-Creation-Date: "
-"2019-10-02 11:24-0300\n"
+"2019-11-25 12:03-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Your "
 "Name <you@example.com>\n"
@@ -51,20 +51,20 @@ msgstr ""
 "X-Poedit-"
 "SearchPath-0: .\n"
 
-#: admin/class-doppler-for-learnpress-admin.php:143
+#: admin/class-doppler-for-learnpress-admin.php:145
 msgid ""
 "We're synchronizing your "
 "Subscribers with your "
 "Doppler List."
 msgstr ""
 
-#: admin/class-doppler-for-learnpress-admin.php:144
+#: admin/class-doppler-for-learnpress-admin.php:146
 msgid ""
 "The List has been "
 "created correctly."
 msgstr ""
 
-#: admin/class-doppler-for-learnpress-admin.php:145
+#: admin/class-doppler-for-learnpress-admin.php:147
 msgid ""
 "Select the Doppler List "
 "where you want to import "
@@ -77,7 +77,7 @@ msgid ""
 "automatically."
 msgstr ""
 
-#: admin/class-doppler-for-learnpress-admin.php:151
+#: admin/class-doppler-for-learnpress-admin.php:153
 msgid ""
 "Ouch! <strong>Doppler "
 "for LearnPress</strong> "
@@ -89,7 +89,7 @@ msgid ""
 "and active."
 msgstr ""
 
-#: admin/class-doppler-for-learnpress-admin.php:154
+#: admin/class-doppler-for-learnpress-admin.php:156
 #, php-format
 msgid ""
 "Ouch! <strong>Doppler "
@@ -103,19 +103,43 @@ msgid ""
 "Forms."
 msgstr ""
 
-#: admin/class-doppler-for-learnpress-admin.php:199
-#: admin/class-doppler-for-learnpress-admin.php:200
+#: admin/class-doppler-for-learnpress-admin.php:207
+#: admin/class-doppler-for-learnpress-admin.php:208
 #: admin/partials/doppler-for-learnpress-admin-display.php:31
 msgid ""
 "Doppler for LearnPress"
 msgstr ""
 
-#: admin/class-doppler-for-learnpress-admin.php:359
+#: admin/class-doppler-for-learnpress-admin.php:394
 msgid ""
 "Ouch! The selected List "
 "was deleted from "
 "Doppler. Please select "
 "another one."
+msgstr ""
+
+#: admin/partials/courses-mapping.php:9
+msgid "Courses Mapping"
+msgstr ""
+
+#: admin/partials/courses-mapping.php:15
+msgid "Select course"
+msgstr ""
+
+#: admin/partials/courses-mapping.php:30
+msgid "Select List"
+msgstr ""
+
+#: admin/partials/courses-mapping.php:44
+msgid "Associate List"
+msgstr ""
+
+#: admin/partials/courses-mapping.php:52
+msgid "Course"
+msgstr ""
+
+#: admin/partials/courses-mapping.php:53
+msgid "Associated List"
 msgstr ""
 
 #: admin/partials/doppler-for-learnpress-admin-display.php:30

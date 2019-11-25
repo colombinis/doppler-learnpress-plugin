@@ -231,22 +231,16 @@ class Doppler_For_Learnpress_Admin {
 
 		if(empty($_POST['list_id'])) wp_die();
 		
-		$list_id = intval($_POST['list_id']);
-		$items = array();
-
+		$list_id = intval($_POST['list_id']);		
 		$students = $this->get_students();
-
-		if(empty($students) || empty($list_id)){
-			echo '0';
+		//If students if empty dont't synch, but continue to save list.
+		if(empty($students)){
+			echo json_encode(array('error'=>'1', 'errCode'=>'NoStudentsFound'));
 			wp_die();
 		}
-		
 		$subscriber_resource = $this->doppler_service->getResource( 'subscribers' );
 		$this->set_origin();
 		$result = $subscriber_resource->importSubscribers( $list_id, $this->get_subscribers_for_import($students) )['body'];
-		if(!empty(json_decode($result)->createdResourceId)){
-			update_option('dplr_learnpress_last_sync',time());
-		}
 		echo $result;
 		wp_die();
 	}

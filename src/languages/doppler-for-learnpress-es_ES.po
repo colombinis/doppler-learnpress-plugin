@@ -123,7 +123,7 @@ msgstr "Crear Lista"
 
 #: admin/partials/settings.php:55
 msgid "Doppler List to send Subscribers"
-msgstr "Lista de Doppler donde enviar Suscriptores"
+msgstr "Lista de Doppler a donde enviar Suscriptores"
 
 #: admin/partials/settings.php:57
 msgid "Select"
