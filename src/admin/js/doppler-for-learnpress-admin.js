@@ -35,14 +35,14 @@
 			$("#dplr-settings-text").html(dplrlp_object_string.Syncrhonizing);
 			synchBuyers(buyersList).then(function( response ){			
 				var obj = JSON.parse(response);
-				if(!obj.createdResourceId){
-					if(obj!=0){
+				if(obj.createdResourceId || obj.errCode == 'NoStudentsFound'){
+					$("#dplr-lp-form-list").submit();
+				}else{
+					if(obj.error!=1){
 						displayErrors(obj);
 					}
 					button.removeAttr('disabled').removeClass("button--loading");
 					return false;
-				}else{
-					$("#dplr-lp-form-list").submit();
 				}
 			});
 		});
