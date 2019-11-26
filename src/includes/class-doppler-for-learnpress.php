@@ -86,7 +86,7 @@ class Doppler_For_Learnpress {
 		if ( defined( 'DOPPLER_FOR_LEARNPRESS_VERSION' ) ) {
 			$this->version = DOPPLER_FOR_LEARNPRESS_VERSION;
 		} else {
-			$this->version = '1.0.3';
+			$this->version = '1.0.4';
 		}
 		$this->plugin_name = 'doppler-for-learnpress';
 
