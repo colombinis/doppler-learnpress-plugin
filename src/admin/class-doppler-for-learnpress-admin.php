@@ -302,6 +302,8 @@ class Doppler_For_Learnpress_Admin {
 			if(!empty($users)){
 				$lists = get_option('dplr_learnpress_subscribers_list');
 				$list_id = $lists['buyers'];
+				//find out if this course is mapped.
+				
 				if(is_array($users)){
 					foreach($users as $k=>$user_id){
 						$user_email = get_userdata($user_id)->data->user_email;
@@ -375,12 +377,16 @@ class Doppler_For_Learnpress_Admin {
 		return  $wpdb->get_results($query);
 	}
 
+	/**
+	 * Get list of published courses
+	 * @return object | null
+	 */
 	private function get_courses(){
 		global $wpdb;
 		$courses   = $wpdb->get_results(
 			$wpdb->prepare(
 					"SELECT p.ID, p.post_title FROM $wpdb->posts p
-					WHERE post_type = '%s' AND post_status = '%s'",
+					WHERE post_type = '%s' AND post_status = '%s' ORDER BY p.post_title",
 					"lp_course", "publish" 
 				)
 		);
@@ -397,18 +403,55 @@ class Doppler_For_Learnpress_Admin {
 	}
 
 	public function dplr_map_course(){
-		if( empty($_POST['course_id']) || empty($_POST['list_id']) ) return false;
+		
+		if( empty($_POST['course_id']) || empty($_POST['list_id']) || empty($_POST['action_id']) ) return false;
 		
 		$map = get_option('dplr_learnpress_courses_map');
+	
 		if($map !== false) $dplr_courses_map = $map;
-		
-		$dplr_courses_map[][$_POST['course_id']] = $_POST['list_id'];
 
-		//maybe array_filter for checking repeteated association?
-		
-		if(update_option( 'dplr_learnpress_courses_map', $dplr_courses_map )){
-			echo '1';
+		$assoc_exists = false;
+		foreach($map as $mapped_course){
+			if($mapped_course['course_id']==$_POST['course_id'] && $mapped_course['action_id']==$_POST['action_id']){
+				$assoc_exists = true;
+				break;
+			}
 		}
+		
+		//avoid repeated course/action association.
+		if($assoc_exists){
+			wp_send_json_error(array('error'=>0,'message'=>'Duplicated association'));
+		}
+
+		//a course plus an action have an associated list
+		//$dplr_courses_map[][$_POST['course_id']][$_POST['action_id']] = $_POST['list_id'];
+		$dplr_courses_map[] = array(
+							'course_id'=>$_POST['course_id'],
+							'action_id'=>$_POST['action_id'],
+							'list_id'=>$_POST['list_id']
+						);
+		if(update_option( 'dplr_learnpress_courses_map', $dplr_courses_map )){
+			wp_send_json_success();
+		}
+		wp_die();
+	}
+	/**
+	 * Removes Course association from Mapped courses.
+	 */
+	public function dplr_delete_course_association(){
+		if(empty($_POST['association'])) return false;
+		$aux = explode('-', $_POST['association']);
+		$course_id = $aux[0];
+		$action_id = $aux[1];
+		
+		$map = get_option('dplr_learnpress_courses_map');
+		foreach($map as $key => $mapped_course){
+			if( $mapped_course['course_id'] == $course_id && $mapped_course['action_id'] == $action_id){
+				unset($map[$key]);
+			}
+		}
+		update_option('dplr_learnpress_courses_map', $map);
+		echo '1';
 		wp_die();
 	}
 

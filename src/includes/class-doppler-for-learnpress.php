@@ -174,6 +174,7 @@ class Doppler_For_Learnpress {
 		//$this->loader->add_action( 'learn-press/payment-complete', 				$plugin_admin, 'dplr_after_customer_subscription' );
 		$this->loader->add_action( 'admin_notices', 							$plugin_admin, 'show_admin_notice' );
 		$this->loader->add_action( 'wp_ajax_dplr_map_course',					$plugin_admin, 'dplr_map_course');
+		$this->loader->add_action( 'wp_ajax_dplrlp_delete_association', 		$plugin_admin, 'dplr_delete_course_association');
 	}
 
 	/**
