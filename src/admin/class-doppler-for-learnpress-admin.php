@@ -291,30 +291,58 @@ class Doppler_For_Learnpress_Admin {
 
 	/**
 	 * Subscribe customer/s to list after 
-	 * course subscription from backend-end
+	 * course subscription from backend-end or backend.
 	 * 
 	 * @since 1.0.0
 	 */
 	public function dplr_after_order_completed( $order_id ) {
 		$order = new LP_Order( $order_id );
+		$order_items = $order->get_items();
+
+		if(empty($order_items)) return;
+
 		if( $order->has_status( 'completed' ) && !$order->is_child() ){
 			$users = get_post_meta( $order_id, '_user_id', true);
 			if(!empty($users)){
+
+				//Subscribe to global buyers list.
 				$lists = get_option('dplr_learnpress_subscribers_list');
 				$list_id = $lists['buyers'];
-				//find out if this course is mapped.
+				$this->subscribe_user_or_users($users, $list_id);
 				
-				if(is_array($users)){
-					foreach($users as $k=>$user_id){
-						$user_email = get_userdata($user_id)->data->user_email;
-						$this->subscribe_customer( $list_id, $user_email, array() );
+				//Check if course is mapped for registering subscriptions and subscribe.
+				$map = get_option('dplr_learnpress_courses_map');
+	
+				if( !empty($map) ){
+					foreach($map as $mapped_course){
+						foreach($order_items as $k=>$order_item){
+							$course_id = $order_item['course_id'];
+							if($mapped_course['action_id'] == '1' && $mapped_course['course_id'] == $course_id){
+								//Subscribe user or users
+								$this->subscribe_user_or_users($users, $mapped_course['list_id']);
+							}
+						}
 					}
-				}else{
-					$user_id = $users;
-					$user_email = get_userdata($user_id)->data->user_email;
-					$this->subscribe_customer( $list_id, $user_email, array() );
-				}				
+				}
 			}
+		}
+	}
+
+	/**
+	 * Subscribe a single user or multiple users to a list.
+	 * @param users | array or int
+	 * @param list_id | string
+	 */
+	private function subscribe_user_or_users($users,$list_id) {
+		if(is_array($users)){
+			foreach($users as $k=>$user_id){
+				$user_email = get_userdata($user_id)->data->user_email;
+				$this->subscribe_customer( $list_id, $user_email, array() );
+			}
+		}else{
+			$user_id = $users;
+			$user_email = get_userdata($user_id)->data->user_email;
+			$this->subscribe_customer( $list_id, $user_email, array() );
 		}
 	}
 
@@ -328,10 +356,13 @@ class Doppler_For_Learnpress_Admin {
 			$subscriber['email'] = $email;
 			$subscriber['fields'] = $fields; 
 			$subscriber_resource = $this->doppler_service->getResource('subscribers');
-			$this->set_origin();
+			
 			$this->set_credentials();
+			
+			$this->set_origin();
+
 			$result = $subscriber_resource->addSubscriber($list_id, $subscriber);
-			$this->write_log($result . __LINE__);
+			//$this->write_log($result . __LINE__);
 		}
 	}
 
