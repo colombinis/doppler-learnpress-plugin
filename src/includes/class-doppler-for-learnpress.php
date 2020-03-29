@@ -93,6 +93,7 @@ class Doppler_For_Learnpress {
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
+		$this->define_public_hooks();
 
 	}
 
@@ -131,6 +132,12 @@ class Doppler_For_Learnpress {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-doppler-for-learnpress-admin.php';
 
+		/**
+		 * The class responsible for defining all actions that occur in the public-facing
+		 * side of the site.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-doppler-for-learnpress-public.php';
+		
 		$this->loader = new Doppler_For_Learnpress_Loader();
 
 	}
@@ -175,6 +182,21 @@ class Doppler_For_Learnpress {
 		$this->loader->add_action( 'admin_notices', 							$plugin_admin, 'show_admin_notice' );
 		$this->loader->add_action( 'wp_ajax_dplr_map_course',					$plugin_admin, 'dplr_map_course');
 		$this->loader->add_action( 'wp_ajax_dplrlp_delete_association', 		$plugin_admin, 'dplr_delete_course_association');
+		$this->loader->add_action( 'learn-press/learn-press/user-course-finished', $plugin_admin, 'dplr_after_course_finished' );
+		$this->loader->add_action( 'rest_api_init' , $plugin_admin, 'dplrlp_custom_endpoint');
+	}
+
+	/**
+	 * Register all of the hooks related to the public-facing functionality
+	 * of the plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function define_public_hooks() {
+
+		$plugin_public = new Doppler_For_Learnpress_Public( $this->get_plugin_name(), $this->get_version() );
+		$this->loader->add_action( 'learn-press/learn-press/user-course-finished', $plugin_public, 'dplr_after_course_finished' );
 	}
 
 	/**

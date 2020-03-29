@@ -541,4 +541,36 @@ class Doppler_For_Learnpress_Admin {
 		return array_filter($list,'is_numeric');
 	}
 
+	public function dplr_after_course_finished( $course_id, $user_id, $return ) {
+		echo 'im in admin';
+		var_dump($course_id);
+		var_dump($user_id);
+		var_dump($return);
+		die();
+	}
+
+	/**
+	* Define custom API endpoint
+	*/
+   public function dplrlp_custom_endpoint( $controllers ) {
+	   //Register abadoned cart endpoint.
+	   register_rest_route( 'learnpress/v1', 'courses', array(
+		   'methods' => 'GET',
+		   'callback' => array($this, 'get_published_courses')
+	   ));
+   }
+
+   public function get_published_courses() {
+	   //Todo: add logit to validate token
+	  $courses_crud = $this->get_courses();
+	  foreach($courses_crud as $course){
+		$courses[] = array( 'id' => $course->ID,
+							'name' => $course->post_title,
+							'permalink' => get_permalink($course->ID),
+							'featured_image' => get_the_post_thumbnail_url($course->ID), 
+							'description' => get_post_field('post_content', $course->ID));
+	  }
+	  return $courses;
+   }
+
 }
