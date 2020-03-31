@@ -29,6 +29,9 @@ define( 'DOPPLER_FOR_LEARNPRESS_URL', plugin_dir_url(__FILE__) );
 if(!defined('DOPPLER_PLUGINS_PATH')):
 	define( 'DOPPLER_PLUGINS_PATH', plugin_dir_path(__DIR__));
 endif;
+if(!defined( 'DOPPLER_LEARNPRESS_API_URL' )) define('DOPPLER_LEARNPRESS_API_URL', 'http://newapiqa.fromdoppler.net/');
+if(!defined( 'DOPPLER_FOR_LEARNPRESS_ORIGIN' )) define('DOPPLER_FOR_LEARNPRESS_ORIGIN', 'Learnpress');
+	
 
 /**
  * The code that runs during plugin activation.
