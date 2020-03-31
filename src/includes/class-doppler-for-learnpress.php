@@ -138,6 +138,17 @@ class Doppler_For_Learnpress {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-doppler-for-learnpress-public.php';
 		
+		/**
+		 * The class responsible of handling connection with Doppler App
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-doppler-for-learnpress-app-connect.php';
+		
+		/**
+		 * The class responsible of displaying admin notifications.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-doppler-for-learnpress-admin-notice.php';
+		
+
 		$this->loader = new Doppler_For_Learnpress_Loader();
 
 	}
