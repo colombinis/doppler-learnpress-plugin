@@ -561,16 +561,21 @@ class Doppler_For_Learnpress_Admin {
    }
 
    public function get_published_courses() {
-	   //Todo: add logit to validate token
-	  $courses_crud = $this->get_courses();
-	  foreach($courses_crud as $course){
-		$courses[] = array( 'id' => $course->ID,
-							'name' => $course->post_title,
-							'permalink' => get_permalink($course->ID),
-							'featured_image' => get_the_post_thumbnail_url($course->ID), 
-							'description' => get_post_field('post_content', $course->ID));
-	  }
-	  return $courses;
+	$accessToken = get_option('dplrlp_accessToken');
+	if( !empty($accessToken) && !empty($_SERVER['PHP_AUTH_PW'])
+		&& ($_SERVER['PHP_AUTH_PW'] === $accessToken) ){
+		$courses_crud = $this->get_courses();
+		foreach($courses_crud as $course){
+			$courses[] = array( 'id' => $course->ID,
+								'name' => $course->post_title,
+								'permalink' => get_permalink($course->ID),
+								'featured_image' => get_the_post_thumbnail_url($course->ID), 
+								'description' => get_post_field('post_content', $course->ID));
+		}
+		return $courses;
+	}else{
+		return array("code"=>"woocommerce_rest_cannot_view","message"=>"forbidden","data"=>array("status"=>401));
+	}
    }
 
 }
