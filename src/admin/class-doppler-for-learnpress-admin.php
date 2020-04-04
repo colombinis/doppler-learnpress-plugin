@@ -241,6 +241,20 @@ class Doppler_For_Learnpress_Admin {
 		$subscriber_resource = $this->doppler_service->getResource( 'subscribers' );
 		$this->set_origin();
 		$result = $subscriber_resource->importSubscribers( $list_id, $this->get_subscribers_for_import($students) )['body'];
+		
+		//Synch also mapped courses.
+
+		//Check if course is mapped for registering subscriptions and subscribe.
+		$map = get_option('dplr_learnpress_courses_map');
+	
+		if( !empty($map) ){
+			foreach($map as $mapped_course){
+					$course_id = $mapped_course['course_id'];
+					$students = get_students_from_course ($course_id);
+					$result = $subscriber_resource->importSubscribers( $mapped_course['list_id'], $this->get_subscribers_for_import($students) )['body'];
+			}
+		}
+		
 		echo $result;
 		wp_die();
 	}
@@ -408,6 +422,21 @@ class Doppler_For_Learnpress_Admin {
 		return  $wpdb->get_results($query);
 	}
 
+	/** Get students from a specific course */
+	private function get_students_from_course ($course_id) {
+		global $wpdb;
+		$query = "SELECT u.user_email, u.user_nicename FROM $wpdb->posts p 
+		JOIN {$wpdb->prefix}postmeta pm ON p.ID = pm.post_id 
+		JOIN {$wpdb->prefix}users u ON u.id = pm.meta_value 
+		JOIN {$wpdb->prefix}learnpress_order_items oi ON p.id = oi.order_id 
+		JOIN {$wpdb->prefix}learnpress_order_itemmeta oim ON oim.learnpress_order_item_id = oi.order_item_id 
+		WHERE p.post_type = 'lp_order' AND p.post_status = 'lp-completed' 
+		AND pm.meta_key = '_user_id' AND oim.meta_key = '_course_id' AND oim.meta_value = $course_id
+		GROUP BY u.id
+		";
+		return  $wpdb->get_results($query);
+	}
+
 	/**
 	 * Get list of published courses
 	 * @return object | null
@@ -434,7 +463,6 @@ class Doppler_For_Learnpress_Admin {
 	}
 
 	public function dplr_map_course(){
-		
 		if( empty($_POST['course_id']) || empty($_POST['list_id']) || empty($_POST['action_id']) ) return false;
 		
 		$map = get_option('dplr_learnpress_courses_map');
@@ -574,7 +602,7 @@ class Doppler_For_Learnpress_Admin {
 		}
 		return $courses;
 	}else{
-		return array("code"=>"woocommerce_rest_cannot_view","message"=>"forbidden","data"=>array("status"=>401));
+		return array("code"=>"learnpress_rest_cannot_view","message"=>"forbidden","data"=>array("status"=>401));
 	}
    }
 
