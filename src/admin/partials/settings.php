@@ -77,7 +77,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
                 <?php _e('Clear selection', 'doppler-for-learnpress') ?>
             </button>
         
-            <button id="dplr-lp-lists-btn" class="dp-button button-medium primary-green ml-1" disabled>
+            <button id="dplr-lp-lists-btn" class="dp-button button-medium primary-green ml-1">
                 <?php _e('Sync', 'doppler-for-learnpress') ?>
             </button>
 
