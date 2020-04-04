@@ -114,9 +114,11 @@
 			var button = $(this);
 			var mapCourse = $("#map-course").val();
 			var mapList = $("#map-list").val();
-			var mapAction = $("#map-action").val();
+			var mapAction = '1';
+			var messages = $("#courses-mapping-messages");
 			if( mapCourse === '' || mapList === '' || mapAction === '' ) return false;
 			button.attr('disabled','true').addClass("button--loading");
+			messages.html('');
 			var data = {
 				action: 'dplr_map_course',
 				course_id: mapCourse,
@@ -128,16 +130,18 @@
 					var html = '<tr>';
 						html+= '<td>'+$("#map-course option:selected").text()+'</td>';
 						html+= '<td>'+$("#map-list option:selected").text()+'</td>';
-						html+= '<td>'+$("#map-action option:selected").text()+'</td>';
-						html+= '<td><a class="pointer" data-assoc="'+mapCourse+'-'+mapAction+'">Delete</a></td>';
+						html+= '<td><a class="pointer" data-assoc="'+mapCourse+'-'+'1'+'">Delete</a></td>';
 						html+= '</tr>';
 					if($("#associated-lists-tbl").removeClass('d-none'));
 					$("#associated-lists-tbl tbody").prepend(html);
 					$("#map-course").val('');
 					$("#map-list").val('');
-					$("#map-action").val('');
 				}else{
-					alert(response.data.message);
+					if(response.data.message){
+						messages.html('<div class="messages-container blocker"><p>'+response.data.message+'</p></div>');
+					}else{
+						console.log(response);
+					}
 				}
 				button.removeAttr('disabled').removeClass("button--loading");
 			})
@@ -161,6 +165,7 @@
 		e.preventDefault();
 		var assoc = $(this).attr('data-assoc');
 		var row = $(this).closest('tr');
+		$("#courses-mapping-messages").html('');
 		$("#dplr-lp-dialog-confirm").dialog("option", "buttons", [{
 			text: object_string.Delete,
 			click: function() {
