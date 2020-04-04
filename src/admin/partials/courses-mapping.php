@@ -1,8 +1,9 @@
 <?php
 $courses = $this->get_courses();
 $courses_map = get_option('dplr_learnpress_courses_map');
+/*
 $actions = array(   '1'=> __('Student subscribes to course', 'doppler-for-learnpress'),
-                    '2'=>  __('Student finishes course', 'doppler-for-learnpress'));
+                    '2'=>  __('Student finishes course', 'doppler-for-learnpress'));*/
 ?>
 <hr>
 
@@ -42,29 +43,15 @@ $actions = array(   '1'=> __('Student subscribes to course', 'doppler-for-learnp
             ?>
         </select>
 
-        <select id="map-action">
-            <option value=""><?php _e('Select condition','doppler-for-learnpress')?></option>
-            <?php
-            foreach($actions as $k=>$v):
-                ?>
-                    <option value="<?php echo esc_attr($k)?>">
-                        <?php echo esc_html($v)?>
-                    </option>
-                <?php
-            endforeach;
-            ?>
-        </select>
-
         <button class="dp-button dp-button--inline button-medium primary-green ml-1" disabled><?php _e('Associate List', 'doppler-for-learnpress')?></button>
     </p>
 </form>
-
+<div id="courses-mapping-messages"></div>
 <table id="associated-lists-tbl" class="fixed widefat <?php if(empty($courses_map)) echo 'd-none'?>">
     <thead>
         <tr>
             <th><?php _e('Course', 'doppler-for-learnpress')?></th>
             <th><?php _e('Associated List', 'doppler-for-learnpress')?></th>
-            <th><?php _e('Action', 'doppler-for-learnpress')?></th>
             <th class="tool-col"></th>
         </tr>
     </thead>
@@ -73,14 +60,12 @@ $actions = array(   '1'=> __('Student subscribes to course', 'doppler-for-learnp
     if(!empty($courses_map)):
         foreach($courses_map as $key=>$value):
             $list_id = $value['list_id'];
-            $action_id = $value['action_id'];
             $course_post = get_post($value['course_id']);
             ?>
                 <tr>
                     <td><?php echo $course_post->post_title ?></td>
                     <td><?php echo isset($lists[$list_id])?$lists[$list_id]['name']:__('Warning: list is missing', 'doppler-for-learnpress')?></td>
-                    <td><?php echo $actions[$action_id]?></td>
-                    <td><a class="pointer" data-assoc="<?php echo $value['course_id']?>-<?php echo $action_id?>">Delete</a></td>
+                    <td><a class="pointer" data-assoc="<?php echo $value['course_id']?>-1">Delete</a></td>
                 </tr>
             <?php
         endforeach;
