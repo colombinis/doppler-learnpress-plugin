@@ -57,10 +57,10 @@ class Doppler_For_Learnpress_Deactivator {
 			if($body->errorCode != 41){
 				$err_message = '';
 				if($body->errorCode == 40){
-					$err_message = _('Please delete associated campaings in Doppler before deactivating.', 'doppler-for-woocommerce');
+					$err_message = _('Please delete associated campaings in Doppler before deactivating.', 'doppler-for-learnpress');
 				}
 				Doppler_For_Learnpress_Admin_Notice::display_error(
-					__("<strong>Doppler For WooCommerce wasn't deactivated.</strong>".$err_message, "doppler-for-woocommerce")
+					__("<strong>Doppler For Learnpress wasn't deactivated.</strong>".$err_message, "doppler-for-learnpress")
 				);
 				header("Location: ".admin_url('plugins.php'));
 				exit();
