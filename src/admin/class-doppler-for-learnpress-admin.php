@@ -99,7 +99,7 @@ class Doppler_For_Learnpress_Admin {
 
 	public function set_origin() {
 		if(method_exists($this->doppler_service,'set_origin')){
-			$this->doppler_service->set_origin('LearnPress');
+			$this->doppler_service->set_origin('Learnpress');
 		}
 	}
 
@@ -250,7 +250,7 @@ class Doppler_For_Learnpress_Admin {
 		if( !empty($map) ){
 			foreach($map as $mapped_course){
 					$course_id = $mapped_course['course_id'];
-					$students = get_students_from_course ($course_id);
+					$students = $this->get_students_from_course ($course_id);
 					$result = $subscriber_resource->importSubscribers( $mapped_course['list_id'], $this->get_subscribers_for_import($students) )['body'];
 			}
 		}
@@ -326,7 +326,6 @@ class Doppler_For_Learnpress_Admin {
 				
 				//Check if course is mapped for registering subscriptions and subscribe.
 				$map = get_option('dplr_learnpress_courses_map');
-	
 				if( !empty($map) ){
 					foreach($map as $mapped_course){
 						foreach($order_items as $k=>$order_item){
@@ -482,6 +481,7 @@ class Doppler_For_Learnpress_Admin {
 			wp_send_json_error(array('error'=>0,'message'=>'Duplicated association'));
 		}
 
+		//TODO: action_id is always 1 atm. 
 		//a course plus an action have an associated list
 		//$dplr_courses_map[][$_POST['course_id']][$_POST['action_id']] = $_POST['list_id'];
 		$dplr_courses_map[] = array(
@@ -490,6 +490,9 @@ class Doppler_For_Learnpress_Admin {
 							'list_id'=>$_POST['list_id']
 						);
 		if(update_option( 'dplr_learnpress_courses_map', $dplr_courses_map )){
+			//Map, then synch!
+			$students = $this->get_students_from_course ($_POST['course_id']);
+			$result = $subscriber_resource->importSubscribers( $_POST['list_id'], $this->get_subscribers_for_import($students) )['body'];
 			wp_send_json_success();
 		}
 		wp_die();
@@ -522,7 +525,7 @@ class Doppler_For_Learnpress_Admin {
 	public function get_alpha_lists() {
 		$list_resource = $this->doppler_service->getResource('lists');
 		$dplr_lists = $list_resource->getAllLists();
-		if(is_array($dplr_lists)){
+		if( is_array($dplr_lists) && count($dplr_lists)>0 ){
 			foreach($dplr_lists as $k=>$v){
 			  if(is_array($v)):
 				foreach($v as $i=>$j){
@@ -569,12 +572,11 @@ class Doppler_For_Learnpress_Admin {
 		return array_filter($list,'is_numeric');
 	}
 
+	/**
+	 * TODO: Maybe syncrhonize graduated.
+	 */
 	public function dplr_after_course_finished( $course_id, $user_id, $return ) {
-		echo 'im in admin';
-		var_dump($course_id);
-		var_dump($user_id);
-		var_dump($return);
-		die();
+		
 	}
 
 	/**
