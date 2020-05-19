@@ -44,17 +44,15 @@ class Doppler_For_Learnpress_Activator {
 		 * If for some reason dplrlp_access_token has a value, it means plugin was
 		 * deactivated and re-activated. On deactivation Integration was DELETED, so we
 		 * are goint to re-activate and regenerate the keys.
-		 * 
+		 * ** TESTING ALWAYS CONNECT ON ACTIVATION **
 		 */
 		$options = get_option('dplr_settings');
-		if(!empty(get_option('dplrlp_access_token'))){
-			$DopplerAppConnect = new Doppler_For_Learnpress_App_Connect(
-				$options['dplr_option_useraccount'], $options['dplr_option_apikey'],
-				DOPPLER_LEARNPRESS_API_URL, DOPPLER_FOR_LEARNPRESS_ORIGIN
-			);
-			$response = $DopplerAppConnect->connect();
-			//check $response['response']['code']==200
-		}
+		$DopplerAppConnect = new Doppler_For_Learnpress_App_Connect(
+			$options['dplr_option_useraccount'], $options['dplr_option_apikey'],
+			DOPPLER_LEARNPRESS_API_URL, DOPPLER_FOR_LEARNPRESS_ORIGIN
+		);
+		$response = $DopplerAppConnect->connect();
+		//check $response['response']['code']==200
 
 	}
 

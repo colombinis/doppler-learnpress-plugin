@@ -492,6 +492,7 @@ class Doppler_For_Learnpress_Admin {
 		if(update_option( 'dplr_learnpress_courses_map', $dplr_courses_map )){
 			//Map, then synch!
 			$students = $this->get_students_from_course ($_POST['course_id']);
+			$subscriber_resource = $this->doppler_service->getResource('subscribers');
 			$result = $subscriber_resource->importSubscribers( $_POST['list_id'], $this->get_subscribers_for_import($students) )['body'];
 			wp_send_json_success();
 		}

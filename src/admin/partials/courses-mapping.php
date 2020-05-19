@@ -65,7 +65,7 @@ $actions = array(   '1'=> __('Student subscribes to course', 'doppler-for-learnp
                 <tr>
                     <td><?php echo $course_post->post_title ?></td>
                     <td><?php echo isset($lists[$list_id])?$lists[$list_id]['name']:__('Warning: list is missing', 'doppler-for-learnpress')?></td>
-                    <td><a class="pointer" data-assoc="<?php echo $value['course_id']?>-1">Delete</a></td>
+                    <td><a class="pointer" data-assoc="<?php echo $value['course_id']?>-1"><?php _e('Delete', 'doppler-form') ?></a></td>
                 </tr>
             <?php
         endforeach;

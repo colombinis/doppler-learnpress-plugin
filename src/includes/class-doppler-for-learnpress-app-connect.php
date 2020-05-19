@@ -11,7 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  */
 class Doppler_For_Learnpress_App_Connect {
 
-	const INTEGRATION = 'learnpress';
+	//const INTEGRATION = 'learnpress';
+	const INTEGRATION = 'magento';
 	const DEBUG_MODE = true;
 	private $api_account;
 	private $api_key;
