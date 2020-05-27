@@ -46,14 +46,16 @@ class Doppler_For_Learnpress_Activator {
 		 * are goint to re-activate and regenerate the keys.
 		 * ** TESTING ALWAYS CONNECT ON ACTIVATION **
 		 */
-		$options = get_option('dplr_settings');
+		/*
+		 $options = get_option('dplr_settings');
+		
 		$DopplerAppConnect = new Doppler_For_Learnpress_App_Connect(
 			$options['dplr_option_useraccount'], $options['dplr_option_apikey'],
 			DOPPLER_LEARNPRESS_API_URL, DOPPLER_FOR_LEARNPRESS_ORIGIN
 		);
 		$response = $DopplerAppConnect->connect();
 		//check $response['response']['code']==200
-
+		*/
 	}
 
 
