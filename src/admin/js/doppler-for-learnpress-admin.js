@@ -88,6 +88,7 @@
 				if(body.createdResourceId){		
 					var html ='<option value="'+body.createdResourceId+'">'+listName+'</option>';
 					$('#dplr-lp-form-list select option:first-child').after(html);
+					$('#course-mapping-form select#map-list option:first-child').after(html);
 					listInput.val('');
 					button.attr('disabled',true);
 					displaySuccess(dplrlp_object_string.newListSuccess);
@@ -113,24 +114,35 @@
 			var button = $(this);
 			var mapCourse = $("#map-course").val();
 			var mapList = $("#map-list").val();
-			if( mapCourse === '' || mapList === '' ) return false;
+			var mapAction = '1';
+			var messages = $("#courses-mapping-messages");
+			if( mapCourse === '' || mapList === '' || mapAction === '' ) return false;
 			button.attr('disabled','true').addClass("button--loading");
+			messages.html('');
 			var data = {
 				action: 'dplr_map_course',
 				course_id: mapCourse,
-				list_id: mapList
+				list_id: mapList,
+				action_id: mapAction
 			}
 			$.post( ajaxurl, data, function( response ){
-				if(response==='1'){
+				if(response.success){
 					var html = '<tr>';
 						html+= '<td>'+$("#map-course option:selected").text()+'</td>';
 						html+= '<td>'+$("#map-list option:selected").text()+'</td>';
-						html+= '<td><a class="pointer">Sync</a></td>';
-						html+= '<td><a class="pointer">Delete</a></td>';
+						html+= '<td><a class="pointer" data-assoc="'+mapCourse+'-'+'1'+'">Delete</a></td>';
 						html+= '</tr>';
 					if($("#associated-lists-tbl").removeClass('d-none'));
 					$("#associated-lists-tbl tbody").prepend(html);
-				} 
+					$("#map-course").val('');
+					$("#map-list").val('');
+				}else{
+					if(response.data.message){
+						messages.html('<div class="messages-container blocker"><p>'+response.data.message+'</p></div>');
+					}else{
+						console.log(response);
+					}
+				}
 				button.removeAttr('disabled').removeClass("button--loading");
 			})
 		});
@@ -145,6 +157,36 @@
 			});
 		}
 
+		$("#associated-lists-tbl").on('click','tr a', deleteCourseAssociation);
+
 	});
+
+	function deleteCourseAssociation(e){
+		e.preventDefault();
+		var assoc = $(this).attr('data-assoc');
+		var row = $(this).closest('tr');
+		$("#courses-mapping-messages").html('');
+		$("#dplr-lp-dialog-confirm").dialog("option", "buttons", [{
+			text: object_string.Delete,
+			click: function() {
+			  var data = {action: 'dplrlp_delete_association', association : assoc}
+			  $(this).dialog("close");
+			  row.addClass('deleting');
+			  $.post(ajaxurl,data,function(resp){
+				  if(resp == '1'){
+					  row.remove();
+				  }
+			  });
+			}
+		  }, {
+			text: object_string.Cancel,
+			click: function() {
+			  $(this).dialog("close");
+			}
+		  }]);
+  
+		$("#dplr-lp-dialog-confirm").dialog("open");
+
+	}
 
 })( jQuery );

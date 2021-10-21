@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank WordPress Pot v1.0.0\n"
 "Report-Msgid-Bugs-To: Translator Name <translations@example.com>\n"
-"POT-Creation-Date: 2019-10-02 11:24-0300\n"
+"POT-Creation-Date: 2020-04-27 10:02-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: Your Team <translations@example.com>\n"
@@ -20,18 +20,18 @@ msgstr ""
 "esc_attr_e;esc_attr_x:1,2c;esc_attr__;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;"
 "_x:1,2c;_n:1,2;_n_noop:1,2;__ngettext:1,2;__ngettext_noop:1,2;_c,_nc:4c,1,2\n"
 "X-Poedit-Basepath: ..\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 1.7.5\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: admin/class-doppler-for-learnpress-admin.php:143
+#: admin/class-doppler-for-learnpress-admin.php:145
 msgid "We're synchronizing your Subscribers with your Doppler List."
 msgstr "Estamos sincronizando tus Suscriptores con tu Lista de Doppler."
 
-#: admin/class-doppler-for-learnpress-admin.php:144
+#: admin/class-doppler-for-learnpress-admin.php:146
 msgid "The List has been created correctly."
 msgstr "La Lista fue creada correctamente."
 
-#: admin/class-doppler-for-learnpress-admin.php:145
+#: admin/class-doppler-for-learnpress-admin.php:147
 msgid ""
 "Select the Doppler List where you want to import Subscribers of your course. "
 "When synchronized, those customers already registered and future customers "
@@ -41,7 +41,7 @@ msgstr ""
 "tu Curso. Al sincronizarlas, se enviarán automáticamente los que ya están "
 "inscriptos y los futuros clientes."
 
-#: admin/class-doppler-for-learnpress-admin.php:151
+#: admin/class-doppler-for-learnpress-admin.php:153
 msgid ""
 "Ouch! <strong>Doppler for LearnPress</strong> requires the <a href=\"https://"
 "wordpress.org/plugins/doppler-form/\">Doppler Forms</a> plugin to be "
@@ -51,7 +51,7 @@ msgstr ""
 "plugin <a href=\"https://wordpress.org/plugins/doppler-form/\">Formularios "
 "Doppler</a> instalado y activo."
 
-#: admin/class-doppler-for-learnpress-admin.php:154
+#: admin/class-doppler-for-learnpress-admin.php:156
 #, php-format
 msgid ""
 "Ouch! <strong>Doppler for LearnPress</strong> requires at least "
@@ -62,18 +62,56 @@ msgstr ""
 "menos la versión de <strong>Doppler Forms v%s</strong>. Por favor <a href="
 "\"%splugins.php\">actualiza</a> Doppler Forms."
 
-#: admin/class-doppler-for-learnpress-admin.php:199
-#: admin/class-doppler-for-learnpress-admin.php:200
+#: admin/class-doppler-for-learnpress-admin.php:207
+#: admin/class-doppler-for-learnpress-admin.php:208
 #: admin/partials/doppler-for-learnpress-admin-display.php:31
 msgid "Doppler for LearnPress"
 msgstr "Doppler para LearnPress"
 
-#: admin/class-doppler-for-learnpress-admin.php:359
+#: admin/class-doppler-for-learnpress-admin.php:459
 msgid ""
 "Ouch! The selected List was deleted from Doppler. Please select another one."
 msgstr ""
 "¡Ouch! La Lista seleccionada fue eliminada en Doppler. Por favor selecciona "
 "otra."
+
+#: admin/partials/courses-mapping.php:11
+msgid "Courses Mapping"
+msgstr "Mapeo de Cursos"
+
+#: admin/partials/courses-mapping.php:17
+msgid "Select course"
+msgstr "Selecciona Curso"
+
+#: admin/partials/courses-mapping.php:32
+msgid "Select List"
+msgstr "Selecciona Lista"
+
+#: admin/partials/courses-mapping.php:46
+msgid "Associate List"
+msgstr "Asociar Lista"
+
+#: admin/partials/courses-mapping.php:53
+msgid "Course"
+msgstr "Curso"
+
+#: admin/partials/courses-mapping.php:54
+msgid "Associated List"
+msgstr "Lista asociada"
+
+#: admin/partials/courses-mapping.php:67
+msgid "Warning: list is missing"
+msgstr "Atención: la lista no existe"
+
+#: admin/partials/courses-mapping.php:77
+msgid "Are you sure? "
+msgstr "¿Está seguro?"
+
+#: admin/partials/courses-mapping.php:78
+msgid ""
+"If you proceed, the Course will no longer send subscriptors to the List."
+msgstr ""
+"Si procede, no se enviarán suscriptores de este Curso a la Lista de Doppler."
 
 #: admin/partials/doppler-for-learnpress-admin-display.php:30
 msgid ""
@@ -141,13 +179,21 @@ msgstr "Sincronizar"
 msgid "Settings"
 msgstr "Configuración"
 
-#: doppler-for-learnpress.php:45
+#: doppler-for-learnpress.php:48
 msgid "This plugin requires "
 msgstr "Este plugin requiere que "
 
-#: doppler-for-learnpress.php:45
+#: doppler-for-learnpress.php:48
 msgid " plugin to be active."
 msgstr " esté activo."
+
+#: includes/class-doppler-for-learnpress-deactivator.php:60
+msgid "Please delete associated campaings in Doppler before deactivating."
+msgstr "Por favor elmine las campañas asociadas antes de desactivar."
+
+#: includes/class-doppler-for-learnpress-deactivator.php:63
+msgid "<strong>Doppler For Learnpress wasn't deactivated.</strong>"
+msgstr "Doppler para Learnpress no fué desactivado."
 
 #~ msgid "Select the list you want to populate."
 #~ msgstr ""

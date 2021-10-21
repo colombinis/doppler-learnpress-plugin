@@ -99,7 +99,7 @@ class Doppler_For_Learnpress_Admin {
 
 	public function set_origin() {
 		if(method_exists($this->doppler_service,'set_origin')){
-			$this->doppler_service->set_origin('LearnPress');
+			$this->doppler_service->set_origin('Learnpress');
 		}
 	}
 
@@ -241,6 +241,20 @@ class Doppler_For_Learnpress_Admin {
 		$subscriber_resource = $this->doppler_service->getResource( 'subscribers' );
 		$this->set_origin();
 		$result = $subscriber_resource->importSubscribers( $list_id, $this->get_subscribers_for_import($students) )['body'];
+		
+		//Synch also mapped courses.
+
+		//Check if course is mapped for registering subscriptions and subscribe.
+		$map = get_option('dplr_learnpress_courses_map');
+	
+		if( !empty($map) ){
+			foreach($map as $mapped_course){
+					$course_id = $mapped_course['course_id'];
+					$students = $this->get_students_from_course ($course_id);
+					$result = $subscriber_resource->importSubscribers( $mapped_course['list_id'], $this->get_subscribers_for_import($students) )['body'];
+			}
+		}
+		
 		echo $result;
 		wp_die();
 	}
@@ -291,28 +305,57 @@ class Doppler_For_Learnpress_Admin {
 
 	/**
 	 * Subscribe customer/s to list after 
-	 * course subscription from backend-end
+	 * course subscription from backend-end or backend.
 	 * 
 	 * @since 1.0.0
 	 */
 	public function dplr_after_order_completed( $order_id ) {
 		$order = new LP_Order( $order_id );
+		$order_items = $order->get_items();
+
+		if(empty($order_items)) return;
+
 		if( $order->has_status( 'completed' ) && !$order->is_child() ){
 			$users = get_post_meta( $order_id, '_user_id', true);
 			if(!empty($users)){
+
+				//Subscribe to global buyers list.
 				$lists = get_option('dplr_learnpress_subscribers_list');
 				$list_id = $lists['buyers'];
-				if(is_array($users)){
-					foreach($users as $k=>$user_id){
-						$user_email = get_userdata($user_id)->data->user_email;
-						$this->subscribe_customer( $list_id, $user_email, array() );
+				$this->subscribe_user_or_users($users, $list_id);
+				
+				//Check if course is mapped for registering subscriptions and subscribe.
+				$map = get_option('dplr_learnpress_courses_map');
+				if( !empty($map) ){
+					foreach($map as $mapped_course){
+						foreach($order_items as $k=>$order_item){
+							$course_id = $order_item['course_id'];
+							if($mapped_course['action_id'] == '1' && $mapped_course['course_id'] == $course_id){
+								//Subscribe user or users
+								$this->subscribe_user_or_users($users, $mapped_course['list_id']);
+							}
+						}
 					}
-				}else{
-					$user_id = $users;
-					$user_email = get_userdata($user_id)->data->user_email;
-					$this->subscribe_customer( $list_id, $user_email, array() );
-				}				
+				}
 			}
+		}
+	}
+
+	/**
+	 * Subscribe a single user or multiple users to a list.
+	 * @param users | array or int
+	 * @param list_id | string
+	 */
+	private function subscribe_user_or_users($users,$list_id) {
+		if(is_array($users)){
+			foreach($users as $k=>$user_id){
+				$user_email = get_userdata($user_id)->data->user_email;
+				$this->subscribe_customer( $list_id, $user_email, array() );
+			}
+		}else{
+			$user_id = $users;
+			$user_email = get_userdata($user_id)->data->user_email;
+			$this->subscribe_customer( $list_id, $user_email, array() );
 		}
 	}
 
@@ -326,10 +369,13 @@ class Doppler_For_Learnpress_Admin {
 			$subscriber['email'] = $email;
 			$subscriber['fields'] = $fields; 
 			$subscriber_resource = $this->doppler_service->getResource('subscribers');
-			$this->set_origin();
+			
 			$this->set_credentials();
+			
+			$this->set_origin();
+
 			$result = $subscriber_resource->addSubscriber($list_id, $subscriber);
-			$this->write_log($result . __LINE__);
+			//$this->write_log($result . __LINE__);
 		}
 	}
 
@@ -375,12 +421,31 @@ class Doppler_For_Learnpress_Admin {
 		return  $wpdb->get_results($query);
 	}
 
+	/** Get students from a specific course */
+	private function get_students_from_course ($course_id) {
+		global $wpdb;
+		$query = "SELECT u.user_email, u.user_nicename FROM $wpdb->posts p 
+		JOIN {$wpdb->prefix}postmeta pm ON p.ID = pm.post_id 
+		JOIN {$wpdb->prefix}users u ON u.id = pm.meta_value 
+		JOIN {$wpdb->prefix}learnpress_order_items oi ON p.id = oi.order_id 
+		JOIN {$wpdb->prefix}learnpress_order_itemmeta oim ON oim.learnpress_order_item_id = oi.order_item_id 
+		WHERE p.post_type = 'lp_order' AND p.post_status = 'lp-completed' 
+		AND pm.meta_key = '_user_id' AND oim.meta_key = '_course_id' AND oim.meta_value = $course_id
+		GROUP BY u.id
+		";
+		return  $wpdb->get_results($query);
+	}
+
+	/**
+	 * Get list of published courses
+	 * @return object | null
+	 */
 	private function get_courses(){
 		global $wpdb;
 		$courses   = $wpdb->get_results(
 			$wpdb->prepare(
 					"SELECT p.ID, p.post_title FROM $wpdb->posts p
-					WHERE post_type = '%s' AND post_status = '%s'",
+					WHERE post_type = '%s' AND post_status = '%s' ORDER BY p.post_title",
 					"lp_course", "publish" 
 				)
 		);
@@ -397,18 +462,59 @@ class Doppler_For_Learnpress_Admin {
 	}
 
 	public function dplr_map_course(){
-		if( empty($_POST['course_id']) || empty($_POST['list_id']) ) return false;
+		if( empty($_POST['course_id']) || empty($_POST['list_id']) || empty($_POST['action_id']) ) return false;
 		
 		$map = get_option('dplr_learnpress_courses_map');
+	
 		if($map !== false) $dplr_courses_map = $map;
-		
-		$dplr_courses_map[][$_POST['course_id']] = $_POST['list_id'];
 
-		//maybe array_filter for checking repeteated association?
-		
-		if(update_option( 'dplr_learnpress_courses_map', $dplr_courses_map )){
-			echo '1';
+		$assoc_exists = false;
+		foreach($map as $mapped_course){
+			if($mapped_course['course_id']==$_POST['course_id'] && $mapped_course['action_id']==$_POST['action_id']){
+				$assoc_exists = true;
+				break;
+			}
 		}
+		
+		//avoid repeated course/action association.
+		if($assoc_exists){
+			wp_send_json_error(array('error'=>0,'message'=>'Duplicated association'));
+		}
+
+		//TODO: action_id is always 1 atm. 
+		//a course plus an action have an associated list
+		//$dplr_courses_map[][$_POST['course_id']][$_POST['action_id']] = $_POST['list_id'];
+		$dplr_courses_map[] = array(
+							'course_id'=>$_POST['course_id'],
+							'action_id'=>$_POST['action_id'],
+							'list_id'=>$_POST['list_id']
+						);
+		if(update_option( 'dplr_learnpress_courses_map', $dplr_courses_map )){
+			//Map, then synch!
+			$students = $this->get_students_from_course ($_POST['course_id']);
+			$subscriber_resource = $this->doppler_service->getResource('subscribers');
+			$result = $subscriber_resource->importSubscribers( $_POST['list_id'], $this->get_subscribers_for_import($students) )['body'];
+			wp_send_json_success();
+		}
+		wp_die();
+	}
+	/**
+	 * Removes Course association from Mapped courses.
+	 */
+	public function dplr_delete_course_association(){
+		if(empty($_POST['association'])) return false;
+		$aux = explode('-', $_POST['association']);
+		$course_id = $aux[0];
+		$action_id = $aux[1];
+		
+		$map = get_option('dplr_learnpress_courses_map');
+		foreach($map as $key => $mapped_course){
+			if( $mapped_course['course_id'] == $course_id && $mapped_course['action_id'] == $action_id){
+				unset($map[$key]);
+			}
+		}
+		update_option('dplr_learnpress_courses_map', $map);
+		echo '1';
 		wp_die();
 	}
 
@@ -420,7 +526,7 @@ class Doppler_For_Learnpress_Admin {
 	public function get_alpha_lists() {
 		$list_resource = $this->doppler_service->getResource('lists');
 		$dplr_lists = $list_resource->getAllLists();
-		if(is_array($dplr_lists)){
+		if( is_array($dplr_lists) && count($dplr_lists)>0 ){
 			foreach($dplr_lists as $k=>$v){
 			  if(is_array($v)):
 				foreach($v as $i=>$j){
@@ -466,5 +572,41 @@ class Doppler_For_Learnpress_Admin {
 	private function sanitize_subscribers_list( $list ) {
 		return array_filter($list,'is_numeric');
 	}
+
+	/**
+	 * TODO: Maybe syncrhonize graduated.
+	 */
+	public function dplr_after_course_finished( $course_id, $user_id, $return ) {
+		
+	}
+
+	/**
+	* Define custom API endpoint
+	*/
+   public function dplrlp_custom_endpoint( $controllers ) {
+	   //Register abadoned cart endpoint.
+	   register_rest_route( 'learnpress/v1', 'courses', array(
+		   'methods' => 'GET',
+		   'callback' => array($this, 'get_published_courses')
+	   ));
+   }
+
+   public function get_published_courses() {
+	$accessToken = get_option('dplrlp_accessToken');
+	if( !empty($accessToken) && !empty($_SERVER['PHP_AUTH_PW'])
+		&& ($_SERVER['PHP_AUTH_PW'] === $accessToken) ){
+		$courses_crud = $this->get_courses();
+		foreach($courses_crud as $course){
+			$courses[] = array( 'id' => $course->ID,
+								'name' => $course->post_title,
+								'permalink' => get_permalink($course->ID),
+								'featured_image' => get_the_post_thumbnail_url($course->ID), 
+								'description' => get_post_field('post_content', $course->ID));
+		}
+		return $courses;
+	}else{
+		return array("code"=>"learnpress_rest_cannot_view","message"=>"forbidden","data"=>array("status"=>401));
+	}
+   }
 
 }

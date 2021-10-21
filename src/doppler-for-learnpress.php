@@ -29,22 +29,15 @@ define( 'DOPPLER_FOR_LEARNPRESS_URL', plugin_dir_url(__FILE__) );
 if(!defined('DOPPLER_PLUGINS_PATH')):
 	define( 'DOPPLER_PLUGINS_PATH', plugin_dir_path(__DIR__));
 endif;
+if(!defined( 'DOPPLER_LEARNPRESS_API_URL' )) define('DOPPLER_LEARNPRESS_API_URL', 'http://newapiqa.fromdoppler.net/');
+if(!defined( 'DOPPLER_FOR_LEARNPRESS_ORIGIN' )) define('DOPPLER_FOR_LEARNPRESS_ORIGIN', 'Learnpress');
+	
 
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-doppler-for-learnpress-activator.php
  */
 function activate_doppler_for_learnpress() {
-	if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
-		include_once( ABSPATH . '/wp-admin/includes/plugin.php' );
-	}
-	if ( current_user_can( 'activate_plugins' ) && ! class_exists( 'LearnPress' ) ) {
-		// Deactivate the plugin.
-		deactivate_plugins( plugin_basename( __FILE__ ) );
-		// Throw an error in the WordPress admin console.
-		$error_message = '<p style="font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,Oxygen-Sans,Ubuntu,Cantarell,\'Helvetica Neue\',sans-serif;font-size: 13px;line-height: 1.5;color:#444;">' . esc_html__( 'This plugin requires ', 'doppler-for-learnpress' ) . '<a href="' . esc_url( 'https://wordpress.org/plugins/learnpress/' ) . '" target="_blank">LearnPress</a>' . esc_html__( ' plugin to be active.', 'doppler-for-learnpress' ) . '</p>';
-		die( $error_message ); // WPCS: XSS ok.
-	}
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-doppler-for-learnpress-activator.php';
 	Doppler_For_Learnpress_Activator::activate();
 }
@@ -78,4 +71,12 @@ function run_doppler_for_learnpress() {
 	$plugin->run();
 
 }
-run_doppler_for_learnpress();
+
+require plugin_dir_path( __FILE__ ) . 'includes/class-dependency-checker.php';
+$dependency_checker = new Dependecy_Checker();
+
+if($dependency_checker->check()){
+	run_doppler_for_learnpress();
+}else{
+	$dependency_checker->display_warning();
+}

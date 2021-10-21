@@ -35,6 +35,27 @@ class Doppler_For_Learnpress_Activator {
 
 		update_option('dplrlp_version', DOPPLER_FOR_LEARNPRESS_VERSION);
 
+		/**
+		 * Doppler App Integration.
+		 * 
+		 * If plugin in installed for the 1st time (dplrlp_access_token is empty)
+		 * we ignore app integration becouse it will be performed on first sync.
+		 * 
+		 * If for some reason dplrlp_access_token has a value, it means plugin was
+		 * deactivated and re-activated. On deactivation Integration was DELETED, so we
+		 * are goint to re-activate and regenerate the keys.
+		 * ** TESTING ALWAYS CONNECT ON ACTIVATION **
+		 */
+		/*
+		 $options = get_option('dplr_settings');
+		
+		$DopplerAppConnect = new Doppler_For_Learnpress_App_Connect(
+			$options['dplr_option_useraccount'], $options['dplr_option_apikey'],
+			DOPPLER_LEARNPRESS_API_URL, DOPPLER_FOR_LEARNPRESS_ORIGIN
+		);
+		$response = $DopplerAppConnect->connect();
+		//check $response['response']['code']==200
+		*/
 	}
 
 
