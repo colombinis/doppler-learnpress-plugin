@@ -13,6 +13,9 @@ Submit your LearnPress Students to a Doppler List.
 
 == Changelog ==
 
+= 1.0.7 =
+* Feature: Now guest students that didn't decide to register (didn't tick the checkbox on checkout) are subscribed to Doppler lists anyway
+
 = 1.0.6 =
 * Feature: Segment students by course taken. (does not include guest students and free courses)
 
