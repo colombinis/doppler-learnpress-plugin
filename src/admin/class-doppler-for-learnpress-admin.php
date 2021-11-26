@@ -345,6 +345,19 @@ class Doppler_For_Learnpress_Admin {
 				$lists = get_option('dplr_learnpress_subscribers_list');
 				$list_id = $lists['buyers'];
 				$this->subscribe_user_or_users($users, $list_id, $user_email);
+
+				$map = get_option('dplr_learnpress_courses_map');
+				if( !empty($map) ){
+					foreach($map as $mapped_course){
+						foreach($order_items as $k=>$order_item){
+							$course_id = $order_item['course_id'];
+							if($mapped_course['action_id'] == '1' && $mapped_course['course_id'] == $course_id){
+								//Subscribe user or users
+								$this->subscribe_user_or_users($users, $mapped_course['list_id'], $user_email);
+							}
+						}
+					}
+				}
 			}
 		}
 	}
