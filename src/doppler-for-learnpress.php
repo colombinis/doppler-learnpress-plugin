@@ -23,7 +23,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'DOPPLER_FOR_LEARNPRESS_VERSION', '1.0.4' );
+define( 'DOPPLER_FOR_LEARNPRESS_VERSION', '1.0.7' );
 define( 'DOPPLER_FOR_LEARNPRESS_PLUGIN_FILE', plugin_basename( __FILE__ ));
 define( 'DOPPLER_FOR_LEARNPRESS_URL', plugin_dir_url(__FILE__) );
 if(!defined('DOPPLER_PLUGINS_PATH')):
